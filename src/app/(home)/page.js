@@ -34,9 +34,10 @@ export default function Home() {
         </div>
       </section>
       <section className="flex flex-col gap-5 md:gap-0 md:flex-row justify-between items-center md:items-start">
-
         <div className="md:mr-5 p-10 min-w-52 h-52 sm:min-w-60 sm:h-60 rounded-div bg-primary relative cursor-pointer overflow-hidden">
-          <h2 className="font-bold text-lg lg:text-xl text-white ">Fresh Products</h2>
+          <h2 className="font-bold text-lg lg:text-2xl text-white">
+            Fresh <br /> Products
+          </h2>
           <Image
             src="/images/tomatoes.png"
             alt="Tomatoes"
@@ -58,7 +59,56 @@ export default function Home() {
           <Product />
           <Product />
         </div>
+      </section>
 
+      <section className="p-5 md:p-10 w-full rounded-div bg-primary overflow-hidden">
+        <h2 className="mb-2 md:mb-5 font-bold text-lg lg:text-2xl text-white ">
+          Contact Us
+        </h2>
+
+        <div className="w-[70%] mx-auto md:w-full flex justify-center flex-col md:flex-row items-center gap-5 md:gap-10">
+          <div className="w-full md:w-[35%]">
+            <div className="pl-2 pr-5 mb-3 w-full h-10 bg-silver rounded-div flex justify-between items-center">
+              <Image
+                src="/images/phone.png"
+                alt="Phone"
+                width="30"
+                height="30"
+                className="rounded-full"
+              />
+              <p>+965 545 456 34</p>
+            </div>
+            <div className="pl-2 pr-5 mb-3 w-full h-10 bg-silver rounded-div flex justify-between items-center">
+              <Image
+                src="/images/email.png"
+                alt="Email"
+                width="30"
+                height="30"
+                className="rounded-full"
+              />
+              <p>ourstore@gmail.com</p>
+            </div>
+            <div className="px-5 py-3 text-center w-full bg-silver rounded-div flex flex-col gap-3 justify-between items-center">
+              <Image
+                src="/images/address.png"
+                alt="Address"
+                width="30"
+                height="30"
+                className="rounded-full"
+              />
+              <p>123 Fresh Market St., Green Valley, Kuwait City, Kuwait.</p>
+            </div>
+          </div>
+          <iframe
+            className="rounded-div"
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d48172.67437440163!2d47.991121699999994!3d29.366618199999998!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3fcf8362d1e75e1b%3A0x3b5166847e02f534!2sKuwait%20Towers!5e1!3m2!1sen!2skw!4v1728481693783!5m2!1sen!2skw"
+            width="300"
+            height="200"
+            allowfullscreen=""
+            loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade"
+          ></iframe>
+        </div>
       </section>
     </main>
   );
