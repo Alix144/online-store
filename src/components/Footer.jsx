@@ -11,13 +11,14 @@ export default function Footer() {
           height={100}
         />
       </div>
-      <p className="text-sm sm:text-base text-center flex flex-col sm:flex-row sm:gap-1 items-center">
+      <p className="text-sm sm:text-base text-center flex flex-col sm:flex-row sm:gap-1 items-center text-darkGray">
         © 2024 Fruiti Store. All rights reserved. Developed by
         <Image
           src="/images/personal-logo.png"
           alt="Ali logo"
           width={40}
           height={40}
+          className="cursor-pointer"
         />
       </p>
     </footer>

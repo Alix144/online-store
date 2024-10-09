@@ -6,7 +6,7 @@ import { useState } from "react";
 export default function Header() {
   const [isLoggedIn, setIsLoggedIn] = useState(true);
   return (
-    <header className="my-5 flex justify-between relative items-center">
+    <header className="my-5 flex justify-between relative items-center z-10">
       <div className="h-6 w-6 sm:hidden">
         <Image
           src="/images/hamburger.png"
@@ -38,7 +38,7 @@ export default function Header() {
           Contact
         </Link>
       </nav>
-      <div className="w-10 h-10 absolute -top-3 md:-top-4 left-1/2 -translate-x-1/2 md:w-16 md:h-16 lg:w-20 lg:h-20">
+      <div className="w-10 h-10 absolute -top-3 md:-top-4 left-1/2 -translate-x-1/2 md:w-16 md:h-16 lg:w-20 lg:h-20 cursor-pointer">
         <Image
           src="/images/logo.png"
           alt="Fruity logo"
@@ -47,7 +47,7 @@ export default function Header() {
           priority
         />
       </div>
-      <button className="py-1 md:py-2 px-3 sm:px-5 md:px-7 bg-primary rounded-[30px] text-white text-sm sm:text-base">
+      <button className="btn-style bg-primary text-white">
         Sign In
       </button>
     </header>
