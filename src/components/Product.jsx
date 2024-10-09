@@ -16,7 +16,7 @@ export default function Product() {
       <div className="px-3 h-[35%] w-full flex justify-between">
         <div className="flex flex-col justify-between">
           <h3 className="text-lg font-semibold">Apples</h3>
-          <p>0.500 KWD / KG</p>
+          <p className="text-sm sm:text-base">0.500 KWD / KG</p>
         </div>
 
         <div className="flex flex-col justify-between">

@@ -76,7 +76,7 @@ export default function Home() {
                 height="30"
                 className="rounded-full"
               />
-              <p>+965 545 456 34</p>
+              <p className="text-sm sm:text-base">+965 545 456 34</p>
             </div>
             <div className="pl-2 pr-5 mb-3 w-full h-10 bg-silver rounded-div flex justify-between items-center">
               <Image
@@ -86,7 +86,7 @@ export default function Home() {
                 height="30"
                 className="rounded-full"
               />
-              <p>ourstore@gmail.com</p>
+              <p className="text-sm sm:text-base">ourstore@gmail.com</p>
             </div>
             <div className="px-5 py-3 text-center w-full bg-silver rounded-div flex flex-col gap-3 justify-between items-center">
               <Image
@@ -96,7 +96,7 @@ export default function Home() {
                 height="30"
                 className="rounded-full"
               />
-              <p>123 Fresh Market St., Green Valley, Kuwait City, Kuwait.</p>
+              <p className="text-sm sm:text-base">123 Fresh Market St., Green Valley, Kuwait City, Kuwait.</p>
             </div>
           </div>
           <iframe
