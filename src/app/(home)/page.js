@@ -1,16 +1,26 @@
 import Header from "@/components/Header";
+import Product from "@/components/Product";
 import Image from "next/image";
 
 export default function Home() {
   return (
-    <main className="h-screen">
+    <main className="flex flex-col gap-10">
       <section className="px-5 md:px-10 lg:px-14 py-3 sm:py-14 lg:py-16 xl:py-20 h-40 sm:h-72 lg:h-96 w-full rounded-div bg-secondary relative overflow-hidden">
         <div className="w-[95%] mx-auto sm:mx-0 text-center sm:text-start sm:w-[65%] lg:w-[45%] h-full flex flex-col justify-between gap-1 lg:gap-5 z-50">
-          <h1 className="font-bold text-lg sm:text-2xl lg:text-3xl">Fresh Vegetables & Fruits Delivered to Your Doorstep!</h1>
-          <p className="text-darkGray text-sm sm:text-base">Farm-fresh produce, handpicked with care. Quality and flavor in every bite.</p>
+          <h1 className="font-bold text-lg sm:text-2xl lg:text-3xl">
+            Fresh Vegetables & Fruits Delivered to Your Doorstep!
+          </h1>
+          <p className="text-darkGray text-sm sm:text-base">
+            Farm-fresh produce, handpicked with care. Quality and flavor in
+            every bite.
+          </p>
           <div className="mx-auto sm:mx-0 flex gap-2">
-            <button className="btn-style bg-primary text-white">Browse Products</button>
-            <button className="btn-style bg-silver text-darkGray">Our Location</button>
+            <button className="btn-style bg-primary text-white">
+              Browse Products
+            </button>
+            <button className="btn-style bg-silver text-darkGray">
+              Our Location
+            </button>
           </div>
         </div>
 
@@ -22,6 +32,33 @@ export default function Home() {
             className="h-full  top-0 right-0"
           />
         </div>
+      </section>
+      <section className="flex justify-between items-center">
+
+        <div className="p-10 w-60 h-60 rounded-div bg-primary relative cursor-pointer overflow-hidden">
+          <h2 className="font-bold text-2xl text-white ">Fresh Products</h2>
+
+          <Image
+            src="/images/tomatoes.png"
+            alt="Tomatoes"
+            width="150"
+            height="150"
+            className="bottom-0 -left-3 absolute scale-x-[-1]"
+          />
+          <Image
+            src="/images/arrow.png"
+            alt="Arrow"
+            width="25"
+            height="25"
+            className="bottom-7 right-7 absolute -rotate-45 hover:bottom-8 hover:right-6 duration-300"
+          />
+        </div>
+        <div className="flex gap-5">
+          <Product />
+          <Product />
+          <Product />
+        </div>
+
       </section>
     </main>
   );
