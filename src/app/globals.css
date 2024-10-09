@@ -5,3 +5,7 @@
 body{
   @apply bg-silver
 }
+
+.rounded-div{
+  @apply rounded-[30px]
+}

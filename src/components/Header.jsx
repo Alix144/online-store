@@ -10,7 +10,7 @@ export default function Header() {
       <div className="h-6 w-6 sm:hidden">
         <Image
           src="/images/hamburger.png"
-          alt="Next.js logo"
+          alt="Hamburger icon"
           width={30}
           height={30}
           priority
@@ -41,7 +41,7 @@ export default function Header() {
       <div className="w-10 h-10 absolute -top-3 md:-top-4 left-1/2 -translate-x-1/2 md:w-16 md:h-16 lg:w-20 lg:h-20">
         <Image
           src="/images/logo.png"
-          alt="Next.js logo"
+          alt="Fruity logo"
           width={300}
           height={300}
           priority
