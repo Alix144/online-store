@@ -1,3 +1,4 @@
+import Header from "@/components/Header";
 import "../globals.css";
 import { Inter } from "next/font/google";
 
@@ -16,8 +17,10 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body className={`${inter.variable}`}>
-        <h1>main layout</h1>
-        {children}
+        <div className="mx-auto w-[90%] sm:w-[80%]">
+          <Header/>
+           {children}
+        </div>
       </body>
     </html>
   );

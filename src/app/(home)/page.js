@@ -1,14 +1,9 @@
-import Image from "next/image";
+import Header from "@/components/Header";
 
 export default function Home() {
   return (
-    <Image
-      className="dark:invert"
-      src="https://nextjs.org/icons/next.svg"
-      alt="Next.js logo"
-      width={180}
-      height={38}
-      priority
-    />
+    <main>
+      <h1>main page</h1>
+    </main>
   );
 }
