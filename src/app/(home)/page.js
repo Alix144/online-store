@@ -4,10 +4,10 @@ import Image from "next/image";
 
 export default function Home() {
   return (
-    <main className="flex flex-col gap-10">
-      <section className="px-5 md:px-10 lg:px-14 py-3 sm:py-14 lg:py-16 xl:py-20 h-40 sm:h-72 lg:h-96 w-full rounded-div bg-secondary relative overflow-hidden">
+    <main className="flex flex-col gap-5 sm:gap-10">
+      <section className="px-5 md:px-10 lg:px-14 py-10 sm:py-14 lg:py-16 xl:py-20 h-48 sm:h-72 lg:h-96 w-full rounded-div bg-secondary relative overflow-hidden">
         <div className="w-[95%] mx-auto sm:mx-0 text-center sm:text-start sm:w-[65%] lg:w-[45%] h-full flex flex-col justify-between gap-1 lg:gap-5 z-50">
-          <h1 className="font-bold text-lg sm:text-2xl lg:text-3xl">
+          <h1 className="font-bold text-xl sm:text-2xl lg:text-3xl">
             Fresh Vegetables & Fruits Delivered to Your Doorstep!
           </h1>
           <p className="text-darkGray text-sm sm:text-base">
@@ -33,11 +33,10 @@ export default function Home() {
           />
         </div>
       </section>
-      <section className="flex justify-between items-center">
+      <section className="flex flex-col gap-5 md:gap-0 md:flex-row justify-between items-center md:items-start">
 
-        <div className="p-10 w-60 h-60 rounded-div bg-primary relative cursor-pointer overflow-hidden">
-          <h2 className="font-bold text-2xl text-white ">Fresh Products</h2>
-
+        <div className="md:mr-5 p-10 min-w-52 h-52 sm:min-w-60 sm:h-60 rounded-div bg-primary relative cursor-pointer overflow-hidden">
+          <h2 className="font-bold text-lg lg:text-xl text-white ">Fresh Products</h2>
           <Image
             src="/images/tomatoes.png"
             alt="Tomatoes"
@@ -53,7 +52,8 @@ export default function Home() {
             className="bottom-7 right-7 absolute -rotate-45 hover:bottom-8 hover:right-6 duration-300"
           />
         </div>
-        <div className="flex gap-5">
+
+        <div className="flex gap-5 flex-wrap justify-center">
           <Product />
           <Product />
           <Product />
