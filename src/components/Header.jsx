@@ -34,7 +34,7 @@ export default function Header() {
             Orders
           </Link>
         )}
-        <Link className="hover:border-b-[1px] border-primary" href={"/contact"}>
+        <Link className="hover:border-b-[1px] border-primary" href={"#contact"}>
           Contact
         </Link>
       </nav>

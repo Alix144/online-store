@@ -61,7 +61,7 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="p-5 md:p-10 w-full rounded-div bg-primary overflow-hidden">
+      <section className="p-5 md:p-10 w-full rounded-div bg-primary overflow-hidden" id="contact">
         <h2 className="mb-2 md:mb-5 font-bold text-lg lg:text-2xl text-white ">
           Contact Us
         </h2>
