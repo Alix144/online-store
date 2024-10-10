@@ -1,4 +1,6 @@
+"use client"
 import Image from "next/image";
+import {signIn} from 'next-auth/react'
 
 export default function SignIn() {
   return (
@@ -8,7 +10,7 @@ export default function SignIn() {
           {" "}
           Sign In
         </h1>
-        <div className="px-3 sm:px-5 py-2 w-full bg-white rounded-[10px] text center border-silver border-2 flex gap-5 cursor-pointer hover:bg-silver duration-300">
+        <div className="px-3 sm:px-5 py-2 w-full bg-white rounded-[10px] text center border-silver border-2 flex gap-5 cursor-pointer hover:bg-silver duration-300" onClick={() => signIn("google", {redirect: true, callbackUrl: "/"})}>
           <Image
             src="/images/google.png"
             alt="Google icon"

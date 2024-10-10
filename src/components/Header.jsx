@@ -1,10 +1,13 @@
-"use client";
 import Link from "next/link";
 import Image from "next/image";
-import { useState } from "react";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/lib/nextAuth";
+import SignoutBtn from "./header-components/SignoutBtn"
+import SigninBtn from "./header-components/signinBtn";
 
-export default function Header() {
-  const [isLoggedIn, setIsLoggedIn] = useState(true);
+export default async function Header() {
+  const session = await getServerSession(authOptions);
+  console.log(session)
   return (
     <header className="my-5 flex justify-between relative items-center z-10">
       <div className="h-6 w-6 sm:hidden">
@@ -26,7 +29,7 @@ export default function Header() {
         >
           Products
         </Link>
-        {isLoggedIn && (
+        {session?.user && (
           <Link
             className="hover:border-b-[1px] border-primary"
             href={"/orders"}
@@ -34,7 +37,10 @@ export default function Header() {
             Orders
           </Link>
         )}
-        <Link className="hover:border-b-[1px] border-primary" href={"#contact"}>
+        <Link
+          className="hover:border-b-[1px] border-primary"
+          href={"/#contact"}
+        >
           Contact
         </Link>
       </nav>
@@ -48,9 +54,8 @@ export default function Header() {
         />
       </div>
 
-      {isLoggedIn ? (
+      {session?.user ? (
         <div className="flex gap-1 sm:gap-2">
-
           <div className="py-1 px-1 rounded-[30px] duration-300 bg-lightGray flex ">
             <div className="hidden sm:flex py-1 px-3 rounded-div duration-300 hover:bg-silver items-center justify-center">
               <Image
@@ -69,28 +74,16 @@ export default function Header() {
               />
             </div>
             <div className="px-3 rounded-div duration-300 hover:bg-silver flex items-center justify-center">
-              <Image
-                src="/images/cart.png"
-                alt="Cart"
-                width={21}
-                height={21}
-              />
+              <Image src="/images/cart.png" alt="Cart" width={21} height={21} />
             </div>
           </div>
 
-          <div className="py-1 px-1  bg-lightGray rounded-div flex items-center justify-center">
-            <div className="py-1 px-3 rounded-div duration-300 hover:bg-silver">
-              <Image
-                src="/images/signout.png"
-                alt="Signout"
-                width={17}
-                height={17}
-              />
-            </div>
+          <div className="py-1 px-1 bg-lightGray rounded-div flex items-center justify-center">
+            <SignoutBtn/>
           </div>
         </div>
       ) : (
-        <button className="btn-style bg-primary text-white">Sign In</button>
+        <SigninBtn/>
       )}
     </header>
   );
