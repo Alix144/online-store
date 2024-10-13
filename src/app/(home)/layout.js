@@ -25,7 +25,7 @@ export default async function RootLayout({ children }) {
       <body className={`${inter.variable}`}>
       <NextAuthProvider>
         <div className="mx-auto w-[90%] sm:w-[80%]">
-          {session?.user.email !== "aliiyousseff144@gmail.com" &&<Header/>}
+          {session?.user.email !== "aaliiyousseff144@gmail.com" &&<Header/>}
            {children}
            {session?.user.email !== "aliiyousseff144@gmail.com" &&<Footer/>}
            
