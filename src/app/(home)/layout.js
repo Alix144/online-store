@@ -21,7 +21,7 @@ export const metadata = {
 
 export default async function RootLayout({ children }) {
   const session = await getServerSession(authOptions);
-  const isAdmin = session?.user.email === "aliiyousseff144@gmail.com";
+  const isAdmin = session?.user.email === "aliiyousseff144@gmail.com" || false;
   return (
     <html lang="en">
       <body className={`${inter.variable} ${isAdmin && "flex"}`}>
