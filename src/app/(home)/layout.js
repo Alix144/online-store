@@ -3,6 +3,8 @@ import Header from "@/components/Header";
 import "../globals.css";
 import { Inter } from "next/font/google";
 import Footer from "@/components/Footer";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/lib/nextAuth";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -15,15 +17,18 @@ export const metadata = {
     "Shop fresh and preserved fruits, vegetables, dates, and a variety of foodstuffs at Fruity Store. Quality products delivered with care.",
 };
 
-export default function RootLayout({ children }) {
+export default async function RootLayout({ children }) {
+  const session = await getServerSession(authOptions);
+
   return (
     <html lang="en">
       <body className={`${inter.variable}`}>
       <NextAuthProvider>
         <div className="mx-auto w-[90%] sm:w-[80%]">
-          <Header/>
+          {session?.user.email !== "aliiyousseff144@gmail.com" &&<Header/>}
            {children}
-           <Footer/>
+           {session?.user.email !== "aliiyousseff144@gmail.com" &&<Footer/>}
+           
         </div>
       </NextAuthProvider>
       </body>
