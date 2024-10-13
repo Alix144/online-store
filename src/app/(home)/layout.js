@@ -1,10 +1,12 @@
 import NextAuthProvider from "@/providers/NextAuthProvider";
 import Header from "@/components/Header";
+import AdminSidebar from "@/components/AdminSidebar";
 import "../globals.css";
 import { Inter } from "next/font/google";
 import Footer from "@/components/Footer";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/nextAuth";
+import AdminHeader from "@/components/AdminHeader";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -19,18 +21,27 @@ export const metadata = {
 
 export default async function RootLayout({ children }) {
   const session = await getServerSession(authOptions);
-
+  const isAdmin = session?.user.email === "aliiyousseff144@gmail.com";
   return (
     <html lang="en">
-      <body className={`${inter.variable}`}>
-      <NextAuthProvider>
-        <div className="mx-auto w-[90%] sm:w-[80%]">
-          {session?.user.email !== "aaliiyousseff144@gmail.com" &&<Header/>}
-           {children}
-           {session?.user.email !== "aliiyousseff144@gmail.com" &&<Footer/>}
-           
-        </div>
-      </NextAuthProvider>
+      <body className={`${inter.variable} ${isAdmin && "flex"}`}>
+        <NextAuthProvider>
+          {isAdmin ? (
+            <div className="w-full flex">
+              <AdminSidebar />
+              <div className="w-full">
+                <AdminHeader />
+                {children}
+              </div>
+            </div>
+          ) : (
+            <div className="mx-auto w-[90%] sm:w-[80%]">
+              <Header />
+              {children}
+              <Footer />
+            </div>
+          )}
+        </NextAuthProvider>
       </body>
     </html>
   );

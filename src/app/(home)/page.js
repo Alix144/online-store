@@ -5,14 +5,14 @@ import { authOptions } from "@/lib/nextAuth";
 
 export default async function Home() {
   const session = await getServerSession(authOptions);
+  const isAdmin = session?.user.email === "aliiyousseff144@gmail.com";
 
   if (session?.user) {
-    return (
-      session.user.email === "aliiyousseff144@gmail.com" ?
+    return isAdmin ? (
       <main>
         <h1>kmkmlmmlkl</h1>
       </main>
-      :
+    ) : (
       <main className="flex flex-col gap-5 sm:gap-10">
         <section className="px-5 md:px-10 lg:px-14 py-10 sm:py-14 lg:py-16 xl:py-20 h-48 sm:h-72 lg:h-96 w-full rounded-div bg-secondary relative overflow-hidden">
           <div className="w-[95%] mx-auto sm:mx-0 text-center sm:text-start sm:w-[65%] lg:w-[45%] h-full flex flex-col justify-between gap-1 lg:gap-5 z-50">
@@ -125,7 +125,6 @@ export default async function Home() {
           </div>
         </section>
       </main>
-      
     );
   } else {
     return (

@@ -44,7 +44,7 @@ export default async function Header() {
           Contact
         </Link>
       </nav>
-      <div className="w-10 h-10 absolute -top-3 md:-top-4 left-1/2 -translate-x-1/2 md:w-16 md:h-16 lg:w-20 lg:h-20 cursor-pointer">
+      <div className="w-10 h-10 md:w-16 md:h-16 lg:w-20 lg:h-20 absolute -top-3 md:-top-4 left-1/2 -translate-x-1/2 cursor-pointer">
         <Image
           src="/images/logo.png"
           alt="Fruity logo"
@@ -57,7 +57,7 @@ export default async function Header() {
       {session?.user ? (
         <div className="flex gap-1 sm:gap-2">
           <div className="py-1 px-1 rounded-[30px] duration-300 bg-lightGray flex ">
-            <div className="hidden sm:flex py-1 px-3 rounded-div duration-300 hover:bg-silver items-center justify-center">
+            <div className="hidden sm:flex py-1 px-3 rounded-div duration-300 hover:bg-silver items-center justify-center cursor-pointer">
               <Image
                 src="/images/empty-heart.png"
                 alt="Empty heart"
@@ -65,7 +65,7 @@ export default async function Header() {
                 height={21}
               />
             </div>
-            <div className="hidden sm:flex px-3 rounded-div duration-300 hover:bg-silver items-center justify-center">
+            <div className="hidden sm:flex px-3 rounded-div duration-300 hover:bg-silver items-center justify-center cursor-pointer">
               <Image
                 src="/images/user.png"
                 alt="User profile"
@@ -73,12 +73,12 @@ export default async function Header() {
                 height={21}
               />
             </div>
-            <div className="px-3 rounded-div duration-300 hover:bg-silver flex items-center justify-center">
+            <div className="px-3 rounded-div duration-300 hover:bg-silver flex items-center justify-center cursor-pointer">
               <Image src="/images/cart.png" alt="Cart" width={21} height={21} />
             </div>
           </div>
 
-          <div className="py-1 px-1 bg-lightGray rounded-div flex items-center justify-center">
+          <div className="py-1 px-1 bg-lightGray rounded-div flex items-center justify-center cursor-pointer">
             <SignoutBtn/>
           </div>
         </div>
