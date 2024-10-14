@@ -1,6 +1,6 @@
 import Image from "next/image";
 
-export default function Product() {
+export default function Product({ product }) {
   return (
     <div className="p-3 w-52 sm:w-60 min-w-52 sm:min-w-60 h-52 sm:h-60 rounded-div bg-white border-lightGray border-[1px] flex flex-col gap-3 cursor-pointer">
       <div className="w-full h-[65%] rounded-div bg-lightGray relative">
@@ -15,8 +15,8 @@ export default function Product() {
 
       <div className="px-3 h-[35%] w-full flex justify-between">
         <div className="flex flex-col justify-between">
-          <h3 className="text-lg font-semibold">Apples</h3>
-          <p className="text-sm sm:text-base">0.500 KWD / KG</p>
+          <h3 className="text-lg font-semibold">{product.name}</h3>
+          <p className="text-sm sm:text-base">{product.price} KWD / {product.measurement}</p>
         </div>
 
         <div className="flex flex-col justify-between">
