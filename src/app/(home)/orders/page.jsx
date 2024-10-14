@@ -1,8 +1,15 @@
+import ListDiv from "@/components/list-div-component/ListDiv";
+import Image from "next/image";
 
 export default function OrdersPage() {
   return (
     <main className="flex flex-col gap-5 sm:gap-10">
-      orders protect page
+      <section className="py-10 sm:py-14 lg:py-16 xl:py-20">
+      <h1 className="mb-5 sm:mb-10 m-auto text-center font-bold text-xl sm:text-2xl lg:text-3xl">
+        Orders
+      </h1>
+        <ListDiv />
+      </section>
     </main>
   );
 }

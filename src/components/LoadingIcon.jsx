@@ -2,7 +2,7 @@ import Image from "next/image";
 
 export default function LoadingIcon({ product }) {
   return (
-    <div className="h-5 w-5 flex justify-center items-center">
+    <div className="mx-auto h-5 w-5 flex justify-center items-center">
       <Image
         src="/images/loading.png"
         alt="Loading Icon"

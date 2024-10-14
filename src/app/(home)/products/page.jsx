@@ -45,7 +45,7 @@ export default function ProductsPage() {
               <p>No Products Found!</p>
             </div>
           ) : (
-            products.map((product) => (
+            products?.map((product) => (
               <Product product={product} key={product._id} />
             ))
           )}

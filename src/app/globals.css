@@ -13,3 +13,10 @@ body{
 .rounded-div{
   @apply rounded-[30px]
 }
+
+.scrollbar-hide {
+  scrollbar-width: none; /* Firefox */
+}
+.scrollbar-hide::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, and Edge */
+}

@@ -15,8 +15,8 @@ export default function Product({ product }) {
 
       <div className="px-3 h-[35%] w-full flex justify-between">
         <div className="flex flex-col justify-between">
-          <h3 className="text-lg font-semibold">{product.name}</h3>
-          <p className="text-sm sm:text-base">{product.price} KWD / {product.measurement}</p>
+          <h3 className="text-lg font-semibold">{product?.name}</h3>
+          <p className="text-sm sm:text-base">{product?.price} KWD / {product?.measurement}</p>
         </div>
 
         <div className="flex flex-col justify-between">
