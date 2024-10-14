@@ -1,6 +1,6 @@
 import Image from "next/image";
 
-export default function Product({ product }) {
+export default function Product({ product, isFavorite }) {
   return (
     <div className="p-3 w-52 sm:w-60 min-w-52 sm:min-w-60 h-52 sm:h-60 rounded-div bg-white border-lightGray border-[1px] flex flex-col gap-3 cursor-pointer">
       <div className="w-full h-[65%] rounded-div bg-lightGray relative">
@@ -21,8 +21,8 @@ export default function Product({ product }) {
 
         <div className="flex flex-col justify-between">
           <Image
-            src="/images/empty-heart.png"
-            alt="Empty heart"
+            src={`/images/${isFavorite ? 'filled-heart.png' : 'empty-heart.png'}`}
+            alt={`${isFavorite ? 'Filled' : 'Empty'} heart`}
             width="20"
             height="20"
             className="cursor-pointer"

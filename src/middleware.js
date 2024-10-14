@@ -9,7 +9,7 @@ export default withAuth(
     const token = await getToken({ req: request });
     const unauthenticatedRoutes = pathname.startsWith("/signin");
     const protectedRoutes = ["/orders", "/profile"];
-    const adminRoutes = ["/aaa"];
+    const adminRoutes = ["/admin"];
 
     //checking if the current route is for admins only or not
     const isAdminRoute = adminRoutes.some((route) =>
@@ -34,12 +34,12 @@ export default withAuth(
 
     //if admin trys to access users pages he gets directed to another page
     if (isProtectedRoute && token?.email === "aliiyousseff144@gmail.com") {
-      return NextResponse.redirect(new URL("/aaa", request.url));
+      return NextResponse.redirect(new URL("/admin", request.url));
     }
 
     //if users try access admin pages they get directed to another page
     if (isAdminRoute && token?.email != "aliiyousseff144@gmail.com") {
-      return NextResponse.redirect(new URL("/orders", request.url));
+      return NextResponse.redirect(new URL("/", request.url));
     }
   },
   {
@@ -56,6 +56,6 @@ export const config = {
     "/orders/:path*",
     "/profile/:path*",
     "/signin/:path*",
-    "/aaa/:path*",
+    "/admin/:path*",
   ],
 };
