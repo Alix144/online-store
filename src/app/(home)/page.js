@@ -2,6 +2,7 @@ import Product from "@/components/Product";
 import Image from "next/image";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/nextAuth";
+import HomePageProducts from "@/components/HomePageProducts";
 
 export default async function Home() {
   const session = await getServerSession(authOptions);
@@ -63,11 +64,7 @@ export default async function Home() {
             />
           </div>
 
-          <div className="flex gap-5 flex-wrap justify-center">
-            <Product />
-            <Product />
-            <Product />
-          </div>
+          <HomePageProducts/>
         </section>
 
         <section
@@ -178,11 +175,7 @@ export default async function Home() {
             />
           </div>
 
-          <div className="flex gap-5 flex-wrap justify-center">
-            <Product />
-            <Product />
-            <Product />
-          </div>
+          <HomePageProducts/>
         </section>
 
         <section
