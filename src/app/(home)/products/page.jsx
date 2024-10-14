@@ -1,4 +1,5 @@
 "use client";
+import Image from "next/image";
 import LoadingIcon from "@/components/LoadingIcon";
 import Product from "@/components/Product";
 import { useState, useEffect } from "react";
@@ -29,11 +30,20 @@ export default function ProductsPage() {
         <h1 className="m-auto text-center font-bold text-xl sm:text-2xl lg:text-3xl">
           Products
         </h1>
-        <div className="min-h-screen flex gap-5 flex-wrap justify-center lg:justify-normal">
+        <div className="min-h-96 flex gap-5 flex-wrap justify-center lg:justify-normal">
           {products === null ? (
-            <LoadingIcon/>
+            <LoadingIcon />
           ) : products.length === 0 ? (
-            <h5>empty</h5>
+            <div className="mt-10 w-full flex flex-col text-center justify-start items-center">
+              <Image
+                src="/images/empty-box.png"
+                alt="Empty Box"
+                width={100}
+                height={100}
+                className="mb-5"
+              />
+              <p>No Products Found!</p>
+            </div>
           ) : (
             products.map((product) => (
               <Product product={product} key={product._id} />
