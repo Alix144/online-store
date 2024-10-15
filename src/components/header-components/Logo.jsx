@@ -9,7 +9,7 @@ export default function Logo() {
   const dispatch = useDispatch();
 
   const goToHomePage = () => {
-    router.replace("/signin");
+    router.replace("/");
     dispatch(setToHome());
   };
 
