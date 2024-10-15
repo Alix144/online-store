@@ -1,10 +1,10 @@
-import Link from "next/link";
 import Image from "next/image";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/nextAuth";
 import SignoutBtn from "./header-components/SignoutBtn"
 import SigninBtn from "./header-components/signinBtn";
 import IconsNav from "./header-components/IconsNav";
+import LeftNav from "./header-components/LeftNav";
 
 export default async function Header() {
   const session = await getServerSession(authOptions);
@@ -20,31 +20,9 @@ export default async function Header() {
           priority
         />
       </div>
-      <nav className="hidden items-center gap-2 lg:gap-10 sm:flex">
-        <Link className="hover:border-b-[1px] border-primary" href={"/"}>
-          Home
-        </Link>
-        <Link
-          className="hover:border-b-[1px] border-primary"
-          href={"/products"}
-        >
-          Products
-        </Link>
-        {session?.user && (
-          <Link
-            className="hover:border-b-[1px] border-primary"
-            href={"/orders"}
-          >
-            Orders
-          </Link>
-        )}
-        <Link
-          className="hover:border-b-[1px] border-primary"
-          href={"/#contact"}
-        >
-          Contact
-        </Link>
-      </nav>
+      
+      <LeftNav isUserSignedIn={session?.user}/>
+      
       <div className="w-10 h-10 md:w-16 md:h-16 lg:w-20 lg:h-20 absolute -top-3 md:-top-4 left-1/2 -translate-x-1/2 cursor-pointer">
         <Image
           src="/images/logo.png"
