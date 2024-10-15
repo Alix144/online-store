@@ -6,6 +6,7 @@ import { Inter } from "next/font/google";
 import Footer from "@/components/Footer";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/nextAuth";
+import ReduxProvider from "@/redux/ReduxProvider";
 import AdminHeader from "@/components/AdminHeader";
 
 const inter = Inter({
@@ -25,23 +26,25 @@ export default async function RootLayout({ children }) {
   return (
     <html lang="en">
       <body className={`${inter.variable} ${isAdmin && "flex"}`}>
-        <NextAuthProvider>
-          {isAdmin ? (
-            <div className="w-full flex">
-              <AdminSidebar />
-              <div className="w-full">
-                <AdminHeader />
-                {children}
+        <ReduxProvider>
+          <NextAuthProvider>
+            {isAdmin ? (
+              <div className="w-full flex">
+                <AdminSidebar />
+                <div className="w-full">
+                  <AdminHeader />
+                  {children}
+                </div>
               </div>
-            </div>
-          ) : (
-            <div className="mx-auto w-[90%] sm:w-[80%]">
-              <Header />
-              {children}
-              <Footer />
-            </div>
-          )}
-        </NextAuthProvider>
+            ) : (
+              <div className="mx-auto w-[90%] sm:w-[80%]">
+                <Header />
+                {children}
+                <Footer />
+              </div>
+            )}
+          </NextAuthProvider>
+        </ReduxProvider>
       </body>
     </html>
   );

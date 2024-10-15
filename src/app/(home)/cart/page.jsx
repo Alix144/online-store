@@ -1,6 +1,3 @@
-
-import Image from "next/image";
-import LoadingIcon from "@/components/LoadingIcon";
 import Product from "@/components/Product";
 
 export default function ProductsPage() {
