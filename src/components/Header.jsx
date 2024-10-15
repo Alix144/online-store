@@ -5,6 +5,7 @@ import SignoutBtn from "./header-components/SignoutBtn"
 import SigninBtn from "./header-components/signinBtn";
 import IconsNav from "./header-components/IconsNav";
 import LeftNav from "./header-components/LeftNav";
+import Logo from "./header-components/Logo";
 
 export default async function Header() {
   const session = await getServerSession(authOptions);
@@ -22,16 +23,8 @@ export default async function Header() {
       </div>
       
       <LeftNav isUserSignedIn={session?.user}/>
-      
-      <div className="w-10 h-10 md:w-16 md:h-16 lg:w-20 lg:h-20 absolute -top-3 md:-top-4 left-1/2 -translate-x-1/2 cursor-pointer">
-        <Image
-          src="/images/logo.png"
-          alt="Fruity logo"
-          width={300}
-          height={300}
-          priority
-        />
-      </div>
+
+      <Logo/>
 
       {session?.user ? (
         <div className="flex gap-1 sm:gap-2">

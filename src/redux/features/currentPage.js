@@ -26,8 +26,11 @@ export const currentPageSlice = createSlice({
         setToCart: (state) => {
          state.value = "cart"
         },
+        setToNull: (state) => {
+         state.value = ""
+        },
     },
 })
 
-export const { setToHome, setToProducts, setToOrders, setToFavorites, setToProfile, setToCart} = currentPageSlice.actions;
+export const { setToHome, setToProducts, setToOrders, setToFavorites, setToProfile, setToCart, setToNull} = currentPageSlice.actions;
 export default currentPageSlice.reducer;
