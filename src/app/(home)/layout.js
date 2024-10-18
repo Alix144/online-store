@@ -29,7 +29,7 @@ export default async function RootLayout({ children }) {
         <ReduxProvider>
           <NextAuthProvider>
             {isAdmin ? (
-              <div className="w-full flex">
+              <div className="w-full flex ">
                 <AdminSidebar />
                 <div className="w-full">
                   <AdminHeader />

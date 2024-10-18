@@ -3,7 +3,7 @@ import ListData from "./list-data/ListData";
 
 export default function ListDiv() {
   return (
-    <div className="mx-auto w-[80%]">
+    <div className="w-full">
       <div className="mb-3 px-3 w-64 h-8 bg-white rounded-div border-darkGray border-[1px] flex gap-1 items-center">
         <div className="w-5 h-5">
           <Image

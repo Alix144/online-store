@@ -3,6 +3,7 @@ import Image from "next/image";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/nextAuth";
 import HomePageProducts from "@/components/HomePageProducts";
+import ListDiv from "@/components/list-div-component/ListDiv";
 
 export default async function Home() {
   const session = await getServerSession(authOptions);
@@ -10,8 +11,40 @@ export default async function Home() {
 
   if (session?.user) {
     return isAdmin ? (
-      <main>
-        <h1>kmkmlmmlkl</h1>
+      <main className="p-10 flex flex-col gap-10">
+        <section className="w-full">
+          <div className="py-3 sm:py-5 px-5 sm:px-10 w-full rounded-div bg-white flex justify-between items-center text-darkGray">
+            <div className="">
+              <p className="text-sm sm:text-base">Total Orders:</p>
+              <p className="text-sm sm:text-base font-bold">23</p>
+            </div>
+            <div className="w-[1px] h-14 bg-lightGray"></div>
+            <div className="">
+              <p className="text-sm sm:text-base">undelivered Orders</p>
+              <p className="text-sm sm:text-base font-bold">3</p>
+            </div>
+            <div className="w-[1px] h-14 bg-lightGray"></div>
+            <div className="">
+              <p className="text-sm sm:text-base">Delivered Orders</p>
+              <p className="text-sm sm:text-base font-bold">20</p>
+            </div>
+            <div className="w-[1px] h-14 bg-lightGray"></div>
+            <div className="">
+              <p className="text-sm sm:text-base">Products</p>
+              <p className="text-sm sm:text-base font-bold">202</p>
+            </div>
+            <div className="w-[1px] h-14 bg-lightGray"></div>
+            <div className="">
+              <p className="text-sm sm:text-base">Total Users</p>
+              <p className="text-sm sm:text-base font-bold">122</p>
+            </div>
+          </div>
+        </section>
+
+        <section className="w-full">
+          <h2 className="mb-3 sm:mb-5 text-lg sm:text-2xl text-darkGray font-semibold">Orders</h2>
+          <ListDiv/>
+        </section>
       </main>
     ) : (
       <main className="flex flex-col gap-5 sm:gap-10">
@@ -64,7 +97,7 @@ export default async function Home() {
             />
           </div>
 
-          <HomePageProducts/>
+          <HomePageProducts />
         </section>
 
         <section
@@ -175,7 +208,7 @@ export default async function Home() {
             />
           </div>
 
-          <HomePageProducts/>
+          <HomePageProducts />
         </section>
 
         <section
