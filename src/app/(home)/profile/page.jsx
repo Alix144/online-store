@@ -1,6 +1,6 @@
 import Image from "next/image";
 
-export default async function Header() {
+export default function Profile() {
   return (
     <main>
       <section className="py-10 sm:py-14 lg:py-16 xl:py-20 mx-auto w-full sm:w-[540px] flex flex-col gap-3 sm:gap-5">
