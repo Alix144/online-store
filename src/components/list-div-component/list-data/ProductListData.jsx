@@ -1,6 +1,17 @@
+"use state"
 import Image from "next/image";
+import { useEffect } from "react";
 
-export default function ProductListData() {
+export default function ProductListData({setIsEditProductWindowOpen, setIsDeleteWindowOpen}) {
+
+  const handleDeleteClick = () => {
+    setIsDeleteWindowOpen(true)
+  }
+
+  const handleEditClick = () => {
+    setIsEditProductWindowOpen(true)
+  }
+
   return (
     <div className="px-8 mx-8 py-5 flex justify-between border-b border-lightGray">
       <div className="flex gap-20">
@@ -14,8 +25,8 @@ export default function ProductListData() {
         <p className="w-24 max-w-24">KG</p>
       </div>
       <div className="flex gap-5 items-center">
-        <button className="btn-style bg-lightGray">Edit</button>
-        <div className="w-5 h-5 cursor-pointer">
+        <button className="btn-style bg-lightGray" onClick={()=>handleEditClick()}>Edit</button>
+        <div className="w-5 h-5 cursor-pointer" onClick={()=>handleDeleteClick()}>
           <Image
             src="/images/trash-can.png"
             alt="Trash Can"

@@ -12,9 +12,12 @@ export default function ListDiv({ type }) {
   const [isAddProductWindowOpen, setIsAddProductWindowOpen] = useState(false);
   const [isEditProductWindowOpen, setIsEditProductWindowOpen] = useState(false);
 
+  const [jaja, setJaja] = useState('initial')
+
   return (
     <>
       <div className="w-full">
+        
         {/* search input */}
         <div className="w-full flex justify-between">
           <div className="mb-3 px-3 w-64 h-8 bg-white rounded-div border-darkGray border-[1px] flex gap-1 items-center">
@@ -89,7 +92,7 @@ export default function ListDiv({ type }) {
             ) : type === "adminOrderList" ? (
               <AdminOrderListData />
             ) : type === "productsList" ? (
-              <ProductListData />
+              <ProductListData setIsEditProductWindowOpen={setIsEditProductWindowOpen} setIsDeleteWindowOpen={setIsDeleteWindowOpen}/>
             ) : (
               <UsersListData />
             )}
@@ -132,8 +135,8 @@ export default function ListDiv({ type }) {
               />
               <select id="measurement" name="measurement" placeholder="Measurement" className="mb-3 px-3 w-64 h-8 bg-white rounded-div border-darkGray border-[1px] text-gray-400">
                 <option value="" disabled selected>Measurement</option>
-                <option value="apple">KG</option>
-                <option value="banana">Gr</option>
+                <option value="kg">kg</option>
+                <option value="g">g</option>
               </select>
             </div>
             <div className="flex justify-between">
@@ -166,14 +169,14 @@ export default function ListDiv({ type }) {
               />
               <select id="measurement" name="measurement" placeholder="Measurement" className="mb-3 px-3 w-64 h-8 bg-white rounded-div border-darkGray border-[1px]">
                 <option value="" disabled selected>Measurement</option>
-                <option value="apple">KG</option>
-                <option value="banana">Gr</option>
+                <option value="kg">kg</option>
+                <option value="g">g</option>
               </select>
             </div>
             <div className="flex justify-between">
               <button
                 className="btn-style bg-[#00000066] text-white"
-                onClick={() => setIsDeleteWindowOpen(false)}
+                onClick={() => setIsEditProductWindowOpen(false)}
               >
                 Cancel
               </button>
