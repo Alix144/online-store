@@ -7,7 +7,7 @@ export default function ProductsPage() {
           <h2 className="mb-3 sm:mb-5 text-lg sm:text-2xl text-darkGray font-semibold">
             Products
           </h2>
-          <ListDiv />
+          <ListDiv type="productsList"/>
         </section>
       </main>
     );

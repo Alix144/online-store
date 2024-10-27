@@ -43,7 +43,7 @@ export default async function Home() {
 
         <section className="w-full">
           <h2 className="mb-3 sm:mb-5 text-lg sm:text-2xl text-darkGray font-semibold">Orders</h2>
-          <ListDiv/>
+          <ListDiv type={"adminOrderList"}/>
         </section>
       </main>
     ) : (

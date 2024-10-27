@@ -1,4 +1,4 @@
-export default function ListData() {
+export default function ListData({ type }) {
   return (
     <div className="px-8 mx-8 py-5 flex justify-between border-b border-lightGray">
       <div className="flex gap-20">

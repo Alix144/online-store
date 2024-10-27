@@ -7,7 +7,7 @@ export default function UsersPage() {
           <h2 className="mb-3 sm:mb-5 text-lg sm:text-2xl text-darkGray font-semibold">
             Users
           </h2>
-          <ListDiv />
+          <ListDiv type="usersList"/>
         </section>
       </main>
     );

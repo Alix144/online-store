@@ -1,5 +1,4 @@
 import ListDiv from "@/components/list-div-component/ListDiv";
-import Image from "next/image";
 
 export default function OrdersPage() {
   return (
@@ -10,7 +9,7 @@ export default function OrdersPage() {
       </h1>
         <div className="mx-auto w-[80%]">
 
-        <ListDiv />
+        <ListDiv type={"customerOrderList"}/>
         </div>
       </section>
     </main>
