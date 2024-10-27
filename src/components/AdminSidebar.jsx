@@ -1,25 +1,36 @@
 "use client"
+import { setToDashboard, setToOrders, setToProducts, setToUsers } from "@/redux/features/adminCurrentPage";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
+import { useDispatch, useSelector } from "react-redux";
 
 export default function AdminSidebar() {
   const router = useRouter()
+  const dispatch = useDispatch();
+
+  const currentPage = useSelector(
+    (state) => state.adminCurrentPage.value
+  );
 
   const navigateToDashboard = () => {
     router.replace("/");
-    // dispatch(setToFavorites())
+    dispatch(setToDashboard())
   };
 
   const navigateToOrders = () => {
     router.push("/admin/orders");
+    dispatch(setToOrders())
+    
   };
 
   const navigateToProducts = () => {
     router.push("/admin/products");
+    dispatch(setToProducts())
   };
 
   const navigateToUsers = () => {
     router.push("/admin/users");
+    dispatch(setToUsers())
   };
 
 
@@ -36,7 +47,7 @@ export default function AdminSidebar() {
       </div>
 
       <div className="sm:w-full text-white">
-        <div className="mb-2 w-full py-2 px-5 flex items-center gap-5 rounded-[10px] hover:bg-[#ffffff40] cursor-pointer duration-300" onClick={()=>navigateToDashboard()}>
+        <div className={`mb-2 w-full py-2 px-5 flex items-center gap-5 rounded-[10px] ${currentPage === "dashboard" && "bg-[#ffffff40]"} hover:bg-[#ffffff40] cursor-pointer duration-300`} onClick={()=>navigateToDashboard()}>
           <div className="w-5 h-5">
             <Image
               src="/images/dashboard.png"
@@ -47,7 +58,7 @@ export default function AdminSidebar() {
           </div>
           <p>Dashboard</p>
         </div>
-        <div className="mb-2 w-full py-2 px-5 flex items-center gap-5 rounded-[10px] hover:bg-[#ffffff40] cursor-pointer duration-300" onClick={()=>navigateToOrders()}>
+        <div className={`mb-2 w-full py-2 px-5 flex items-center gap-5 rounded-[10px] ${currentPage === "orders" && "bg-[#ffffff40]"} hover:bg-[#ffffff40] cursor-pointer duration-300`} onClick={()=>navigateToOrders()}>
           <div className="w-5 h-5">
             <Image
               src="/images/orders.png"
@@ -58,7 +69,7 @@ export default function AdminSidebar() {
           </div>
           <p>Orders</p>
         </div>
-        <div className="mb-2 w-full py-2 px-5 flex items-center gap-5 rounded-[10px] hover:bg-[#ffffff40] cursor-pointer duration-300" onClick={()=>navigateToProducts()}>
+        <div className={`mb-2 w-full py-2 px-5 flex items-center gap-5 rounded-[10px] ${currentPage === "products" && "bg-[#ffffff40]"} hover:bg-[#ffffff40] cursor-pointer duration-300`} onClick={()=>navigateToProducts()}>
           <div className="w-5 h-5">
             <Image
               src="/images/products.png"
@@ -69,7 +80,7 @@ export default function AdminSidebar() {
           </div>
           <p>Products</p>
         </div>
-        <div className="mb-2 w-full py-2 px-5 flex items-center gap-5 rounded-[10px] hover:bg-[#ffffff40] cursor-pointer duration-300" onClick={()=>navigateToUsers()}>
+        <div className={`mb-2 w-full py-2 px-5 flex items-center gap-5 rounded-[10px] ${currentPage === "users" && "bg-[#ffffff40]"} hover:bg-[#ffffff40] cursor-pointer duration-300`} onClick={()=>navigateToUsers()}>
           <div className="w-5 h-5">
             <Image src="/images/users.png" alt="Users" width={20} height={10} />
           </div>
