@@ -1,5 +1,9 @@
 import Image from "next/image";
 import ListData from "./list-data/ListData";
+import CustomerOrderListData from "./list-data/CustomerOrderListData";
+import AdminOrderListData from "./list-data/AdminOrderListData";
+import ProductListData from "./list-data/ProductListData";
+import UsersListData from "./list-data/UsersListdata";
 
 export default function ListDiv({ type }) {
   return (
@@ -62,7 +66,15 @@ export default function ListDiv({ type }) {
 
         {/* content */}
         <div className="w-full max-h-80 overflow-y-scroll scrollbar-hide">
-          <ListData type={type}/>
+          {type === "customerOrderList" ?
+          <CustomerOrderListData/>:
+          type === "adminOrderList" ?
+          <AdminOrderListData/>:
+          type === "productsList" ?
+          <ProductListData/>
+          :
+          <UsersListData/>
+        }
         </div>
       </div>
     </div>
