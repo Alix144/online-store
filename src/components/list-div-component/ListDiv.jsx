@@ -9,21 +9,27 @@ export default function ListDiv({ type }) {
   return (
     <div className="w-full">
       {/* search input */}
-      <div className="mb-3 px-3 w-64 h-8 bg-white rounded-div border-darkGray border-[1px] flex gap-1 items-center">
-        <div className="w-5 h-5">
-          <Image
-            src="/images/search.png"
-            alt="Search"
-            width={100}
-            height={100}
+      <div className="w-full flex justify-between">
+        <div className="mb-3 px-3 w-64 h-8 bg-white rounded-div border-darkGray border-[1px] flex gap-1 items-center">
+          <div className="w-5 h-5">
+            <Image
+              src="/images/search.png"
+              alt="Search"
+              width={100}
+              height={100}
+            />
+          </div>
+          <input
+            type="text"
+            placeholder="Search Order"
+            className="h-full w-full focus:outline-none rounded-sm text-darkGray"
           />
         </div>
-        <input
-          type="text"
-          placeholder="Search Order"
-          className="h-full w-full focus:outline-none rounded-sm text-darkGray"
-        />
+        {type === "productsList" && 
+        <button className="px-5 h-8 py-0 bg-primary text-white rounded-[30px] text-sm sm:text-base hover:rounded-[10px] duration-300">Add Product</button>
+        }
       </div>
+
       <div className="p-3 w-full h-96 bg-white rounded-div">
         {/* header */}
         {type === "customerOrderList" ? (
@@ -66,15 +72,15 @@ export default function ListDiv({ type }) {
 
         {/* content */}
         <div className="w-full max-h-80 overflow-y-scroll scrollbar-hide">
-          {type === "customerOrderList" ?
-          <CustomerOrderListData/>:
-          type === "adminOrderList" ?
-          <AdminOrderListData/>:
-          type === "productsList" ?
-          <ProductListData/>
-          :
-          <UsersListData/>
-        }
+          {type === "customerOrderList" ? (
+            <CustomerOrderListData />
+          ) : type === "adminOrderList" ? (
+            <AdminOrderListData />
+          ) : type === "productsList" ? (
+            <ProductListData />
+          ) : (
+            <UsersListData />
+          )}
         </div>
       </div>
     </div>
