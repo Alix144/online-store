@@ -19,8 +19,8 @@ export default function ListDiv({ type }) {
       <div className="w-full">
         
         {/* search input */}
-        <div className="w-full flex justify-between">
-          <div className="mb-3 px-3 w-64 h-8 bg-white rounded-div border-darkGray border-[1px] flex gap-1 items-center">
+        <div className="w-full flex justify-between flex-col-reverse sm:flex-row">
+          <div className="mb-3 px-3 w-full sm:w-64 h-8 bg-white rounded-div border-darkGray border-[1px] flex gap-1 items-center">
             <div className="w-5 h-5">
               <Image
                 src="/images/search.png"
@@ -37,7 +37,7 @@ export default function ListDiv({ type }) {
           </div>
           {type === "productsList" && (
             <button
-              className="px-5 h-8 py-0 bg-primary text-white rounded-[30px] text-sm sm:text-base hover:rounded-[10px] duration-300"
+              className="mb-2 sm:mb-0 px-5 h-8 py-0 bg-primary text-white rounded-[30px] text-sm sm:text-base hover:rounded-[10px] duration-300"
               onClick={() => setIsAddProductWindowOpen(true)}
             >
               Add Product
