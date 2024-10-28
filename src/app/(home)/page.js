@@ -11,7 +11,7 @@ export default async function Home() {
 
   if (session?.user) {
     return isAdmin ? (
-      <main className="p-10 flex flex-col gap-10">
+      <main className="p-5 sm:p-10 flex flex-col gap-10">
         <section className="w-full">
           <div className="m-auto py-3 sm:py-5 px-5 md:px-10 w-48 sm:w-full rounded-div bg-white flex-col sm:flex-row flex justify-between items-center text-darkGray text-center sm:text-left">
             <div className="">
