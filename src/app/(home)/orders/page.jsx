@@ -7,7 +7,7 @@ export default function OrdersPage() {
       <h1 className="mb-5 sm:mb-10 m-auto text-center font-bold text-xl sm:text-2xl lg:text-3xl">
         Orders
       </h1>
-        <div className="mx-auto w-[80%]">
+        <div className="mx-auto w-full md:w-[80%]">
 
         <ListDiv type={"customerOrderList"}/>
         </div>
