@@ -2,7 +2,7 @@ import Image from "next/image";
 
 export default function ProfilePage() {
   return (
-    <main className="p-10 flex flex-col gap-5 sm:gap-10">
+    <main className="p-5 sm:p-10 flex flex-col gap-5 sm:gap-10">
       <section className="h-screen w-full">
         <h2 className="mb-3 sm:mb-5 text-lg sm:text-2xl text-darkGray font-semibold">
           Profile
