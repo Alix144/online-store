@@ -67,12 +67,12 @@ export default function ListDiv({ type }) {
               <h5 className="w-10 sm:w-14 lg:w-24 font-semibold text-sm sm:text-base">Status</h5>
             </div>
           ) : type === "productsList" ? (
-            <div className="px-16 py-1 w-full bg-silver rounded-div flex justify-between">
-              <div className="flex gap-20">
-                <h5 className="w-24 max-w-24 font-semibold">Image</h5>
-                <h5 className="w-24 max-w-24 font-semibold">Name</h5>
-                <h5 className="w-24 max-w-24 font-semibold">Price</h5>
-                <h5 className="w-24 max-w-24 font-semibold">Measurement</h5>
+            <div className="px-5 lg:px-16 py-1 w-full bg-silver rounded-div flex justify-between scrollbar-hide overflow-x-auto">
+              <div className="flex gap-5 sm:gap-10 md:gap-20">
+                <h5 className="w-10 sm:w-14 lg:w-24 font-semibold text-sm sm:text-base">Image</h5>
+                <h5 className="w-10 sm:w-14 lg:w-24 font-semibold text-sm sm:text-base">Name</h5>
+                <h5 className="w-10 sm:w-14 lg:w-24 font-semibold text-sm sm:text-base">Price</h5>
+                <h5 className="w-10 sm:w-14 lg:w-24 font-semibold text-sm sm:text-base">Measurement</h5>
               </div>
             </div>
           ) : (
