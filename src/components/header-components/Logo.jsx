@@ -1,6 +1,7 @@
 "use client";
 import Image from "next/image";
 import { setToHome } from "@/redux/features/currentPage";
+import { setToFalse } from "@/redux/features/isSidebarOpen";
 import { useRouter } from "next/navigation";
 import { useDispatch } from "react-redux";
 
@@ -11,6 +12,7 @@ export default function Logo() {
   const goToHomePage = () => {
     router.replace("/");
     dispatch(setToHome());
+    dispatch(setToFalse())
   };
 
   return (

@@ -1,9 +1,8 @@
 "use client";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
-import {
-    setToProfile,
-  } from "@/redux/features/adminCurrentPage";
+import { setToProfile } from "@/redux/features/adminCurrentPage";
+import { setToFalse } from "@/redux/features/isSidebarOpen";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 
@@ -18,6 +17,7 @@ export default function ProfileIcon() {
   const navigateToProfile = () => {
     router.push("/admin/profile");
     dispatch(setToProfile());
+    dispatch(setToFalse())
   };
 
 

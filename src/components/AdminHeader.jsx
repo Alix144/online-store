@@ -1,21 +1,12 @@
-import Link from "next/link";
-import Image from "next/image";
 import SignoutBtn from "./header-components/SignoutBtn";
 import ProfileIcon from "./header-components/ProfileIcon";
+import AdminHamburderBtn from "./header-components/AdminHamburgerBtn";
 
 export default function AdminHeader() {
   return (
     <div className="py-2 px-3 sm:px-5 md:px-10 w-full bg-white z-10 flex justify-between sm:justify-end">
       <div className="flex sm:hidden items-center gap-3">
-        <div className="h-6 w-6 sm:hidden">
-          <Image
-            src="/images/hamburger.png"
-            alt="Hamburger icon"
-            width={30}
-            height={30}
-            priority
-          />
-        </div>
+        <AdminHamburderBtn/>
       </div>
       <div className="flex gap-1 sm:gap-2">
         <div className="py-1 px-1 rounded-[30px] duration-300 bg-lightGray flex ">
