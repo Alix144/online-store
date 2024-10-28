@@ -1,3 +1,4 @@
+import UserBoxes from "@/components/profile-components/UserBoxes";
 import Image from "next/image";
 
 export default function Profile() {
@@ -35,33 +36,7 @@ export default function Profile() {
             <p className="text-sm sm:text-base font-bold">12-04-2022</p>
           </div>
         </div>
-        <div className="w-full flex gap-3 sm:gap-5 text-center text-darkGray">
-          <div className="py-3 sm:py-5 px-5 sm:px-10 w-[50%] bg-secondary rounded-div flex flex-col gap-3 sm:gap-5 items-center">
-            <div className="w-8 sm:w-10 h-8 sm:h-10">
-              <Image
-                src="/images/phone.png"
-                alt="Phone"
-                width={300}
-                height={300}
-                className="mb-5"
-              />
-            </div>
-            <p className="text-sm sm:text-base font-bold">+965 45534464</p>
-          </div>
-          <div className="py-3 sm:py-5 px-5 sm:px-10 w-[50%] bg-secondary rounded-div flex flex-col gap-3 sm:gap-5 items-center">
-            <div className="w-8 sm:w-10 h-8 sm:h-10">
-              <Image
-                src="/images/address.png"
-                alt="Address"
-                width={300}
-                height={300}
-                className="mb-5"
-              />
-            </div>
-            {/* <p className="text-sm sm:text-base font-bold">Kuwait, Hawalli</p> */}
-            <button className="py-2 px-5 text-sm sm:text-base text-white rounded-div border-none bg-[#00000066] hover:bg-darkGray duration-300 cursor-pointer">Add Address</button>
-          </div>
-        </div>
+        <UserBoxes/>
       </section>
     </main>
   );
