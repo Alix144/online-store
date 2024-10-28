@@ -13,27 +13,27 @@ export default async function Home() {
     return isAdmin ? (
       <main className="p-10 flex flex-col gap-10">
         <section className="w-full">
-          <div className="py-3 sm:py-5 px-5 sm:px-10 w-full rounded-div bg-white flex justify-between items-center text-darkGray">
+          <div className="m-auto py-3 sm:py-5 px-5 md:px-10 w-48 sm:w-full rounded-div bg-white flex-col sm:flex-row flex justify-between items-center text-darkGray text-center sm:text-left">
             <div className="">
               <p className="text-sm sm:text-base">Total Orders:</p>
               <p className="text-sm sm:text-base font-bold">23</p>
             </div>
-            <div className="w-[1px] h-14 bg-lightGray"></div>
+            <div className="my-3 w-20 sm:w-[1px] h-[1px] sm:h-14 bg-lightGray"></div>
             <div className="">
               <p className="text-sm sm:text-base">undelivered Orders</p>
               <p className="text-sm sm:text-base font-bold">3</p>
             </div>
-            <div className="w-[1px] h-14 bg-lightGray"></div>
+            <div className="my-3 w-20 sm:w-[1px] h-[1px] sm:h-14 bg-lightGray"></div>
             <div className="">
               <p className="text-sm sm:text-base">Delivered Orders</p>
               <p className="text-sm sm:text-base font-bold">20</p>
             </div>
-            <div className="w-[1px] h-14 bg-lightGray"></div>
+            <div className="my-3 w-20 sm:w-[1px] h-[1px] sm:h-14 bg-lightGray"></div>
             <div className="">
               <p className="text-sm sm:text-base">Products</p>
               <p className="text-sm sm:text-base font-bold">202</p>
             </div>
-            <div className="w-[1px] h-14 bg-lightGray"></div>
+            <div className="my-3 w-20 sm:w-[1px] h-[1px] sm:h-14 bg-lightGray"></div>
             <div className="">
               <p className="text-sm sm:text-base">Total Users</p>
               <p className="text-sm sm:text-base font-bold">122</p>
