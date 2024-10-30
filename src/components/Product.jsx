@@ -33,7 +33,7 @@ export default function Product({ product, isFavorite, inCart }) {
           </p>
         </div>
 
-        {true ? (
+        {inCart ? (
           <div className="flex flex-col justify-between items-end">
             <Image
               src="/images/trash-can.png"

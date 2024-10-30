@@ -11,9 +11,9 @@ export default function ProductsPage() {
           </h1>
           <div className="flex gap-5 justify-center sm:justify-normal items-start">
             <div className="w-[60%] hidden sm:flex gap-5 flex-wrap">
-              <Product />
-              <Product />
-              <Product />
+              <Product inCart={true}/>
+              <Product inCart={true}/>
+              <Product inCart={true}/>
             </div>
             {/* order summary div */}
             <div className="p-5 md:p-10 lg:w-[40%] bg-primary rounded-div flex flex-col justify-between">

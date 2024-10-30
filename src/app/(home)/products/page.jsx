@@ -46,7 +46,7 @@ export default function ProductsPage() {
             </div>
           ) : (
             products?.map((product) => (
-              <Product product={product} key={product._id} />
+              <Product product={product} key={product._id} inCart={false}/>
             ))
           )}
         </div>
