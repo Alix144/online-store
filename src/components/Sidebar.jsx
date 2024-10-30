@@ -23,6 +23,10 @@ export default function Sidebar({ isUserSignedIn }) {
 
   const goToHomePage = () => {
     router.push("/")
+    goToHome()
+  }
+
+  const goToHome = () => {
     dispatch(setToHome())
     hideSidebar()
   }
@@ -83,7 +87,7 @@ export default function Sidebar({ isUserSignedIn }) {
             currentPage === "home" && "border-b-[1px]"
           } hover:border-b-[1px] border-white`}
           href={"/"}
-          onClick={() => dispatch(setToHome())}
+          onClick={() => goToHome()}
         >
           Home
         </Link>
