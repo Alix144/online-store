@@ -1,9 +1,10 @@
 "use client"
 import Image from "next/image";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export default function Product({ product, isFavorite, inCart }) {
   const [amount, setAmount] = useState(1)
+  const [favorite, setFavorite] = useState(true)
   const [isDeleteWindowOpen, setIsDeleteWindowOpen] = useState(false);
 
   const reduceAmount = () => {
@@ -13,6 +14,14 @@ export default function Product({ product, isFavorite, inCart }) {
       setAmount(amount - 0.25)
     }
   }
+
+  const toggleFavorite = () => {
+    setFavorite(!favorite)
+  }
+
+  useEffect(()=>{
+    setFavorite(isFavorite)
+  },[])
 
   return (
     <>
@@ -74,12 +83,13 @@ export default function Product({ product, isFavorite, inCart }) {
           <div className="flex flex-col justify-between">
             <Image
               src={`/images/${
-                isFavorite ? "filled-heart.png" : "empty-heart.png"
+                favorite ? "filled-heart.png" : "empty-heart.png"
               }`}
               alt={`${isFavorite ? "Filled" : "Empty"} heart`}
               width="20"
               height="20"
               className="cursor-pointer"
+              onClick={()=>toggleFavorite()}
             />
             <Image
               src="/images/cart.png"
