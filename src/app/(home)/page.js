@@ -4,6 +4,8 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/nextAuth";
 import HomePageProducts from "@/components/HomePageProducts";
 import ListDiv from "@/components/list-div-component/ListDiv";
+import Link from "next/link";
+import CallToActionDiv from "@/components/CallToActionDiv";
 
 export default async function Home() {
   const session = await getServerSession(authOptions);
@@ -42,8 +44,10 @@ export default async function Home() {
         </section>
 
         <section className="w-full">
-          <h2 className="mb-3 sm:mb-5 text-lg sm:text-2xl text-darkGray font-semibold">Orders</h2>
-          <ListDiv type={"adminOrderList"}/>
+          <h2 className="mb-3 sm:mb-5 text-lg sm:text-2xl text-darkGray font-semibold">
+            Orders
+          </h2>
+          <ListDiv type={"adminOrderList"} />
         </section>
       </main>
     ) : (
@@ -59,10 +63,10 @@ export default async function Home() {
             </p>
             <div className="mx-auto sm:mx-0 flex gap-2">
               <button className="btn-style bg-primary text-white">
-                Browse Products
+                <Link href={"/products"}>Browse Products</Link>
               </button>
               <button className="btn-style bg-silver text-darkGray">
-                Our Location
+                <Link href={"#contact"}>Our Location</Link>
               </button>
             </div>
           </div>
@@ -77,26 +81,7 @@ export default async function Home() {
           </div>
         </section>
         <section className="flex flex-col gap-5 md:gap-0 md:flex-row justify-between items-center md:items-start">
-          <div className="md:mr-5 p-10 min-w-52 h-52 sm:min-w-60 sm:h-60 rounded-div bg-primary relative cursor-pointer overflow-hidden">
-            <h2 className="font-bold text-lg lg:text-2xl text-white">
-              Fresh <br /> Products
-            </h2>
-            <Image
-              src="/images/tomatoes.png"
-              alt="Tomatoes"
-              width="150"
-              height="150"
-              className="bottom-0 -left-3 absolute scale-x-[-1]"
-            />
-            <Image
-              src="/images/arrow.png"
-              alt="Arrow"
-              width="25"
-              height="25"
-              className="bottom-7 right-7 absolute -rotate-45 hover:bottom-8 hover:right-6 duration-300"
-            />
-          </div>
-
+          <CallToActionDiv />
           <HomePageProducts />
         </section>
 
@@ -170,10 +155,10 @@ export default async function Home() {
             </p>
             <div className="mx-auto sm:mx-0 flex gap-2">
               <button className="btn-style bg-primary text-white">
-                Browse Products
+                <Link href={"/products"}>Browse Products</Link>
               </button>
               <button className="btn-style bg-silver text-darkGray">
-                Our Location
+                <Link href={"#contact"}>Our Location</Link>
               </button>
             </div>
           </div>
@@ -188,26 +173,7 @@ export default async function Home() {
           </div>
         </section>
         <section className="flex flex-col gap-5 md:gap-0 md:flex-row justify-between items-center md:items-start">
-          <div className="md:mr-5 p-10 min-w-52 h-52 sm:min-w-60 sm:h-60 rounded-div bg-primary relative cursor-pointer overflow-hidden">
-            <h2 className="font-bold text-lg lg:text-2xl text-white">
-              Fresh <br /> Products
-            </h2>
-            <Image
-              src="/images/tomatoes.png"
-              alt="Tomatoes"
-              width="150"
-              height="150"
-              className="bottom-0 -left-3 absolute scale-x-[-1]"
-            />
-            <Image
-              src="/images/arrow.png"
-              alt="Arrow"
-              width="25"
-              height="25"
-              className="bottom-7 right-7 absolute -rotate-45 hover:bottom-8 hover:right-6 duration-300"
-            />
-          </div>
-
+          <CallToActionDiv />
           <HomePageProducts />
         </section>
 

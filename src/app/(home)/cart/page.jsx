@@ -9,8 +9,8 @@ export default function ProductsPage() {
           <h1 className="m-auto text-center font-bold text-xl sm:text-2xl lg:text-3xl">
             Cart
           </h1>
-          <div className="flex gap-5 justify-center sm:justify-normal items-start">
-            <div className="w-[60%] hidden sm:flex gap-5 flex-wrap">
+          <div className="flex gap-5 justify-center sm:justify-normal items-center sm:items-start flex-col sm:flex-row">
+            <div className="w-[60%] flex gap-5 flex-wrap justify-center sm:justify-normal">
               <Product inCart={true}/>
               <Product inCart={true}/>
               <Product inCart={true}/>
