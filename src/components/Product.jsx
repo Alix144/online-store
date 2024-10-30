@@ -4,6 +4,7 @@ import { useState } from "react";
 
 export default function Product({ product, isFavorite, inCart }) {
   const [amount, setAmount] = useState(1)
+  const [isDeleteWindowOpen, setIsDeleteWindowOpen] = useState(false);
 
   const reduceAmount = () => {
     if(amount > 1){
@@ -14,6 +15,7 @@ export default function Product({ product, isFavorite, inCart }) {
   }
 
   return (
+    <>
     <div className="p-3 w-52 sm:w-60 min-w-52 sm:min-w-60 h-52 sm:h-60 rounded-div bg-white border-lightGray border-[1px] flex flex-col gap-3 cursor-pointer">
       <div className="w-full h-[65%] rounded-div bg-lightGray relative">
         <Image
@@ -40,6 +42,7 @@ export default function Product({ product, isFavorite, inCart }) {
               alt="Trash Can"
               width={15}
               height={15}
+              onClick={()=>setIsDeleteWindowOpen(true)}
             />
             <div className="flex gap-1 items-center">
               <div className="w-4 h-4" onClick={()=>reduceAmount()}>
@@ -89,5 +92,24 @@ export default function Product({ product, isFavorite, inCart }) {
         )}
       </div>
     </div>
+
+    {isDeleteWindowOpen && (
+        <div className="w-full h-full fixed top-0 left-0 bg-[#00000066] z-10 flex justify-center items-center">
+          <div className="p-5 bg-white rounded-div flex flex-col gap-5 justify-between text-darkGray text-center">
+            <h2 className="text-lg font-semibold">Delete Product</h2>
+            <p>Are you sure you want to delete this product?</p>
+            <div className="flex justify-between">
+              <button
+                className="btn-style bg-[#00000066] text-white"
+                onClick={() => setIsDeleteWindowOpen(false)}
+              >
+                Cancel
+              </button>
+              <button className="btn-style bg-danger text-white">Delete</button>
+            </div>
+          </div>
+        </div>
+      )}
+    </>
   );
 }
