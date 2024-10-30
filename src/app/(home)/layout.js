@@ -8,6 +8,7 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/nextAuth";
 import ReduxProvider from "@/redux/ReduxProvider";
 import AdminHeader from "@/components/AdminHeader";
+import Sidebar from "@/components/Sidebar";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -37,8 +38,9 @@ export default async function RootLayout({ children }) {
                 </div>
               </div>
             ) : (
-              <div className="mx-auto w-[90%] sm:w-[80%]">
+              <div className="mx-auto w-[90%] sm:w-[80%] relative">
                 <Header />
+                <Sidebar isUserSignedIn={session?.user}/>
                 {children}
                 <Footer />
               </div>

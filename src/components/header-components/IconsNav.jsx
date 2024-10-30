@@ -9,7 +9,7 @@ import {
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 
-export default function IconsNav() {
+export default function IconsNav({ isSidebarNav }) {
   const router = useRouter();
   const dispatch = useDispatch();
 
@@ -31,13 +31,8 @@ export default function IconsNav() {
   };
 
   return (
-    <div className="py-1 px-1 rounded-[30px] duration-300 bg-lightGray flex ">
-      <div
-        className={`hidden sm:flex py-1 px-3 rounded-div duration-300 ${
-          currentPage === "favorites" && "bg-silver"
-        } hover:bg-silver items-center justify-center cursor-pointer`}
-        onClick={() => navigateToFavorite()}
-      >
+    <div className={`${isSidebarNav && "min-h-[35px] min-w-[140px]"} py-1 px-1 rounded-[30px] duration-300 bg-lightGray flex`}>
+      <div className={`${isSidebarNav ? "flex" : "hidden sm:flex"} py-1 px-3 rounded-div duration-300 ${  currentPage === "favorites" && "bg-silver"} hover:bg-silver items-center justify-center cursor-pointer`} onClick={() => navigateToFavorite()}>
         <Image
           src="/images/empty-heart.png"
           alt="Empty heart"
@@ -46,7 +41,7 @@ export default function IconsNav() {
         />
       </div>
       <div
-        className={`hidden sm:flex px-3 rounded-div duration-300 ${
+        className={`${isSidebarNav ? "flex" : "hidden sm:flex"} px-3 rounded-div duration-300 ${
           currentPage === "profile" && "bg-silver"
         } hover:bg-silver items-center justify-center cursor-pointer`}
         onClick={() => navigateToProfile()}
