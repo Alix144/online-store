@@ -11,9 +11,11 @@ import LoadingIcon from "../LoadingIcon";
 export default function ListDiv({ type }) {
   const [isDeleteWindowOpen, setIsDeleteWindowOpen] = useState(false);
   const [isAddProductWindowOpen, setIsAddProductWindowOpen] = useState(false);
-  const [isEditProductWindowOpen, setIsEditProductWindowOpen] = useState(false);
-
-  const [jaja, setJaja] = useState('initial')
+  const [isEditProductWindowOpen, setIsEditProductWindowOpen] = useState(null);
+  const [productName, setProductName] = useState("");
+  const [productPrice, setProductPrice] = useState("");
+  const [productMeasurement, setProductMeasurement] = useState("");
+  const [productId, setProductId] = useState("");
 
   const [products, setProducts] = useState(null);
 
@@ -29,6 +31,15 @@ export default function ListDiv({ type }) {
   useEffect(() => {
     getProducts();
   }, []);
+
+  useEffect(() => {
+    if(isEditProductWindowOpen !== null){
+      setProductId(isEditProductWindowOpen._id)
+      setProductName(isEditProductWindowOpen.name)
+      setProductPrice(isEditProductWindowOpen.price)
+      setProductMeasurement(isEditProductWindowOpen.measurement)
+    }
+  }, [isEditProductWindowOpen]);
 
   return (
     <>
@@ -123,7 +134,7 @@ export default function ListDiv({ type }) {
                 </div>
               ) : (
                 products?.map((product) => (
-                  <ProductListData product={product} setIsEditProductWindowOpen={setIsEditProductWindowOpen} setIsDeleteWindowOpen={setIsDeleteWindowOpen}/>
+                  <ProductListData key={product._id} product={product} setIsEditProductWindowOpen={setIsEditProductWindowOpen} setIsDeleteWindowOpen={setIsDeleteWindowOpen}/>
                 ))
               
             ) : (
@@ -185,7 +196,7 @@ export default function ListDiv({ type }) {
         </div>
       )}
 
-      {isEditProductWindowOpen && (
+      {isEditProductWindowOpen !== null && (
         <div className="w-full h-full absolute top-0 left-0 bg-[#00000066] z-10 flex justify-center items-center">
           <div className="p-5 bg-white rounded-div flex flex-col gap-5 justify-between text-darkGray text-center">
             <h2 className="text-lg font-semibold">Edit Product</h2>
@@ -194,22 +205,25 @@ export default function ListDiv({ type }) {
                 type="text"
                 placeholder="Product Name"
                 className="mb-3 px-3 w-64 h-8 bg-white rounded-div border-darkGray border-[1px]"
+                value={productName}
+                onChange={(e)=>setProductName(e.target.value)}
               />
               <input
                 type="Number"
                 placeholder="Price (KWD)"
                 className="mb-3 px-3 w-64 h-8 bg-white rounded-div border-darkGray border-[1px]"
+                value={productPrice}
+                onChange={(e)=>setProductPrice(e.target.value)}
               />
               <select id="measurement" name="measurement" placeholder="Measurement" className="mb-3 px-3 w-64 h-8 bg-white rounded-div border-darkGray border-[1px]">
-                <option value="" disabled selected>Measurement</option>
-                <option value="kg">kg</option>
-                <option value="g">g</option>
+                <option value="kg" selected={productMeasurement === "kg"}>kg</option>
+                <option value="g" selected={productMeasurement === "g"}>g</option>
               </select>
             </div>
             <div className="flex justify-between">
               <button
                 className="btn-style bg-[#00000066] text-white"
-                onClick={() => setIsEditProductWindowOpen(false)}
+                onClick={() => setIsEditProductWindowOpen(null)}
               >
                 Cancel
               </button>

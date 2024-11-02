@@ -33,3 +33,27 @@ export const POST = async (request) => {
     );
   }
 };
+
+export const PATCH = async (request) => {
+    try {
+        const body = await request.json();
+        const {productId, name, price, measurement} = body;
+
+        await connectToDb();
+
+        const updatedProduct = await Product.findOneAndUpdate({_id: productId}, {name: name}, {price: price}, {measurement: measurement}, {new: true})
+
+        if(!updatedProduct)
+        return new NextResponse(
+            JSON.stringify({message: 'Product not found'}), {status: 400}
+        )
+
+        return new NextResponse(
+            JSON.stringify({message: 'Products is updated', product: updatedProduct}), {status: 200}
+        )
+    } catch (error) {
+        return new NextResponse(
+            JSON.stringify({message: 'error in catch block : ' + error.message,}), {status: 500}
+        )
+    }
+}

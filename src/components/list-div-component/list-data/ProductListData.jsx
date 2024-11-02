@@ -8,7 +8,7 @@ export default function ProductListData({product, setIsEditProductWindowOpen, se
   }
 
   const handleEditClick = () => {
-    setIsEditProductWindowOpen(true)
+    setIsEditProductWindowOpen(product)
   }
 
   return (
