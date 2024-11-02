@@ -9,17 +9,24 @@ import { useEffect, useState } from "react";
 import LoadingIcon from "../LoadingIcon";
 
 export default function ListDiv({ type }) {
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
   const [isDeleteWindowOpen, setIsDeleteWindowOpen] = useState(false);
   const [isAddProductWindowOpen, setIsAddProductWindowOpen] = useState(false);
   const [isEditProductWindowOpen, setIsEditProductWindowOpen] = useState(null);
+  const [productId, setProductId] = useState("");
   const [productName, setProductName] = useState("");
   const [productPrice, setProductPrice] = useState("");
   const [productMeasurement, setProductMeasurement] = useState("");
-  const [productId, setProductId] = useState("");
 
   const [products, setProducts] = useState(null);
 
-  const getProducts = async () => {
+  const closeEditForm = () => {
+    setIsEditProductWindowOpen(null)
+    setError("")
+  }
+
+  const getProducts = async() => {
     const response = await fetch("/api/products/", {
       method: "GET",
       headers: { "Content-Type": "application/json" },
@@ -27,6 +34,28 @@ export default function ListDiv({ type }) {
     const data = await response.json();
     setProducts(data);
   };
+
+  const editProduct = async() => {
+    setError("")
+    if(productName === "" && productPrice === ""){
+      setError("Please provide product name and price!")
+      return
+    }else if(productPrice === ""){
+      setError("Please provide a product price!")
+      return
+    }else if(productName === ""){
+      setError("Please provide a product name!")
+      return
+    }
+    setLoading(true)
+    const response = await fetch('/api/products/', {
+      method: 'PATCH',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({productId, name: productName, price: productPrice, measurement: productMeasurement}),
+    })
+    setLoading(false)
+    setIsEditProductWindowOpen(null)
+  }
 
   useEffect(() => {
     getProducts();
@@ -215,19 +244,20 @@ export default function ListDiv({ type }) {
                 value={productPrice}
                 onChange={(e)=>setProductPrice(e.target.value)}
               />
-              <select id="measurement" name="measurement" placeholder="Measurement" className="mb-3 px-3 w-64 h-8 bg-white rounded-div border-darkGray border-[1px]">
+              <select id="measurement" name="measurement" placeholder="Measurement" className="mb-3 px-3 w-64 h-8 bg-white rounded-div border-darkGray border-[1px]" onChange={(e) => setProductMeasurement(e.target.value)}>
                 <option value="kg" selected={productMeasurement === "kg"}>kg</option>
                 <option value="g" selected={productMeasurement === "g"}>g</option>
               </select>
             </div>
+            {error && <p className="text-sm sm:text-base text-danger">{error}</p>}
             <div className="flex justify-between">
               <button
                 className="btn-style bg-[#00000066] text-white"
-                onClick={() => setIsEditProductWindowOpen(null)}
+                onClick={() => closeEditForm()}
               >
                 Cancel
               </button>
-              <button className="btn-style bg-primary text-white">Edit</button>
+              <button className="btn-style bg-primary text-white" onClick={()=>editProduct()}>{loading ? <LoadingIcon/> : "Edit"}</button>
             </div>
           </div>
         </div>

@@ -41,7 +41,7 @@ export const PATCH = async (request) => {
 
         await connectToDb();
 
-        const updatedProduct = await Product.findOneAndUpdate({_id: productId}, {name: name}, {price: price}, {measurement: measurement}, {new: true})
+        const updatedProduct = await Product.findOneAndUpdate({_id: productId}, {name, price, measurement}, {new: true})
 
         if(!updatedProduct)
         return new NextResponse(
