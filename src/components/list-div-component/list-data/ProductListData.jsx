@@ -4,7 +4,7 @@ import { useEffect } from "react";
 export default function ProductListData({product, setIsEditProductWindowOpen, setIsDeleteWindowOpen}) {
 
   const handleDeleteClick = () => {
-    setIsDeleteWindowOpen(true)
+    setIsDeleteWindowOpen(product._id)
   }
 
   const handleEditClick = () => {

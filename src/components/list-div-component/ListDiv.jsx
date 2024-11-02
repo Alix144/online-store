@@ -11,7 +11,7 @@ import LoadingIcon from "../LoadingIcon";
 export default function ListDiv({ type }) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
-  const [isDeleteWindowOpen, setIsDeleteWindowOpen] = useState(false);
+  const [isDeleteWindowOpen, setIsDeleteWindowOpen] = useState(null);
   const [isAddProductWindowOpen, setIsAddProductWindowOpen] = useState(false);
   const [isEditProductWindowOpen, setIsEditProductWindowOpen] = useState(null);
   const [productId, setProductId] = useState("");
@@ -21,12 +21,18 @@ export default function ListDiv({ type }) {
 
   const [products, setProducts] = useState(null);
 
-  const closeEditForm = () => {
-    setIsEditProductWindowOpen(null)
-    setError("")
-  }
+  const closeAddForm = () => {
+    setIsAddProductWindowOpen(false);
+    setError("");
+  };
 
-  const getProducts = async() => {
+  const closeEditForm = () => {
+    setIsEditProductWindowOpen(null);
+    setError("");
+  };
+
+  // calling APIs
+  const getProducts = async () => {
     const response = await fetch("/api/products/", {
       method: "GET",
       headers: { "Content-Type": "application/json" },
@@ -35,45 +41,109 @@ export default function ListDiv({ type }) {
     setProducts(data);
   };
 
-  const editProduct = async() => {
-    setError("")
-    if(productName === "" && productPrice === ""){
-      setError("Please provide product name and price!")
-      return
-    }else if(productPrice === ""){
-      setError("Please provide a product price!")
-      return
-    }else if(productName === ""){
-      setError("Please provide a product name!")
-      return
+  const addProduct = async () => {
+    setError("");
+    if (
+      productName === "" &&
+      productPrice === "" &&
+      productMeasurement === ""
+    ) {
+      setError("Please provide fill all the fields!");
+      return;
+    } else if (productPrice === "") {
+      setError("Please provide a product price!");
+      return;
+    } else if (productName === "") {
+      setError("Please provide a product name!");
+      return;
+    } else if (productMeasurement === "") {
+      setError("Please provide measurement!");
+      return;
     }
-    setLoading(true)
-    const response = await fetch('/api/products/', {
-      method: 'PATCH',
-      headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify({productId, name: productName, price: productPrice, measurement: productMeasurement}),
-    })
-    setLoading(false)
-    setIsEditProductWindowOpen(null)
-  }
+    setLoading(true);
+    const response = await fetch("/api/products/", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        name: productName,
+        price: productPrice,
+        measurement: productMeasurement,
+      }),
+    });
+    getProducts();
+    setLoading(false);
+    setProductName("");
+    setProductPrice("");
+    setIsAddProductWindowOpen(false);
+  };
+
+  const editProduct = async () => {
+    setError("");
+    if (productName === "" && productPrice === "") {
+      setError("Please provide product name and price!");
+      return;
+    } else if (productPrice === "") {
+      setError("Please provide a product price!");
+      return;
+    } else if (productName === "") {
+      setError("Please provide a product name!");
+      return;
+    }
+    setLoading(true);
+    const response = await fetch("/api/products/", {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        productId,
+        name: productName,
+        price: productPrice,
+        measurement: productMeasurement,
+      }),
+    });
+    getProducts();
+    setLoading(false);
+    setIsEditProductWindowOpen(null);
+  };
+
+  const deleteProduct = async () => {
+    setLoading(true);
+    const response = await fetch("/api/products/", {
+      method: "DELETE",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ productId }),
+    });
+    getProducts();
+    setLoading(false);
+    setIsDeleteWindowOpen(null);
+  };
 
   useEffect(() => {
     getProducts();
   }, []);
 
   useEffect(() => {
-    if(isEditProductWindowOpen !== null){
-      setProductId(isEditProductWindowOpen._id)
-      setProductName(isEditProductWindowOpen.name)
-      setProductPrice(isEditProductWindowOpen.price)
-      setProductMeasurement(isEditProductWindowOpen.measurement)
+    if (isEditProductWindowOpen === null) {
+      setProductId("");
+      setProductName("");
+      setProductPrice("");
+      setProductMeasurement("");
+    } else {
+      setProductId(isEditProductWindowOpen._id);
+      setProductName(isEditProductWindowOpen.name);
+      setProductPrice(isEditProductWindowOpen.price);
+      setProductMeasurement(isEditProductWindowOpen.measurement);
     }
   }, [isEditProductWindowOpen]);
+
+  useEffect(() => {
+    if (isDeleteWindowOpen !== null) {
+      setProductId(isDeleteWindowOpen);
+    }
+  }, [isDeleteWindowOpen]);
 
   return (
     <>
       <div className="w-full">
-        
         {/* search input */}
         <div className="w-full flex justify-between flex-col-reverse sm:flex-row">
           <div className="mb-3 px-3 w-full sm:w-64 h-8 bg-white rounded-div border-darkGray border-[1px] flex gap-1 items-center">
@@ -106,37 +176,67 @@ export default function ListDiv({ type }) {
           {type === "customerOrderList" ? (
             <div className="px-5 lg:px-16 py-1 w-full bg-silver rounded-div flex justify-between scrollbar-hide overflow-x-auto">
               <div className="flex gap-5 sm:gap-10 md:gap-20">
-                <h5 className="w-10 sm:w-14 lg:w-24 font-semibold text-sm sm:text-base">Date</h5>
-                <h5 className="w-10 sm:w-14 lg:w-24 font-semibold text-sm sm:text-base">Price</h5>
-                <h5 className="w-10 sm:w-14 lg:w-24 font-semibold text-sm sm:text-base">Items</h5>
+                <h5 className="w-10 sm:w-14 lg:w-24 font-semibold text-sm sm:text-base">
+                  Date
+                </h5>
+                <h5 className="w-10 sm:w-14 lg:w-24 font-semibold text-sm sm:text-base">
+                  Price
+                </h5>
+                <h5 className="w-10 sm:w-14 lg:w-24 font-semibold text-sm sm:text-base">
+                  Items
+                </h5>
               </div>
               <h5 className="font-semibold text-sm sm:text-base">Status</h5>
             </div>
           ) : type === "adminOrderList" ? (
             <div className="px-5 lg:px-16 py-1 w-full bg-silver rounded-div flex justify-between scrollbar-hide overflow-x-auto">
               <div className="flex gap-5 sm:gap-10 md:gap-20">
-                <h5 className="w-16 lg:w-24 font-semibold text-sm sm:text-base">Customer</h5>
-                <h5 className="w-10 sm:w-14 lg:w-24 font-semibold text-sm sm:text-base">Date</h5>
-                <h5 className="w-10 sm:w-14 lg:w-24 font-semibold text-sm sm:text-base">Price</h5>
-                <h5 className="w-10 sm:w-14 lg:w-24 font-semibold text-sm sm:text-base">Items</h5>
+                <h5 className="w-16 lg:w-24 font-semibold text-sm sm:text-base">
+                  Customer
+                </h5>
+                <h5 className="w-10 sm:w-14 lg:w-24 font-semibold text-sm sm:text-base">
+                  Date
+                </h5>
+                <h5 className="w-10 sm:w-14 lg:w-24 font-semibold text-sm sm:text-base">
+                  Price
+                </h5>
+                <h5 className="w-10 sm:w-14 lg:w-24 font-semibold text-sm sm:text-base">
+                  Items
+                </h5>
               </div>
-              <h5 className="w-10 sm:w-14 lg:w-24 font-semibold text-sm sm:text-base">Status</h5>
+              <h5 className="w-10 sm:w-14 lg:w-24 font-semibold text-sm sm:text-base">
+                Status
+              </h5>
             </div>
           ) : type === "productsList" ? (
             <div className="px-5 lg:px-16 py-1 w-full bg-silver rounded-div flex justify-between scrollbar-hide overflow-x-auto">
               <div className="flex gap-5 sm:gap-10 md:gap-20">
-                <h5 className="w-10 sm:w-14 lg:w-24 font-semibold text-sm sm:text-base">Image</h5>
-                <h5 className="w-10 sm:w-14 lg:w-24 font-semibold text-sm sm:text-base">Name</h5>
-                <h5 className="w-10 sm:w-14 lg:w-24 font-semibold text-sm sm:text-base">Price</h5>
-                <h5 className="w-10 sm:w-14 lg:w-24 font-semibold text-sm sm:text-base">Measurement</h5>
+                <h5 className="w-10 sm:w-14 lg:w-24 font-semibold text-sm sm:text-base">
+                  Image
+                </h5>
+                <h5 className="w-10 sm:w-14 lg:w-24 font-semibold text-sm sm:text-base">
+                  Name
+                </h5>
+                <h5 className="w-10 sm:w-14 lg:w-24 font-semibold text-sm sm:text-base">
+                  Price
+                </h5>
+                <h5 className="w-10 sm:w-14 lg:w-24 font-semibold text-sm sm:text-base">
+                  Measurement
+                </h5>
               </div>
             </div>
           ) : (
             <div className="px-5 lg:px-16 py-1 w-full bg-silver rounded-div flex justify-between scrollbar-hide overflow-x-auto">
               <div className="flex gap-5 sm:gap-10 md:gap-20">
-                <h5 className="w-10 sm:w-14 lg:w-24 font-semibold text-sm sm:text-base">Name</h5>
-                <h5 className="w-10 sm:w-14 lg:w-24 font-semibold text-sm sm:text-base">Email</h5>
-                <h5 className="w-24 font-semibold text-sm sm:text-base">Member Since</h5>
+                <h5 className="w-10 sm:w-14 lg:w-24 font-semibold text-sm sm:text-base">
+                  Name
+                </h5>
+                <h5 className="w-10 sm:w-14 lg:w-24 font-semibold text-sm sm:text-base">
+                  Email
+                </h5>
+                <h5 className="w-24 font-semibold text-sm sm:text-base">
+                  Member Since
+                </h5>
               </div>
             </div>
           )}
@@ -147,7 +247,7 @@ export default function ListDiv({ type }) {
               <CustomerOrderListData />
             ) : type === "adminOrderList" ? (
               <AdminOrderListData />
-            ) : type === "productsList" ? 
+            ) : type === "productsList" ? (
               products === null ? (
                 <LoadingIcon />
               ) : products.length === 0 ? (
@@ -163,9 +263,14 @@ export default function ListDiv({ type }) {
                 </div>
               ) : (
                 products?.map((product) => (
-                  <ProductListData key={product._id} product={product} setIsEditProductWindowOpen={setIsEditProductWindowOpen} setIsDeleteWindowOpen={setIsDeleteWindowOpen}/>
+                  <ProductListData
+                    key={product._id}
+                    product={product}
+                    setIsEditProductWindowOpen={setIsEditProductWindowOpen}
+                    setIsDeleteWindowOpen={setIsDeleteWindowOpen}
+                  />
                 ))
-              
+              )
             ) : (
               <UsersListData />
             )}
@@ -173,7 +278,7 @@ export default function ListDiv({ type }) {
         </div>
       </div>
 
-      {isDeleteWindowOpen && (
+      {isDeleteWindowOpen !== null && (
         <div className="w-full h-full absolute top-0 left-0 bg-[#00000066] z-10 flex justify-center items-center">
           <div className="p-5 bg-white rounded-div flex flex-col gap-5 justify-between text-darkGray text-center">
             <h2 className="text-lg font-semibold">Delete Product</h2>
@@ -181,11 +286,16 @@ export default function ListDiv({ type }) {
             <div className="flex justify-between">
               <button
                 className="btn-style bg-[#00000066] text-white"
-                onClick={() => setIsDeleteWindowOpen(false)}
+                onClick={() => setIsDeleteWindowOpen(null)}
               >
                 Cancel
               </button>
-              <button className="btn-style bg-danger text-white">Delete</button>
+              <button
+                className="btn-style bg-danger text-white"
+                onClick={() => deleteProduct()}
+              >
+                {loading ? <LoadingIcon /> : "Delete"}
+              </button>
             </div>
           </div>
         </div>
@@ -200,26 +310,47 @@ export default function ListDiv({ type }) {
                 type="text"
                 placeholder="Product Name"
                 className="mb-3 px-3 w-64 h-8 bg-white rounded-div border-darkGray border-[1px]"
+                value={productName}
+                onChange={(e) => setProductName(e.target.value)}
               />
               <input
                 type="Number"
                 placeholder="Price (KWD)"
                 className="mb-3 px-3 w-64 h-8 bg-white rounded-div border-darkGray border-[1px]"
+                value={productPrice}
+                onChange={(e) => setProductPrice(e.target.value)}
               />
-              <select id="measurement" name="measurement" placeholder="Measurement" className="mb-3 px-3 w-64 h-8 bg-white rounded-div border-darkGray border-[1px] text-gray-400">
-                <option value="" disabled selected>Measurement</option>
+              <select
+                id="measurement"
+                name="measurement"
+                placeholder="Measurement"
+                className="mb-3 px-3 w-64 h-8 bg-white rounded-div border-darkGray border-[1px] text-gray-400"
+                onChange={(e) => setProductMeasurement(e.target.value)}
+              >
+                <option value="" disabled selected>
+                  Measurement
+                </option>
                 <option value="kg">kg</option>
                 <option value="g">g</option>
               </select>
             </div>
+            {error && (
+              <p className="text-sm sm:text-base text-danger">{error}</p>
+            )}
+
             <div className="flex justify-between">
               <button
                 className="btn-style bg-[#00000066] text-white"
-                onClick={() => setIsAddProductWindowOpen(false)}
+                onClick={() => closeAddForm()}
               >
                 Cancel
               </button>
-              <button className="btn-style bg-primary text-white">Add</button>
+              <button
+                className="btn-style bg-primary text-white"
+                onClick={() => addProduct()}
+              >
+                {loading ? <LoadingIcon /> : "Add"}
+              </button>
             </div>
           </div>
         </div>
@@ -235,21 +366,33 @@ export default function ListDiv({ type }) {
                 placeholder="Product Name"
                 className="mb-3 px-3 w-64 h-8 bg-white rounded-div border-darkGray border-[1px]"
                 value={productName}
-                onChange={(e)=>setProductName(e.target.value)}
+                onChange={(e) => setProductName(e.target.value)}
               />
               <input
                 type="Number"
                 placeholder="Price (KWD)"
                 className="mb-3 px-3 w-64 h-8 bg-white rounded-div border-darkGray border-[1px]"
                 value={productPrice}
-                onChange={(e)=>setProductPrice(e.target.value)}
+                onChange={(e) => setProductPrice(e.target.value)}
               />
-              <select id="measurement" name="measurement" placeholder="Measurement" className="mb-3 px-3 w-64 h-8 bg-white rounded-div border-darkGray border-[1px]" onChange={(e) => setProductMeasurement(e.target.value)}>
-                <option value="kg" selected={productMeasurement === "kg"}>kg</option>
-                <option value="g" selected={productMeasurement === "g"}>g</option>
+              <select
+                id="measurement"
+                name="measurement"
+                placeholder="Measurement"
+                className="mb-3 px-3 w-64 h-8 bg-white rounded-div border-darkGray border-[1px]"
+                onChange={(e) => setProductMeasurement(e.target.value)}
+              >
+                <option value="kg" selected={productMeasurement === "kg"}>
+                  kg
+                </option>
+                <option value="g" selected={productMeasurement === "g"}>
+                  g
+                </option>
               </select>
             </div>
-            {error && <p className="text-sm sm:text-base text-danger">{error}</p>}
+            {error && (
+              <p className="text-sm sm:text-base text-danger">{error}</p>
+            )}
             <div className="flex justify-between">
               <button
                 className="btn-style bg-[#00000066] text-white"
@@ -257,7 +400,12 @@ export default function ListDiv({ type }) {
               >
                 Cancel
               </button>
-              <button className="btn-style bg-primary text-white" onClick={()=>editProduct()}>{loading ? <LoadingIcon/> : "Edit"}</button>
+              <button
+                className="btn-style bg-primary text-white"
+                onClick={() => editProduct()}
+              >
+                {loading ? <LoadingIcon /> : "Edit"}
+              </button>
             </div>
           </div>
         </div>

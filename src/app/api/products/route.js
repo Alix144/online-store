@@ -35,25 +35,67 @@ export const POST = async (request) => {
 };
 
 export const PATCH = async (request) => {
-    try {
-        const body = await request.json();
-        const {productId, name, price, measurement} = body;
+  try {
+    const body = await request.json();
+    const { productId, name, price, measurement } = body;
 
-        await connectToDb();
+    await connectToDb();
 
-        const updatedProduct = await Product.findOneAndUpdate({_id: productId}, {name, price, measurement}, {new: true})
+    const updatedProduct = await Product.findOneAndUpdate(
+      { _id: productId },
+      { name, price, measurement },
+      { new: true }
+    );
 
-        if(!updatedProduct)
-        return new NextResponse(
-            JSON.stringify({message: 'Product not found'}), {status: 400}
-        )
+    if (!updatedProduct)
+      return new NextResponse(
+        JSON.stringify({ message: "Product not found" }),
+        { status: 400 }
+      );
 
-        return new NextResponse(
-            JSON.stringify({message: 'Products is updated', product: updatedProduct}), {status: 200}
-        )
-    } catch (error) {
-        return new NextResponse(
-            JSON.stringify({message: 'error in catch block : ' + error.message,}), {status: 500}
-        )
+    return new NextResponse(
+      JSON.stringify({
+        message: "Products is updated",
+        product: updatedProduct,
+      }),
+      { status: 200 }
+    );
+  } catch (error) {
+    return new NextResponse(
+      JSON.stringify({ message: "error in catch block : " + error.message }),
+      { status: 500 }
+    );
+  }
+};
+
+export const DELETE = async (request) => {
+  try {
+    const body = await request.json();
+    const { productId } = body;
+
+    if (!productId) {
+      return new NextResponse(JSON.stringify({ message: "id is required" }), {
+        status: 400,
+      });
     }
-}
+
+    await connectToDb();
+
+    const deletedProduct = await Product.findByIdAndDelete(productId);
+
+    if (!deletedProduct) {
+      return new NextResponse(JSON.stringify({ message: "Product not found" }), {
+        status: 400,
+      });
+    }
+
+    return new NextResponse(JSON.stringify({ message: "Product deleted" }), {
+      status: 200,
+    });
+  } catch (error) {
+    return new NextResponse(
+      JSON.stringify({ message: "Error deleting product: " + error.message}),
+      { status: 400 }
+    );
+  }
+};
