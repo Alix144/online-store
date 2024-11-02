@@ -1,8 +1,7 @@
-"use state"
 import Image from "next/image";
 import { useEffect } from "react";
 
-export default function ProductListData({setIsEditProductWindowOpen, setIsDeleteWindowOpen}) {
+export default function ProductListData({product, setIsEditProductWindowOpen, setIsDeleteWindowOpen}) {
 
   const handleDeleteClick = () => {
     setIsDeleteWindowOpen(true)
@@ -20,9 +19,9 @@ export default function ProductListData({setIsEditProductWindowOpen, setIsDelete
 
             </div>
         </div>
-        <p className="w-10 sm:w-14 lg:w-24 text-sm sm:text-base">Apple</p>
-        <p className="w-10 sm:w-14 lg:w-24 text-sm sm:text-base">7 KWD</p>
-        <p className="w-10 sm:w-14 lg:w-24 text-sm sm:text-base">KG</p>
+        <p className="w-10 sm:w-14 lg:w-24 text-sm sm:text-base">{product.name}</p>
+        <p className="w-10 sm:w-14 lg:w-24 text-sm sm:text-base">{product.price} KWD</p>
+        <p className="w-10 sm:w-14 lg:w-24 text-sm sm:text-base">{product.measurement}</p>
       </div>
       <div className="flex gap-5 items-center">
         <button className="btn-style bg-lightGray" onClick={()=>handleEditClick()}>Edit</button>

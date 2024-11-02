@@ -5,7 +5,8 @@ import CustomerOrderListData from "./list-data/CustomerOrderListData";
 import AdminOrderListData from "./list-data/AdminOrderListData";
 import ProductListData from "./list-data/ProductListData";
 import UsersListData from "./list-data/UsersListdata";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import LoadingIcon from "../LoadingIcon";
 
 export default function ListDiv({ type }) {
   const [isDeleteWindowOpen, setIsDeleteWindowOpen] = useState(false);
@@ -13,6 +14,21 @@ export default function ListDiv({ type }) {
   const [isEditProductWindowOpen, setIsEditProductWindowOpen] = useState(false);
 
   const [jaja, setJaja] = useState('initial')
+
+  const [products, setProducts] = useState(null);
+
+  const getProducts = async () => {
+    const response = await fetch("/api/products/", {
+      method: "GET",
+      headers: { "Content-Type": "application/json" },
+    });
+    const data = await response.json();
+    setProducts(data);
+  };
+
+  useEffect(() => {
+    getProducts();
+  }, []);
 
   return (
     <>
@@ -91,8 +107,25 @@ export default function ListDiv({ type }) {
               <CustomerOrderListData />
             ) : type === "adminOrderList" ? (
               <AdminOrderListData />
-            ) : type === "productsList" ? (
-              <ProductListData setIsEditProductWindowOpen={setIsEditProductWindowOpen} setIsDeleteWindowOpen={setIsDeleteWindowOpen}/>
+            ) : type === "productsList" ? 
+              products === null ? (
+                <LoadingIcon />
+              ) : products.length === 0 ? (
+                <div className="mt-10 w-full flex flex-col text-center justify-start items-center">
+                  <Image
+                    src="/images/empty-box.png"
+                    alt="Empty Box"
+                    width={100}
+                    height={100}
+                    className="mb-5"
+                  />
+                  <p>No Products Found!</p>
+                </div>
+              ) : (
+                products?.map((product) => (
+                  <ProductListData product={product} setIsEditProductWindowOpen={setIsEditProductWindowOpen} setIsDeleteWindowOpen={setIsDeleteWindowOpen}/>
+                ))
+              
             ) : (
               <UsersListData />
             )}
