@@ -148,7 +148,7 @@ export default function ProductsPage() {
                         <LoadingIcon />
                       ) : (
                         products?.map((product) => (
-                          <div className="w-full flex justify-between">
+                          <div className="w-full flex justify-between" key={product._id}>
                             <div className="flex gap-3 sm:gap-5">
                               <p className="text-sm sm:text-base text-white">
                                 2 {product.measurement}
