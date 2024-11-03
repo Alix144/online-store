@@ -8,7 +8,7 @@ export const GET = async (request) => {
     const userId = pathname.split("/").pop(); 
 
     await connectToDb();
-    const user = await User.findOne({ userId }).populate("favorite");
+    const user = await User.findOne({ userId }).populate("favorite").populate("cart");
     
     if (!user) {
       return new NextResponse(JSON.stringify({ message: "User not found" }), {

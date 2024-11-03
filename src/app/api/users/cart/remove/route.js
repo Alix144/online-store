@@ -9,13 +9,13 @@ export const PATCH = async (request) => {
   
       await connectToDb();
   
-      const updatedFavorite = await User.findOneAndUpdate(
+      const updatedCart = await User.findOneAndUpdate(
         { userId },
-        { $pull: { favorite: productId } },
+        { $pull: { cart: productId } },
         { new: true }
       );
   
-      if (!updatedFavorite)
+      if (!updatedCart)
         return new NextResponse(
           JSON.stringify({ message: "Product not found" }),
           { status: 400 }
@@ -23,8 +23,8 @@ export const PATCH = async (request) => {
   
       return new NextResponse(
         JSON.stringify({
-          message: "Product removed from favorites",
-          user: updatedFavorite,
+          message: "Product removed from cart",
+          user: updatedCart,
         }),
         { status: 200 }
       );

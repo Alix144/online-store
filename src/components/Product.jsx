@@ -1,5 +1,6 @@
 "use client";
 import Image from "next/image";
+import Link from "next/link";
 import { useEffect, useState } from "react";
 import LoadingIcon from "./LoadingIcon";
 
@@ -8,6 +9,7 @@ export default function Product({ product, isFavorite, inCart }) {
   const [user, setUser] = useState(null);
   const [amount, setAmount] = useState(1);
   const [favorite, setFavorite] = useState(false);
+  const [isInCart, setIsInCart] = useState(false);
   const [isDeleteWindowOpen, setIsDeleteWindowOpen] = useState(false);
   const userId = localStorage.getItem("userId");
 
@@ -68,6 +70,22 @@ export default function Product({ product, isFavorite, inCart }) {
     setLoading(false);
   };
 
+  const addToCart = async () => {
+    try {
+      const response = await fetch("/api/users/cart/add/", {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          userId,
+          productId: product._id,
+        }),
+      });
+      setIsInCart(true)
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   const getUser = async () => {
     const response = await fetch(`/api/users/${userId}`, {
       method: "GET",
@@ -82,8 +100,12 @@ export default function Product({ product, isFavorite, inCart }) {
   }, []);
 
   useEffect(() => {
-    if (user && user?.favorite?.some(fav => fav._id === product._id)) {
+    if (user && user?.favorite?.some((fav) => fav._id === product?._id)) {
       setFavorite(true);
+    }
+
+    if (user && user?.cart?.some((pro) => pro._id === product?._id)) {
+      setIsInCart(true);
     }
   }, [user]);
 
@@ -144,7 +166,7 @@ export default function Product({ product, isFavorite, inCart }) {
               </div>
             </div>
           ) : (
-            <div className="flex flex-col justify-between">
+            <div className="flex flex-col justify-between items-end">
               {loading ? (
                 <LoadingIcon />
               ) : (
@@ -159,13 +181,18 @@ export default function Product({ product, isFavorite, inCart }) {
                   onClick={() => toggleFavorite()}
                 />
               )}
-              <Image
-                src="/images/cart.png"
-                alt="Cart"
-                width="20"
-                height="20"
-                className="cursor-pointer"
-              />
+              {isInCart ? (
+                <Link href={"/cart"} className="text-sm sm:text-base">In Cart</Link>
+              ) : (
+                <Image
+                  src="/images/cart.png"
+                  alt="Cart"
+                  width="20"
+                  height="20"
+                  className="cursor-pointer"
+                  onClick={()=>addToCart()}
+                />
+              )}
             </div>
           )}
         </div>
