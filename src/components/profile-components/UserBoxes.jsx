@@ -1,9 +1,8 @@
 "use client";
-
 import Image from "next/image";
 import { useState } from "react";
 
-export default function UserBoxes() {
+export default function UserBoxes({ user }) {
   const [isAddAddressWindowOpen, setIsAddAddressWindowOpen] = useState(false);
   const [isAddNumberWindowOpen, setIsAddNumberWindowOpen] = useState(false);
 
@@ -20,13 +19,16 @@ export default function UserBoxes() {
               className="mb-5"
             />
           </div>
-          <p className="text-sm sm:text-base font-bold">+965 45534464</p>
-          {/* <button
-            className="py-2 px-5 text-sm sm:text-base text-white rounded-div border-none bg-[#00000066] hover:bg-darkGray duration-300 cursor-pointer"
-            onClick={() => setIsAddNumberWindowOpen(true)}
-          >
-            Add Number
-          </button> */}
+          {user?.phoneNumber ? (
+            <p className="text-sm sm:text-base font-bold">{user.phoneNumber}</p>
+          ) : (
+            <button
+              className="py-2 px-5 text-sm sm:text-base text-white rounded-div border-none bg-[#00000066] hover:bg-darkGray duration-300 cursor-pointer"
+              onClick={() => setIsAddNumberWindowOpen(true)}
+            >
+              Add Number
+            </button>
+          )}
         </div>
         <div className="py-3 sm:py-5 px-5 sm:px-10 w-[50%] bg-secondary rounded-div flex flex-col gap-3 sm:gap-5 items-center">
           <div className="w-8 sm:w-10 h-8 sm:h-10">
@@ -38,13 +40,16 @@ export default function UserBoxes() {
               className="mb-5"
             />
           </div>
-          {/* <p className="text-sm sm:text-base font-bold">Kuwait, Hawalli</p> */}
-          <button
-            className="py-2 px-5 text-sm sm:text-base text-white rounded-div border-none bg-[#00000066] hover:bg-darkGray duration-300 cursor-pointer"
-            onClick={() => setIsAddAddressWindowOpen(true)}
-          >
-            Add Address
-          </button>
+          {user?.address ? (
+            <p className="text-sm sm:text-base font-bold">{user.address}</p>
+          ) : (
+            <button
+              className="py-2 px-5 text-sm sm:text-base text-white rounded-div border-none bg-[#00000066] hover:bg-darkGray duration-300 cursor-pointer"
+              onClick={() => setIsAddAddressWindowOpen(true)}
+            >
+              Add Address
+            </button>
+          )}
         </div>
       </div>
 
@@ -66,7 +71,7 @@ export default function UserBoxes() {
                   placeholder="Phone Number"
                   className="mb-3 px-3 w-60 h-8 bg-white rounded-div border-darkGray border-[1px]"
                 />
-              </div>              
+              </div>
             </div>
             <div className="flex justify-between">
               <button
@@ -128,8 +133,12 @@ export default function UserBoxes() {
                   className="mb-3 px-3 w-40 h-8 bg-white rounded-div border-darkGray border-[1px]"
                 />
               </div>
-              <textarea name="" id="" placeholder="Additional directions (optional)" className="mb-3 px-3 w-full bg-white rounded-div border-darkGray border-[1px]"></textarea>
-              
+              <textarea
+                name=""
+                id=""
+                placeholder="Additional directions (optional)"
+                className="mb-3 px-3 w-full bg-white rounded-div border-darkGray border-[1px]"
+              ></textarea>
             </div>
             <div className="flex justify-between">
               <button
