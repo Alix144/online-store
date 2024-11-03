@@ -79,7 +79,7 @@ export default function Sidebar({ isUserSignedIn }) {
         />
       </div>
 
-      {isUserSignedIn && <IconsNav isSidebarNav={true} />}
+      {isUserSignedIn && <IconsNav isSidebarNav={true} hideSidebar={hideSidebar}/>}
 
       <nav className="sm:w-full text-white items-center gap-2 lg:gap-10 flex flex-col ">
         <Link
