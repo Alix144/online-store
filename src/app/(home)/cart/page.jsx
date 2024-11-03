@@ -1,7 +1,38 @@
+"use client";
+import LoadingIcon from "@/components/LoadingIcon";
 import OrderSuccess from "@/components/OrderSuccess";
 import Product from "@/components/Product";
+import { useEffect, useState } from "react";
 
 export default function ProductsPage() {
+  const [products, setProducts] = useState(null);
+  const [userId, setUserId] = useState(null);
+
+  // calling APIs
+  const getUser = async () => {
+    const response = await fetch(`/api/users/${userId}`, {
+      method: "GET",
+      headers: { "Content-Type": "application/json" },
+    });
+    const data = await response.json();
+    setProducts(data.cart);
+  };
+
+  //accessing user local storage
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const storedUserId = localStorage.getItem("userId");
+      setUserId(storedUserId);
+    }
+  }, []);
+
+  // fetching user
+  useEffect(() => {
+    if (userId) {
+      getUser();
+    }
+  }, [userId]);
+
   return (
     <main className="flex flex-col gap-5 sm:gap-10">
       {true ? (
@@ -11,9 +42,24 @@ export default function ProductsPage() {
           </h1>
           <div className="flex gap-5 justify-center sm:justify-normal items-center sm:items-start flex-col sm:flex-row">
             <div className="w-[60%] flex gap-5 flex-wrap justify-center sm:justify-normal">
-              <Product inCart={true}/>
-              <Product inCart={true}/>
-              <Product inCart={true}/>
+              {products === null ? (
+                <LoadingIcon />
+              ) : products.length === 0 ? (
+                <div className="mt-10 w-full flex flex-col text-center justify-start items-center">
+                  <Image
+                    src="/images/empty-box.png"
+                    alt="Empty Box"
+                    width={100}
+                    height={100}
+                    className="mb-5"
+                  />
+                  <p>No products in cart!</p>
+                </div>
+              ) : (
+                products?.map((product) => (
+                  <Product product={product} products={products} setProducts={setProducts} key={product._id} inCart={true} isFavorite={true}/>
+                ))
+              )}
             </div>
             {/* order summary div */}
             <div className="p-5 md:p-10 lg:w-[40%] bg-primary rounded-div flex flex-col justify-between">

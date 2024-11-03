@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import LoadingIcon from "./LoadingIcon";
 
-export default function Product({ product, isFavorite, inCart }) {
+export default function Product({ product, products, setProducts, isFavorite, inCart }) {
   const [loading, setLoading] = useState(false);
   const [user, setUser] = useState(null);
   const [amount, setAmount] = useState(1);
@@ -86,6 +86,22 @@ export default function Product({ product, isFavorite, inCart }) {
     }
   };
 
+  const removeFromCart = async () => {
+    try {
+      const response = await fetch("/api/users/cart/remove/", {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          userId,
+          productId: product._id,
+        }),
+      });
+      setIsInCart(false)
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   const getUser = async () => {
     const response = await fetch(`/api/users/${userId}`, {
       method: "GET",
@@ -94,6 +110,13 @@ export default function Product({ product, isFavorite, inCart }) {
     const data = await response.json();
     setUser(data);
   };
+
+  const handleRemoveProductFromCart = () => {
+    removeFromCart()
+    const updatedProducts = products.filter(pro => pro._id !== product._id);
+    setProducts(updatedProducts)
+    setIsDeleteWindowOpen(false)
+  }
 
   useEffect(() => {
     getUser();
@@ -210,7 +233,7 @@ export default function Product({ product, isFavorite, inCart }) {
               >
                 Cancel
               </button>
-              <button className="btn-style bg-danger text-white">Delete</button>
+              <button className="btn-style bg-danger text-white" onClick={()=>handleRemoveProductFromCart()}>Delete</button>
             </div>
           </div>
         </div>
