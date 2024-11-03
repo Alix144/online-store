@@ -5,7 +5,8 @@ import { useEffect, useState } from "react";
 import LoadingIcon from "./LoadingIcon";
 
 export default function Product({ product, products, setProducts, isFavorite, inCart }) {
-  const [loading, setLoading] = useState(false);
+  const [loadingFavorite, setLoadingFavorite] = useState(false);
+  const [loadingCart, setLoadingCart] = useState(false);
   const [user, setUser] = useState(null);
   const [amount, setAmount] = useState(1);
   const [favorite, setFavorite] = useState(false);
@@ -33,7 +34,7 @@ export default function Product({ product, products, setProducts, isFavorite, in
 
   // calling APIs
   const addToFavorites = async () => {
-    setLoading(true);
+    setLoadingFavorite(true);
 
     try {
       const response = await fetch("/api/users/favorites/add/", {
@@ -48,11 +49,11 @@ export default function Product({ product, products, setProducts, isFavorite, in
       console.log(error);
     }
 
-    setLoading(false);
+    setLoadingFavorite(false);
   };
 
   const removeFromFavorites = async () => {
-    setLoading(true);
+    setLoadingFavorite(true);
 
     try {
       const response = await fetch("/api/users/favorites/remove/", {
@@ -67,10 +68,11 @@ export default function Product({ product, products, setProducts, isFavorite, in
       console.log(error);
     }
 
-    setLoading(false);
+    setLoadingFavorite(false);
   };
 
   const addToCart = async () => {
+    setLoadingCart(true)
     try {
       const response = await fetch("/api/users/cart/add/", {
         method: "PATCH",
@@ -84,6 +86,7 @@ export default function Product({ product, products, setProducts, isFavorite, in
     } catch (error) {
       console.log(error);
     }
+    setLoadingCart(false)
   };
 
   const removeFromCart = async () => {
@@ -190,7 +193,7 @@ export default function Product({ product, products, setProducts, isFavorite, in
             </div>
           ) : (
             <div className="flex flex-col justify-between items-end">
-              {loading ? (
+              {loadingFavorite ? (
                 <LoadingIcon />
               ) : (
                 <Image
@@ -207,6 +210,9 @@ export default function Product({ product, products, setProducts, isFavorite, in
               {isInCart ? (
                 <Link href={"/cart"} className="text-sm sm:text-base">In Cart</Link>
               ) : (
+                loadingCart ?
+                <LoadingIcon/>
+                :
                 <Image
                   src="/images/cart.png"
                   alt="Cart"

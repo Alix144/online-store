@@ -1,4 +1,5 @@
 "use client";
+import Image from "next/image";
 import LoadingIcon from "@/components/LoadingIcon";
 import OrderSuccess from "@/components/OrderSuccess";
 import Product from "@/components/Product";
