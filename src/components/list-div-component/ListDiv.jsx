@@ -20,6 +20,7 @@ export default function ListDiv({ type }) {
   const [productMeasurement, setProductMeasurement] = useState("");
 
   const [products, setProducts] = useState(null);
+  const [users, setUsers] = useState(null);
 
   const closeAddForm = () => {
     setIsAddProductWindowOpen(false);
@@ -31,7 +32,8 @@ export default function ListDiv({ type }) {
     setError("");
   };
 
-  // calling APIs
+  //**** calling APIs ****//
+  // products
   const getProducts = async () => {
     const response = await fetch("/api/products/", {
       method: "GET",
@@ -117,8 +119,23 @@ export default function ListDiv({ type }) {
     setIsDeleteWindowOpen(null);
   };
 
+  // users
+  const getUsers = async () => {
+    const response = await fetch("/api/users/", {
+      method: "GET",
+      headers: { "Content-Type": "application/json" },
+    });
+    const data = await response.json();
+    setUsers(data);
+    console.log(data)
+  };
+
   useEffect(() => {
-    getProducts();
+    if(type === "productsList"){
+      getProducts();
+    }else{
+      getUsers()
+    }
   }, []);
 
   useEffect(() => {
@@ -272,7 +289,25 @@ export default function ListDiv({ type }) {
                 ))
               )
             ) : (
-              <UsersListData />
+              users === null ? (
+                <LoadingIcon />
+              ) : users.length === 0 ? (
+                <div className="mt-10 w-full flex flex-col text-center justify-start items-center">
+                  <Image
+                    src="/images/empty-box.png"
+                    alt="Empty Box"
+                    width={100}
+                    height={100}
+                    className="mb-5"
+                  />
+                  <p>No usesrs found!</p>
+                </div>
+              ) : (
+                users?.map((user) => (
+                  <UsersListData user={user}/>
+                ))
+              )
+              
             )}
           </div>
         </div>
