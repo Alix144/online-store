@@ -2,9 +2,18 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
+import { setToTrue, setToFalse } from "@/redux/features/isCartEmpty";
 import LoadingIcon from "./LoadingIcon";
 
-export default function Product({ product, products, setProducts, isFavorite, inCart }) {
+export default function Product({
+  product,
+  products,
+  setProducts,
+  isFavorite,
+  inCart,
+}) {
+  const dispatch = useDispatch();
   const [loadingFavorite, setLoadingFavorite] = useState(false);
   const [loadingCart, setLoadingCart] = useState(false);
   const [user, setUser] = useState(null);
@@ -13,12 +22,21 @@ export default function Product({ product, products, setProducts, isFavorite, in
   const [isInCart, setIsInCart] = useState(false);
   const [isDeleteWindowOpen, setIsDeleteWindowOpen] = useState(false);
   const userId = localStorage.getItem("userId");
+  
 
   const reduceAmount = () => {
     if (amount > 1) {
       setAmount(amount - 1);
     } else if (amount === 1 || amount === 0.75 || amount === 0.5) {
       setAmount(amount - 0.25);
+    }
+  };
+
+  const increaseAmount = () => {
+    if (amount < 1) {
+      setAmount(amount + 0.25);
+    } else {
+      setAmount(amount + 1);
     }
   };
 
@@ -72,7 +90,8 @@ export default function Product({ product, products, setProducts, isFavorite, in
   };
 
   const addToCart = async () => {
-    setLoadingCart(true)
+    setLoadingCart(false);
+    dispatch(setToFalse())
     try {
       const response = await fetch("/api/users/cart/add/", {
         method: "PATCH",
@@ -82,11 +101,11 @@ export default function Product({ product, products, setProducts, isFavorite, in
           productId: product._id,
         }),
       });
-      setIsInCart(true)
+      setIsInCart(true);
     } catch (error) {
       console.log(error);
     }
-    setLoadingCart(false)
+    setLoadingCart(false);
   };
 
   const removeFromCart = async () => {
@@ -99,7 +118,7 @@ export default function Product({ product, products, setProducts, isFavorite, in
           productId: product._id,
         }),
       });
-      setIsInCart(false)
+      setIsInCart(false);
     } catch (error) {
       console.log(error);
     }
@@ -115,11 +134,14 @@ export default function Product({ product, products, setProducts, isFavorite, in
   };
 
   const handleRemoveProductFromCart = () => {
-    removeFromCart()
-    const updatedProducts = products.filter(pro => pro._id !== product._id);
-    setProducts(updatedProducts)
-    setIsDeleteWindowOpen(false)
-  }
+    removeFromCart();
+    const updatedProducts = products.filter((pro) => pro._id !== product._id);
+    if(updatedProducts.length === 0){
+      dispatch(setToTrue())
+    }
+    setProducts(updatedProducts);
+    setIsDeleteWindowOpen(false);
+  };
 
   useEffect(() => {
     getUser();
@@ -178,10 +200,10 @@ export default function Product({ product, products, setProducts, isFavorite, in
                   type="number"
                   className="px-1 w-10 h-5 border border-darkGray rounded-[5px]"
                   value={amount}
-                  onChange={(e) => setAmount(e.target.value)}
+                  onChange={(e) => setAmount(Number(e.target.value))}
                 />
                 <p className="text-sm sm:text-base">kg</p>
-                <div className="w-4 h-4" onClick={() => setAmount(amount + 1)}>
+                <div className="w-4 h-4" onClick={() => increaseAmount()}>
                   <Image
                     src="/images/plus.png"
                     alt="Plus"
@@ -208,18 +230,19 @@ export default function Product({ product, products, setProducts, isFavorite, in
                 />
               )}
               {isInCart ? (
-                <Link href={"/cart"} className="text-sm sm:text-base">In Cart</Link>
+                <Link href={"/cart"} className="text-sm sm:text-base">
+                  In Cart
+                </Link>
+              ) : loadingCart ? (
+                <LoadingIcon />
               ) : (
-                loadingCart ?
-                <LoadingIcon/>
-                :
                 <Image
                   src="/images/cart.png"
                   alt="Cart"
                   width="20"
                   height="20"
                   className="cursor-pointer"
-                  onClick={()=>addToCart()}
+                  onClick={() => addToCart()}
                 />
               )}
             </div>
@@ -239,7 +262,12 @@ export default function Product({ product, products, setProducts, isFavorite, in
               >
                 Cancel
               </button>
-              <button className="btn-style bg-danger text-white" onClick={()=>handleRemoveProductFromCart()}>Delete</button>
+              <button
+                className="btn-style bg-danger text-white"
+                onClick={() => handleRemoveProductFromCart()}
+              >
+                Delete
+              </button>
             </div>
           </div>
         </div>

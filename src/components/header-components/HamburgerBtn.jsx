@@ -1,18 +1,10 @@
 "use client";
 import Image from "next/image";
-import {
-  setToOrders,
-  setToProducts,
-  setToHome,
-} from "@/redux/features/currentPage";
-import { useDispatch } from "react-redux";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { setToTrue } from "@/redux/features/isSidebarOpen";
 
 export default function HamburgerBtn() {
   const dispatch = useDispatch();
-
-  const currentPage = useSelector((state) => state.currentPage.value);
 
   const showSidebar = () => {
     dispatch(setToTrue())

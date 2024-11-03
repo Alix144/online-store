@@ -6,15 +6,17 @@ import {
   setToProfile,
   setToCart,
 } from "@/redux/features/currentPage";
-import { useDispatch } from "react-redux";
-import { useSelector } from "react-redux";
-import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect, useState } from "react";
+import { setToFalse } from "@/redux/features/isCartEmpty";
 
 export default function IconsNav({ isSidebarNav, userId }) {
   const router = useRouter();
   const dispatch = useDispatch();
 
   const currentPage = useSelector((state) => state.currentPage.value);
+
+  const isCartEmpty = useSelector((state) => state.isCartEmpty.value);
 
   const navigateToFavorite = () => {
     router.push("/favorites");
@@ -30,6 +32,31 @@ export default function IconsNav({ isSidebarNav, userId }) {
     router.push("/cart");
     dispatch(setToCart());
   };
+
+  const [products, setProducts] = useState(null);
+
+  // calling APIs
+  const getUser = async () => {
+    const response = await fetch(`/api/users/${userId}`, {
+      method: "GET",
+      headers: { "Content-Type": "application/json" },
+    });
+    const data = await response.json();
+    setProducts(data.cart);
+  };
+
+  // fetching user
+  useEffect(() => {
+    if (userId) {
+      getUser();
+    }
+  }, [userId]);
+
+  useEffect(() => {
+    if (products?.length > 0) {
+      dispatch(setToFalse())
+    }
+  }, [products]);
 
   useEffect(()=>{
     if (userId) {
@@ -68,7 +95,7 @@ export default function IconsNav({ isSidebarNav, userId }) {
         onClick={() => navigateToCart()}
       >
         <Image src="/images/cart.png" alt="Cart" width={21} height={21} />
-        {true && (
+        {!isCartEmpty && (
           <div className="w-2 h-2 bg-primary rounded-full absolute top-1 right-2"></div>
         )}
       </div>
