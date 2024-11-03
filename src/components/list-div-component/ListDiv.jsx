@@ -304,7 +304,7 @@ export default function ListDiv({ type }) {
                 </div>
               ) : (
                 users?.map((user) => (
-                  <UsersListData user={user}/>
+                  <UsersListData key={user._id} user={user}/>
                 ))
               )
               

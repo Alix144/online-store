@@ -19,7 +19,7 @@ export default async function Header() {
 
       {session?.user ? (
         <div className="flex gap-1 sm:gap-2">
-          <IconsNav/>
+          <IconsNav userId={session.user.id}/>
 
           <div className="py-1 px-1 bg-lightGray rounded-div flex items-center justify-center cursor-pointer">
             <SignoutBtn/>

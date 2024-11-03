@@ -10,6 +10,7 @@ export default function SignoutBtn() {
   const handleSignOut = () => {
     signOut()
     dispatch(setToFalse())
+    localStorage.removeItem("userId");
   }
 
   return (

@@ -20,10 +20,6 @@ export default function ProductsPage() {
     getProducts();
   }, []);
 
-  useEffect(() => {
-    console.log(products);
-  }, [products]);
-
   return (
     <main className="flex flex-col gap-5 sm:gap-10">
       <section className="py-10 sm:py-14 lg:py-16 xl:py-20 flex flex-col gap-5 sm:gap-10">

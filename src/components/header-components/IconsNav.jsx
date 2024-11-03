@@ -8,8 +8,9 @@ import {
 } from "@/redux/features/currentPage";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
+import { useEffect } from "react";
 
-export default function IconsNav({ isSidebarNav }) {
+export default function IconsNav({ isSidebarNav, userId }) {
   const router = useRouter();
   const dispatch = useDispatch();
 
@@ -29,6 +30,13 @@ export default function IconsNav({ isSidebarNav }) {
     router.push("/cart");
     dispatch(setToCart());
   };
+
+  useEffect(()=>{
+    if (userId) {
+      localStorage.setItem("userId", userId);
+      console.log(userId);
+    }
+  },[userId])
 
   return (
     <div className={`${isSidebarNav && "min-h-[35px] min-w-[140px]"} py-1 px-1 rounded-[30px] duration-300 bg-lightGray flex`}>
