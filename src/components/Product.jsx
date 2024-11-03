@@ -20,11 +20,11 @@ export default function Product({ product, isFavorite, inCart }) {
   };
 
   const toggleFavorite = () => {
-    if(favorite) {
-      setFavorite(false)
+    if (favorite) {
+      setFavorite(false);
       removeFromFavorites();
     } else {
-      setFavorite(true)
+      setFavorite(true);
       addToFavorites();
     }
   };
@@ -75,16 +75,14 @@ export default function Product({ product, isFavorite, inCart }) {
     });
     const data = await response.json();
     setUser(data);
-    console.log(data)
   };
 
   useEffect(() => {
-    // setFavorite(isFavorite);
-    getUser()
+    getUser();
   }, []);
 
   useEffect(() => {
-    if (user && user?.favorite?.includes(product._id)) {
+    if (user && user?.favorite?.some(fav => fav._id === product._id)) {
       setFavorite(true);
     }
   }, [user]);

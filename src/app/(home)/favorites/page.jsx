@@ -5,24 +5,34 @@ import Product from "@/components/Product";
 import { useState, useEffect } from "react";
 
 export default function FavoritesPage() {
-  const [products, setProducts] = useState(null);
+  const [favorites, setFavorites] = useState(null);
+  const [userId, setUserId] = useState(null);
 
-  const getProducts = async () => {
-    const response = await fetch("/api/products/", {
+  // calling APIs
+  const getUser = async () => {
+    const response = await fetch(`/api/users/${userId}`, {
       method: "GET",
       headers: { "Content-Type": "application/json" },
     });
     const data = await response.json();
-    setProducts(data);
+    console.log(data.favorite);
+    setFavorites(data.favorite);
   };
 
+  //accessing user local storage
   useEffect(() => {
-    getProducts();
+    if (typeof window !== "undefined") {
+      const storedUserId = localStorage.getItem("userId");
+      setUserId(storedUserId);
+    }
   }, []);
 
+  // fetching user
   useEffect(() => {
-    console.log(products);
-  }, [products]);
+    if (userId) {
+      getUser();
+    }
+  }, [userId]);
 
   return (
     <main className="flex flex-col gap-5 sm:gap-10">
@@ -31,9 +41,9 @@ export default function FavoritesPage() {
           Favorites
         </h1>
         <div className="min-h-96 flex gap-5 flex-wrap justify-center lg:justify-normal">
-          {products === null ? (
+          {favorites === null ? (
             <LoadingIcon />
-          ) : products.length === 0 ? (
+          ) : favorites.length === 0 ? (
             <div className="mt-10 w-full flex flex-col text-center justify-start items-center">
               <Image
                 src="/images/empty-box.png"
@@ -42,11 +52,11 @@ export default function FavoritesPage() {
                 height={100}
                 className="mb-5"
               />
-              <p>No Products Found!</p>
+              <p>No favorites products!</p>
             </div>
           ) : (
-            products?.map((product) => (
-              <Product product={product} key={product._id} isFavorite={true}/>
+            favorites?.map((product) => (
+              <Product product={product} key={product._id} isFavorite={true} />
             ))
           )}
         </div>
