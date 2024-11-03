@@ -5,8 +5,9 @@ import LoadingIcon from "./LoadingIcon";
 
 export default function Product({ product, isFavorite, inCart }) {
   const [loading, setLoading] = useState(false);
+  const [user, setUser] = useState(null);
   const [amount, setAmount] = useState(1);
-  const [favorite, setFavorite] = useState(true);
+  const [favorite, setFavorite] = useState(false);
   const [isDeleteWindowOpen, setIsDeleteWindowOpen] = useState(false);
   const userId = localStorage.getItem("userId");
 
@@ -67,9 +68,26 @@ export default function Product({ product, isFavorite, inCart }) {
     setLoading(false);
   };
 
+  const getUser = async () => {
+    const response = await fetch(`/api/users/${userId}`, {
+      method: "GET",
+      headers: { "Content-Type": "application/json" },
+    });
+    const data = await response.json();
+    setUser(data);
+    console.log(data)
+  };
+
   useEffect(() => {
-    setFavorite(isFavorite);
+    // setFavorite(isFavorite);
+    getUser()
   }, []);
+
+  useEffect(() => {
+    if (user && user?.favorite?.includes(product._id)) {
+      setFavorite(true);
+    }
+  }, [user]);
 
   return (
     <>
