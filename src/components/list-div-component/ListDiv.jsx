@@ -11,6 +11,7 @@ import LoadingIcon from "../LoadingIcon";
 export default function ListDiv({ type }) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [userId, setUserId] = useState(null);
   const [isDeleteWindowOpen, setIsDeleteWindowOpen] = useState(null);
   const [isAddProductWindowOpen, setIsAddProductWindowOpen] = useState(false);
   const [isEditProductWindowOpen, setIsEditProductWindowOpen] = useState(null);
@@ -18,7 +19,7 @@ export default function ListDiv({ type }) {
   const [productName, setProductName] = useState("");
   const [productPrice, setProductPrice] = useState("");
   const [productMeasurement, setProductMeasurement] = useState("");
-
+  const [orders, setOrders] = useState(null);
   const [products, setProducts] = useState(null);
   const [users, setUsers] = useState(null);
 
@@ -127,16 +128,34 @@ export default function ListDiv({ type }) {
     });
     const data = await response.json();
     setUsers(data);
-    console.log(data)
+    console.log(data);
+  };
+
+  // orders
+  const getOrders = async () => {
+    setLoading(true);
+    const response = await fetch("/api/orders/", {
+      method: "GET",
+      headers: { "Content-Type": "application/json" },
+    });
+    const data = await response.json();
+    const userOrders = data.filter((order) => order.userId === userId);
+    console.log(data);
+    setOrders(userOrders);
   };
 
   useEffect(() => {
-    if(type === "productsList"){
-      getProducts();
-    }else{
-      getUsers()
+    if (userId) {
+      if (type === "productsList") {
+        getProducts();
+      }
+      if (type === "customerOrderList") {
+        getOrders();
+      } else {
+        getUsers();
+      }
     }
-  }, []);
+  }, [userId]);
 
   useEffect(() => {
     if (isEditProductWindowOpen === null) {
@@ -157,6 +176,13 @@ export default function ListDiv({ type }) {
       setProductId(isDeleteWindowOpen);
     }
   }, [isDeleteWindowOpen]);
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const storedUserId = localStorage.getItem("userId");
+      setUserId(storedUserId);
+    }
+  }, []);
 
   return (
     <>
@@ -261,7 +287,15 @@ export default function ListDiv({ type }) {
           {/* content */}
           <div className="w-full max-h-80 overflow-y-scroll scrollbar-hide overflow-x-auto">
             {type === "customerOrderList" ? (
-              <CustomerOrderListData />
+              orders === null ? (
+                <LoadingIcon />
+              ) : orders.length === 0 ? (
+                <p>no orders found</p>
+              ) : (
+                orders?.slice().reverse().map((order) => (
+                  <CustomerOrderListData key={order._id} order={order} />
+                ))
+              )
             ) : type === "adminOrderList" ? (
               <AdminOrderListData />
             ) : type === "productsList" ? (
@@ -288,26 +322,21 @@ export default function ListDiv({ type }) {
                   />
                 ))
               )
+            ) : users === null ? (
+              <LoadingIcon />
+            ) : users.length === 0 ? (
+              <div className="mt-10 w-full flex flex-col text-center justify-start items-center">
+                <Image
+                  src="/images/empty-box.png"
+                  alt="Empty Box"
+                  width={100}
+                  height={100}
+                  className="mb-5"
+                />
+                <p>No usesrs found!</p>
+              </div>
             ) : (
-              users === null ? (
-                <LoadingIcon />
-              ) : users.length === 0 ? (
-                <div className="mt-10 w-full flex flex-col text-center justify-start items-center">
-                  <Image
-                    src="/images/empty-box.png"
-                    alt="Empty Box"
-                    width={100}
-                    height={100}
-                    className="mb-5"
-                  />
-                  <p>No usesrs found!</p>
-                </div>
-              ) : (
-                users?.map((user) => (
-                  <UsersListData key={user._id} user={user}/>
-                ))
-              )
-              
+              users?.map((user) => <UsersListData key={user._id} user={user} />)
             )}
           </div>
         </div>
