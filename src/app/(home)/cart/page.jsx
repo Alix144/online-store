@@ -10,6 +10,29 @@ export default function CartPage() {
   const [userId, setUserId] = useState(null);
   const [totalPrice, setTotalPrice] = useState(0);
 
+  const handleAmountChange = (productId, newAmount) => {
+    setProducts((prevProducts) =>
+      prevProducts.map((product) =>
+        product._id === productId ? { ...product, amount: newAmount } : product
+      )
+    );
+  };
+
+  const getProductPrice = (price, amount) => {
+    let productPrice = price * (amount || 1);
+    return parseFloat(productPrice.toFixed(5));
+  };
+
+  const calculateTotalPrice = () => {
+    if (products) {
+      const total = products.reduce((acc, product) => {
+        const productPrice = product.price * (product.amount || 1);
+        return acc + parseFloat(productPrice.toFixed(5));
+      }, 0);
+      setTotalPrice(total);
+    }
+  };
+
   // calling APIs
   const getUser = async () => {
     const response = await fetch(`/api/users/${userId}`, {
@@ -34,6 +57,10 @@ export default function CartPage() {
       getUser();
     }
   }, [userId]);
+
+  useEffect(()=>{
+    calculateTotalPrice()
+  }, [products])
 
   return (
     <main className="flex flex-col gap-5 sm:gap-10">
@@ -60,12 +87,13 @@ export default function CartPage() {
               ) : (
                 products?.map((product) => (
                   <Product
+                    key={product._id}
                     product={product}
                     products={products}
                     setProducts={setProducts}
-                    key={product._id}
                     inCart={true}
                     isFavorite={true}
+                    onAmountChange={handleAmountChange}
                   />
                 ))
               )}
@@ -152,14 +180,14 @@ export default function CartPage() {
                           <div className="w-full flex justify-between" key={product._id}>
                             <div className="flex gap-3 sm:gap-5">
                               <p className="text-sm sm:text-base text-white">
-                                2 {product.measurement}
+                                {product?.amount ? product?.amount : "1"} {product.measurement}
                               </p>
                               <p className="text-sm sm:text-base text-white">
                                 {product.name}
                               </p>
                             </div>
                             <p className="text-sm sm:text-base text-white">
-                              0.600 KWD
+                              {getProductPrice(product.price, product.amount)} KWD
                             </p>
                           </div>
                         ))

@@ -12,11 +12,12 @@ export default function Product({
   setProducts,
   isFavorite,
   inCart,
+  onAmountChange
 }) {
   const dispatch = useDispatch();
   const [loadingFavorite, setLoadingFavorite] = useState(false);
   const [loadingCart, setLoadingCart] = useState(false);
-  const [amount, setAmount] = useState(1);
+  const [amount, setAmount] = useState("1");
   const [user, setUser] = useState(null);
   const [favorite, setFavorite] = useState(false);
   const [isInCart, setIsInCart] = useState(false);
@@ -26,20 +27,29 @@ export default function Product({
   const calculatePrice = () => {};
 
   const reduceAmount = () => {
-    if (amount > 1) {
-      setAmount(amount - 1);
-    } else if (amount === 1 || amount === 0.75 || amount === 0.5) {
-      setAmount(amount - 0.25);
+    let newAmount;
+    if(Number(amount) > 1){
+       newAmount = Number(amount) - 1
+    }else if(Number(amount) <= 0.25){
+       newAmount = Number(amount);
+    }else{
+       newAmount = Number(amount) - 0.25
     }
+    setAmount(String(newAmount));
   };
 
   const increaseAmount = () => {
-    if (amount < 1) {
-      setAmount(amount + 0.25);
-    } else {
-      setAmount(amount + 1);
-    }
+    let newAmount = Number(amount) < 1 ? Number(amount) + 0.25 : Number(amount) + 1;
+    setAmount(String(newAmount));
   };
+
+  const settingCustomAmount = (e) => {
+    setAmount(String(e.target.value))
+  }
+
+  useEffect(()=>{
+    onAmountChange(product._id, Number(amount));
+  },[amount])
 
   const toggleFavorite = () => {
     if (favorite) {
@@ -201,7 +211,7 @@ export default function Product({
                   type="number"
                   className="px-1 w-10 h-5 border border-darkGray rounded-[5px]"
                   value={amount}
-                  onChange={(e) => setAmount(Number(e.target.value))}
+                  onChange={(e) => settingCustomAmount(e)}
                 />
                 <p className="text-sm sm:text-base">kg</p>
                 <div className="w-4 h-4" onClick={() => increaseAmount()}>
