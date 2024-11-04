@@ -48,6 +48,7 @@ export default function Product({
   }
 
   useEffect(()=>{
+    if(inCart)
     onAmountChange(product._id, Number(amount));
   },[amount])
 
