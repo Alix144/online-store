@@ -4,11 +4,17 @@ import LoadingIcon from "@/components/LoadingIcon";
 import OrderSuccess from "@/components/OrderSuccess";
 import Product from "@/components/Product";
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+import { setToTrue } from "@/redux/features/isCartEmpty";
+import { useDispatch } from "react-redux";
 
 export default function CartPage() {
+  const dispatch = useDispatch()
+  const route = useRouter();
   const [products, setProducts] = useState(null);
   const [userId, setUserId] = useState(null);
   const [totalPrice, setTotalPrice] = useState(0);
+  const [loading, setLoading] = useState(false);
 
   const handleAmountChange = (productId, newAmount) => {
     setProducts((prevProducts) =>
@@ -43,6 +49,34 @@ export default function CartPage() {
     setProducts(data.cart);
   };
 
+  const makeOrder = async () => {
+    const response = await fetch("/api/orders/", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        userId,
+        products,
+        price: totalPrice,
+      }),
+    });
+  };
+
+  const emptyCart = async () => {
+    const response = await fetch("/api/users/cart/", {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ userId }),
+    });
+    dispatch(setToTrue())
+  };
+
+  const placeOrder = () => {
+    setLoading(true);
+    makeOrder().then(() => {
+      emptyCart(), route.push("/");
+    });
+  };
+
   //accessing user local storage
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -58,9 +92,9 @@ export default function CartPage() {
     }
   }, [userId]);
 
-  useEffect(()=>{
-    calculateTotalPrice()
-  }, [products])
+  useEffect(() => {
+    calculateTotalPrice();
+  }, [products]);
 
   return (
     <main className="flex flex-col gap-5 sm:gap-10">
@@ -177,17 +211,22 @@ export default function CartPage() {
                         <LoadingIcon />
                       ) : (
                         products?.map((product) => (
-                          <div className="w-full flex justify-between" key={product._id}>
+                          <div
+                            className="w-full flex justify-between"
+                            key={product._id}
+                          >
                             <div className="flex gap-3 sm:gap-5">
                               <p className="text-sm sm:text-base text-white">
-                                {product?.amount ? product?.amount : "1"} {product.measurement}
+                                {product?.amount ? product?.amount : "1"}{" "}
+                                {product.measurement}
                               </p>
                               <p className="text-sm sm:text-base text-white">
                                 {product.name}
                               </p>
                             </div>
                             <p className="text-sm sm:text-base text-white">
-                              {getProductPrice(product.price, product.amount)} KWD
+                              {getProductPrice(product.price, product.amount)}{" "}
+                              KWD
                             </p>
                           </div>
                         ))
@@ -205,8 +244,11 @@ export default function CartPage() {
                       {totalPrice} KWD
                     </p>
                   </div>
-                  <button className="w-full font-bold btn-style bg-secondary">
-                    Place Order
+                  <button
+                    className="w-full font-bold btn-style bg-secondary"
+                    onClick={() => placeOrder()}
+                  >
+                    {loading ? <LoadingIcon /> : "Place Order"}
                   </button>
                 </div>
               </div>
