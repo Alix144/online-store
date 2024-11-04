@@ -5,9 +5,10 @@ import OrderSuccess from "@/components/OrderSuccess";
 import Product from "@/components/Product";
 import { useEffect, useState } from "react";
 
-export default function ProductsPage() {
+export default function CartPage() {
   const [products, setProducts] = useState(null);
   const [userId, setUserId] = useState(null);
+  const [totalPrice, setTotalPrice] = useState(0);
 
   // calling APIs
   const getUser = async () => {
@@ -173,7 +174,7 @@ export default function ProductsPage() {
                       Total
                     </p>
                     <p className="text-sm sm:text-base font-bold text-white">
-                      0.400 KWD
+                      {totalPrice} KWD
                     </p>
                   </div>
                   <button className="w-full font-bold btn-style bg-secondary">

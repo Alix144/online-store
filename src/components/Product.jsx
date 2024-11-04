@@ -16,13 +16,14 @@ export default function Product({
   const dispatch = useDispatch();
   const [loadingFavorite, setLoadingFavorite] = useState(false);
   const [loadingCart, setLoadingCart] = useState(false);
-  const [user, setUser] = useState(null);
   const [amount, setAmount] = useState(1);
+  const [user, setUser] = useState(null);
   const [favorite, setFavorite] = useState(false);
   const [isInCart, setIsInCart] = useState(false);
   const [isDeleteWindowOpen, setIsDeleteWindowOpen] = useState(false);
   const userId = localStorage.getItem("userId");
-  
+
+  const calculatePrice = () => {};
 
   const reduceAmount = () => {
     if (amount > 1) {
@@ -90,8 +91,8 @@ export default function Product({
   };
 
   const addToCart = async () => {
-    setLoadingCart(false);
-    dispatch(setToFalse())
+    setLoadingCart(true);
+    dispatch(setToFalse());
     try {
       const response = await fetch("/api/users/cart/add/", {
         method: "PATCH",
@@ -136,8 +137,8 @@ export default function Product({
   const handleRemoveProductFromCart = () => {
     removeFromCart();
     const updatedProducts = products.filter((pro) => pro._id !== product._id);
-    if(updatedProducts.length === 0){
-      dispatch(setToTrue())
+    if (updatedProducts.length === 0) {
+      dispatch(setToTrue());
     }
     setProducts(updatedProducts);
     setIsDeleteWindowOpen(false);
@@ -229,12 +230,13 @@ export default function Product({
                   onClick={() => toggleFavorite()}
                 />
               )}
-              {isInCart ? (
+              {loadingCart ?
+              <LoadingIcon />
+              :
+              isInCart ? (
                 <Link href={"/cart"} className="text-sm sm:text-base">
                   In Cart
                 </Link>
-              ) : loadingCart ? (
-                <LoadingIcon />
               ) : (
                 <Image
                   src="/images/cart.png"
