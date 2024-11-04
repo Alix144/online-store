@@ -285,10 +285,12 @@ export default function ListDiv({ type }) {
           )}
 
           {/* content */}
-          <div className="w-full max-h-80 overflow-y-scroll scrollbar-hide overflow-x-auto">
+          <div className="w-full h-full max-h-80 overflow-y-scroll scrollbar-hide overflow-x-auto">
             {type === "customerOrderList" ? (
               orders === null ? (
-                <LoadingIcon />
+                <div className="h-full flex justify-center items-center">
+                  <LoadingIcon />
+                </div>
               ) : orders.length === 0 ? (
                 <p>no orders found</p>
               ) : (
