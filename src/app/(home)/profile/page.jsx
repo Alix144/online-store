@@ -78,7 +78,7 @@ export default function Profile() {
             <p className="text-sm sm:text-base font-bold">{formattedDate}</p>
           </div>
         </div>
-        <UserBoxes user={user} />
+        <UserBoxes userId={userId} user={user} />
       </section>
     </main>
   );

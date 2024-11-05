@@ -24,8 +24,6 @@ export default function Product({
   const [isDeleteWindowOpen, setIsDeleteWindowOpen] = useState(false);
   const userId = localStorage.getItem("userId");
 
-  const calculatePrice = () => {};
-
   const reduceAmount = () => {
     let newAmount;
     if(Number(amount) > 1){

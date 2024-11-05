@@ -3,11 +3,35 @@ import Image from "next/image";
 import { useEffect, useState } from "react";
 import LoadingIcon from "../LoadingIcon";
 
-export default function UserBoxes({ user }) {
+export default function UserBoxes({ userId, user }) {
   const [isAddAddressWindowOpen, setIsAddAddressWindowOpen] = useState(false);
+  const [isEditAddressWindowOpen, setIsEditAddressWindowOpen] = useState(false);
   const [isAddNumberWindowOpen, setIsAddNumberWindowOpen] = useState(false);
+  const [isEditNumberWindowOpen, setIsEditNumberWindowOpen] = useState(false);
   const [address, setAddress] = useState(null);
   const [number, setNumber] = useState(null);
+  const [loading, setLoading] = useState(false);
+
+  //form values
+  const [phoneNumber, setPhoneNumber] = useState("");
+
+  const addNumber = async () => {
+    setLoading(true);
+    try {
+      const response = await fetch("/api/users/phone/", {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          userId,
+          productId: product._id,
+        }),
+      });
+      setIsInCart(true);
+    } catch (error) {
+      console.log(error);
+    }
+    setLoadingCart(false);
+  };
 
   useEffect(() => {
     if (user) {
@@ -53,7 +77,17 @@ export default function UserBoxes({ user }) {
               Add Number
             </button>
           ) : (
-            <p className="text-sm sm:text-base font-bold">{user.phoneNumber}</p>
+            <div className="w-full h-full flex flex-col justify-between gap-2">
+              <p className="text-sm sm:text-base font-bold">
+                {user.phoneNumber}
+              </p>
+              <button
+                className="py-2 px-5 text-sm sm:text-base text-white rounded-div border-none bg-[#00000066] hover:bg-darkGray duration-300 cursor-pointer"
+                onClick={() => setIsEditNumberWindowOpen(true)}
+              >
+                Edit Number
+              </button>
+            </div>
           )}
         </div>
         <div className="py-3 sm:py-5 px-5 sm:px-10 w-[50%] bg-secondary rounded-div flex flex-col gap-3 sm:gap-5 items-center">
@@ -76,12 +110,20 @@ export default function UserBoxes({ user }) {
               Add Address
             </button>
           ) : (
-            <p className="text-sm sm:text-base font-bold">{address}</p>
+            <div className="w-full h-full flex flex-col justify-between gap-2">
+              <p className="text-sm sm:text-base font-bold">{address}</p>
+              <button
+                className="py-2 px-5 text-sm sm:text-base text-white rounded-div border-none bg-[#00000066] hover:bg-darkGray duration-300 cursor-pointer"
+                onClick={() => setIsEditAddressWindowOpen(true)}
+              >
+                Edit Address
+              </button>
+            </div>
           )}
         </div>
       </div>
 
-      {/* add address window */}
+      {/* add number window */}
       {isAddNumberWindowOpen && (
         <div className="w-full h-full fixed top-0 left-0 bg-[#00000066] z-10 flex justify-center items-center">
           <div className="p-5 bg-silver rounded-div flex flex-col gap-5 justify-between text-darkGray text-center">
@@ -95,9 +137,11 @@ export default function UserBoxes({ user }) {
                   className="mb-3 px-3 w-20 h-8 bg-white rounded-div border-darkGray border-[1px]"
                 />
                 <input
-                  type="text"
+                  type="number"
                   placeholder="Phone Number"
                   className="mb-3 px-3 w-60 h-8 bg-white rounded-div border-darkGray border-[1px]"
+                  value={phoneNumber}
+                  onChange={(e) => setPhoneNumber(e.target.value)}
                 />
               </div>
             </div>
@@ -109,6 +153,41 @@ export default function UserBoxes({ user }) {
                 Cancel
               </button>
               <button className="btn-style bg-primary text-white">Add</button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* edit number window */}
+      {isEditNumberWindowOpen && (
+        <div className="w-full h-full fixed top-0 left-0 bg-[#00000066] z-10 flex justify-center items-center">
+          <div className="p-5 bg-silver rounded-div flex flex-col gap-5 justify-between text-darkGray text-center">
+            <h2 className="text-lg font-semibold">Edit Number</h2>
+            <div className="flex flex-col">
+              <div className="flex gap-2">
+                <input
+                  type="text"
+                  disabled
+                  placeholder="+965"
+                  className="mb-3 px-3 w-20 h-8 bg-white rounded-div border-darkGray border-[1px]"
+                />
+                <input
+                  type="number"
+                  placeholder="Phone Number"
+                  className="mb-3 px-3 w-60 h-8 bg-white rounded-div border-darkGray border-[1px]"
+                  value={phoneNumber}
+                  onChange={(e) => setPhoneNumber(e.target.value)}
+                />
+              </div>
+            </div>
+            <div className="flex justify-between">
+              <button
+                className="btn-style bg-[#00000066] text-white"
+                onClick={() => setIsEditNumberWindowOpen(false)}
+              >
+                Cancel
+              </button>
+              <button className="btn-style bg-primary text-white">Edit</button>
             </div>
           </div>
         </div>
@@ -176,6 +255,72 @@ export default function UserBoxes({ user }) {
                 Cancel
               </button>
               <button className="btn-style bg-primary text-white">Add</button>
+            </div>
+          </div>
+        </div>
+      )}
+      {/* edit address window */}
+      {isEditAddressWindowOpen && (
+        <div className="w-full h-full fixed top-0 left-0 bg-[#00000066] z-10 flex justify-center items-center">
+          <div className="p-5 bg-silver rounded-div flex flex-col gap-5 justify-between text-darkGray text-center">
+            <h2 className="text-lg font-semibold">Edit Address</h2>
+            <div className="flex flex-col">
+              <div className="flex gap-2">
+                <input
+                  type="text"
+                  placeholder="Area"
+                  className="mb-3 px-3 w-40 h-8 bg-white rounded-div border-darkGray border-[1px]"
+                />
+                <input
+                  type="text"
+                  placeholder="Block"
+                  className="mb-3 px-3 w-40 h-8 bg-white rounded-div border-darkGray border-[1px]"
+                />
+              </div>
+              <input
+                type="text"
+                placeholder="Street"
+                className="mb-3 px-3 w-full h-8 bg-white rounded-div border-darkGray border-[1px]"
+              />
+              <div className="flex gap-2">
+                <input
+                  type="text"
+                  placeholder="Building No"
+                  className="mb-3 px-3 w-40 h-8 bg-white rounded-div border-darkGray border-[1px]"
+                />
+                <input
+                  type="text"
+                  placeholder="Avenue (optional)"
+                  className="mb-3 px-3 w-40 h-8 bg-white rounded-div border-darkGray border-[1px]"
+                />
+              </div>
+              <div className="flex gap-2">
+                <input
+                  type="text"
+                  placeholder="Apt. number"
+                  className="mb-3 px-3 w-40 h-8 bg-white rounded-div border-darkGray border-[1px]"
+                />
+                <input
+                  type="text"
+                  placeholder="Floor"
+                  className="mb-3 px-3 w-40 h-8 bg-white rounded-div border-darkGray border-[1px]"
+                />
+              </div>
+              <textarea
+                name=""
+                id=""
+                placeholder="Additional directions (optional)"
+                className="mb-3 px-3 w-full bg-white rounded-div border-darkGray border-[1px]"
+              ></textarea>
+            </div>
+            <div className="flex justify-between">
+              <button
+                className="btn-style bg-[#00000066] text-white"
+                onClick={() => setIsEditAddressWindowOpen(false)}
+              >
+                Cancel
+              </button>
+              <button className="btn-style bg-primary text-white">Edit</button>
             </div>
           </div>
         </div>
