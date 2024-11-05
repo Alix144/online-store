@@ -4,7 +4,9 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { setToTrue, setToFalse } from "@/redux/features/isCartEmpty";
+import { setToNull } from "@/redux/features/currentPage";
 import LoadingIcon from "./LoadingIcon";
+import { useRouter } from "next/navigation";
 
 export default function Product({
   product,
@@ -12,8 +14,9 @@ export default function Product({
   setProducts,
   isFavorite,
   inCart,
-  onAmountChange
+  onAmountChange,
 }) {
+  const router = useRouter()
   const dispatch = useDispatch();
   const [loadingFavorite, setLoadingFavorite] = useState(false);
   const [loadingCart, setLoadingCart] = useState(false);
@@ -26,37 +29,42 @@ export default function Product({
 
   const reduceAmount = () => {
     let newAmount;
-    if(Number(amount) > 1){
-       newAmount = Number(amount) - 1
-    }else if(Number(amount) <= 0.25){
-       newAmount = Number(amount);
-    }else{
-       newAmount = Number(amount) - 0.25
+    if (Number(amount) > 1) {
+      newAmount = Number(amount) - 1;
+    } else if (Number(amount) <= 0.25) {
+      newAmount = Number(amount);
+    } else {
+      newAmount = Number(amount) - 0.25;
     }
     setAmount(String(newAmount));
   };
 
   const increaseAmount = () => {
-    let newAmount = Number(amount) < 1 ? Number(amount) + 0.25 : Number(amount) + 1;
+    let newAmount =
+      Number(amount) < 1 ? Number(amount) + 0.25 : Number(amount) + 1;
     setAmount(String(newAmount));
   };
 
   const settingCustomAmount = (e) => {
-    setAmount(String(e.target.value))
-  }
+    setAmount(String(e.target.value));
+  };
 
-  useEffect(()=>{
-    if(inCart)
-    onAmountChange(product._id, Number(amount));
-  },[amount])
+  useEffect(() => {
+    if (inCart) onAmountChange(product._id, Number(amount));
+  }, [amount]);
 
   const toggleFavorite = () => {
-    if (favorite) {
-      setFavorite(false);
-      removeFromFavorites();
-    } else {
-      setFavorite(true);
-      addToFavorites();
+    if (userId) {
+      if (favorite) {
+        setFavorite(false);
+        removeFromFavorites();
+      } else {
+        setFavorite(true);
+        addToFavorites();
+      }
+    }else{
+      router.push("/signin")
+      dispatch(setToNull())
     }
   };
 
@@ -99,7 +107,7 @@ export default function Product({
     setLoadingFavorite(false);
   };
 
-  const addToCart = async () => {
+  const addToCartRequest = async () => {
     setLoadingCart(true);
     dispatch(setToFalse());
     try {
@@ -116,6 +124,15 @@ export default function Product({
       console.log(error);
     }
     setLoadingCart(false);
+  };
+
+  const addToCart = async () => {
+    if (userId) {
+      await addToCartRequest()
+    }else{
+      router.push("/signin")
+      dispatch(setToNull())
+    }
   };
 
   const removeFromCart = async () => {
@@ -239,10 +256,9 @@ export default function Product({
                   onClick={() => toggleFavorite()}
                 />
               )}
-              {loadingCart ?
-              <LoadingIcon />
-              :
-              isInCart ? (
+              {loadingCart ? (
+                <LoadingIcon />
+              ) : isInCart ? (
                 <Link href={"/cart"} className="text-sm sm:text-base">
                   In Cart
                 </Link>
