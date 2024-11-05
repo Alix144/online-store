@@ -10,29 +10,93 @@ export default function UserBoxes({ userId, user }) {
   const [isEditNumberWindowOpen, setIsEditNumberWindowOpen] = useState(false);
   const [address, setAddress] = useState(null);
   const [number, setNumber] = useState(null);
+  const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
   //form values
+  //add number form
   const [phoneNumber, setPhoneNumber] = useState("");
+  //edit number form
+  const [editNumberValue, setEditNumberValue] = useState("");
 
+
+  // API calls
   const addNumber = async () => {
     setLoading(true);
+    if(phoneNumber.toString().length < 8){
+      setLoading(false);
+      setError("Phone number should be 8 characters long!")
+      return
+    }
     try {
       const response = await fetch("/api/users/phone/", {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           userId,
-          productId: product._id,
+          phoneNumber,
         }),
       });
-      setIsInCart(true);
+      if (response.ok) {
+        setNumber(phoneNumber);
+      } else {
+        setError("Failed to update phone number!")
+        console.log("Failed to update phone number:", response);
+      }
     } catch (error) {
+      setError("Failed to update phone number!")
       console.log(error);
     }
-    setLoadingCart(false);
+    setLoading(false);
+    closeAddNumberWindowOpen()
   };
 
+  const editNumber = async () => {
+    setLoading(true);
+    if(editNumberValue.toString().length < 8){
+      setLoading(false);
+      setError("Phone number should be 8 characters long!")
+      return
+    }
+    try {
+      const response = await fetch("/api/users/phone/", {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          userId,
+          phoneNumber: editNumberValue,
+        }),
+      });
+      if (response.ok) {
+        setNumber(editNumberValue);
+      } else {
+        setError("Failed to update phone number!")
+        console.log("Failed to update phone number:", response);
+      }
+    } catch (error) {
+      setError("Failed to update phone number!")
+      console.log(error);
+    }
+    setLoading(false);
+    closeEditNumberWindowOpen()
+  };
+
+  const closeAddNumberWindowOpen = () => {
+    setIsAddNumberWindowOpen(false)
+    setPhoneNumber("")
+    setError("")
+  }
+
+  const closeEditNumberWindowOpen = () => {
+    setIsEditNumberWindowOpen(false)
+    setEditNumberValue(number)
+    setError("")
+  }
+
+  useEffect(()=>{
+    setEditNumberValue(number)
+  },[number])
+  
   useEffect(() => {
     if (user) {
       if (user?.address) {
@@ -48,8 +112,10 @@ export default function UserBoxes({ userId, user }) {
 
       if (user?.phoneNumber) {
         setNumber(user.phoneNumber);
+        setEditNumberValue(user.phoneNumber)
       } else {
         setNumber("");
+        setEditNumberValue(user.phoneNumber)
       }
     }
   }, [user]);
@@ -79,7 +145,7 @@ export default function UserBoxes({ userId, user }) {
           ) : (
             <div className="w-full h-full flex flex-col justify-between gap-2">
               <p className="text-sm sm:text-base font-bold">
-                {user.phoneNumber}
+                {number}
               </p>
               <button
                 className="py-2 px-5 text-sm sm:text-base text-white rounded-div border-none bg-[#00000066] hover:bg-darkGray duration-300 cursor-pointer"
@@ -145,14 +211,15 @@ export default function UserBoxes({ userId, user }) {
                 />
               </div>
             </div>
+            {error && <p className="text-sm sm:text-base text-danger">{error}</p>}
             <div className="flex justify-between">
               <button
                 className="btn-style bg-[#00000066] text-white"
-                onClick={() => setIsAddNumberWindowOpen(false)}
+                onClick={() => closeAddNumberWindowOpen()}
               >
                 Cancel
               </button>
-              <button className="btn-style bg-primary text-white">Add</button>
+              <button className="btn-style bg-primary text-white" onClick={()=>addNumber()}>{loading? <LoadingIcon/>: "Add"}</button>
             </div>
           </div>
         </div>
@@ -175,19 +242,20 @@ export default function UserBoxes({ userId, user }) {
                   type="number"
                   placeholder="Phone Number"
                   className="mb-3 px-3 w-60 h-8 bg-white rounded-div border-darkGray border-[1px]"
-                  value={phoneNumber}
-                  onChange={(e) => setPhoneNumber(e.target.value)}
+                  value={editNumberValue}
+                  onChange={(e) => setEditNumberValue(e.target.value)}
                 />
               </div>
             </div>
+            {error && <p className="text-sm sm:text-base text-danger">{error}</p>}
             <div className="flex justify-between">
               <button
                 className="btn-style bg-[#00000066] text-white"
-                onClick={() => setIsEditNumberWindowOpen(false)}
+                onClick={() => closeEditNumberWindowOpen()}
               >
                 Cancel
               </button>
-              <button className="btn-style bg-primary text-white">Edit</button>
+              <button className="btn-style bg-primary text-white" onClick={()=>editNumber()}>{loading? <LoadingIcon/>: "Edit"}</button>
             </div>
           </div>
         </div>
