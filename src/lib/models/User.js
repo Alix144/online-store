@@ -24,7 +24,8 @@ const UserSchema = new Schema(
       type: String,
     },
     address: {
-      type: String,
+      type: Object,
+      required: false,
     },
     cart:[
       {
