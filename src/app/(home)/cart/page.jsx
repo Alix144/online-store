@@ -59,6 +59,7 @@ export default function CartPage() {
       }),
     });
     const data = await response.json();
+    console.log(data)
     return(data.order._id)
   };
 

@@ -3,8 +3,7 @@ import mongoose, { Schema, model, models } from "mongoose";
 const OrderSchema = new Schema(
   {
     userId: {
-      type: mongoose.Types.ObjectId,
-      ref: "User",
+      type: String,
       required: true,
     },
     products:{
@@ -13,7 +12,7 @@ const OrderSchema = new Schema(
     },
     status: {
       type: String,
-      default: "Active",
+      default: "active",
     },
     price: {
       type: Number,
