@@ -18,10 +18,10 @@ export const GET = async () => {
 export const POST = async (request) => {
   try {
     const body = await request.json();
-    const { userId, products, price } = body;
+    const { userId, products, price, customerName } = body;
 
     await connectToDb();
-    const newOrder = new Order({userId, products, price});
+    const newOrder = new Order({userId, products, price, customerName});
     await newOrder.save();
     return new NextResponse(
       JSON.stringify({ message: "Order created", order: newOrder }),

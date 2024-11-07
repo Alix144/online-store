@@ -89,17 +89,27 @@ export default function Profile() {
         <div className="py-3 sm:py-5 px-5 sm:px-10 w-full rounded-div bg-white flex justify-between items-center text-darkGray">
           <div className="">
             <p className="text-sm sm:text-base">Total Orders:</p>
-            <p className="text-sm sm:text-base font-bold">{userOrders.length > 0 ? userOrders.length : <LoadingIcon />}</p>
+            {userOrders.length > 0 ? 
+            <p className="text-sm sm:text-base font-bold">{userOrders.length}</p> 
+            : 
+            <LoadingIcon />}
+            
           </div>
           <div className="w-[1px] h-14 bg-lightGray"></div>
           <div className="">
             <p className="text-sm sm:text-base">Active Orders</p>
-            <p className="text-sm sm:text-base font-bold">{activeOrders.length > 0 ? activeOrders.length : <LoadingIcon />}</p>
+            {activeOrders.length > 0 ? 
+            <p className="text-sm sm:text-base font-bold">{activeOrders.length}</p> 
+            : 
+            <LoadingIcon />}
           </div>
           <div className="w-[1px] h-14 bg-lightGray"></div>
           <div className="">
             <p className="text-sm sm:text-base">Member Since</p>
-            <p className="text-sm sm:text-base font-bold">{formattedDate ? formattedDate : <LoadingIcon/>}</p>
+            {formattedDate ? 
+            <p className="text-sm sm:text-base font-bold">{formattedDate}</p> 
+            : 
+            <LoadingIcon />}
           </div>
         </div>
         <UserBoxes userId={userId} user={user} />

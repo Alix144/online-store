@@ -6,6 +6,10 @@ const OrderSchema = new Schema(
       type: String,
       required: true,
     },
+    customerName:{
+      type: String,
+      required: true,
+    },
     products:{
         type: Array,
         required: true,

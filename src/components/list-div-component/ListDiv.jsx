@@ -142,7 +142,6 @@ export default function ListDiv({ type }) {
     const data = await response.json();
     const userOrders = data.filter((order) => order.userId === userId);
     const adminComingOrders = data;
-    console.log(data);
     setOrders(userOrders);
     setAdminOrders(adminComingOrders)
   };

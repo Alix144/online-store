@@ -11,9 +11,11 @@ export default function CartPage() {
   const dispatch = useDispatch();
   const route = useRouter();
   const [products, setProducts] = useState(null);
+  const [user, setUser] = useState(null);
   const [userId, setUserId] = useState(null);
   const [totalPrice, setTotalPrice] = useState(0);
   const [loading, setLoading] = useState(false);
+  const [placeOrderLoading, setPlaceOrderLoading] = useState(true);
 
   const handleAmountChange = (productId, newAmount) => {
     setProducts((prevProducts) =>
@@ -46,6 +48,7 @@ export default function CartPage() {
     });
     const data = await response.json();
     setProducts(data.cart);
+    setUser(data);
   };
 
   const makeOrder = async () => {
@@ -56,14 +59,15 @@ export default function CartPage() {
         userId,
         products,
         price: totalPrice,
+        customerName: user.name,
       }),
     });
     const data = await response.json();
-    console.log(data)
-    return(data.order._id)
+    console.log(data);
+    return data.order._id;
   };
 
-  const emptyCart = async() => {
+  const emptyCart = async () => {
     const response = await fetch("/api/users/cart/", {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
@@ -72,16 +76,17 @@ export default function CartPage() {
     dispatch(setToTrue());
   };
 
-  const placeOrder = async() => {
-    setLoading(true);
-    const orderId = await makeOrder()
+  const placeOrder = async () => {
+    if (!placeOrderLoading) {
+      setLoading(true);
+      const orderId = await makeOrder();
 
-    if(orderId){
-      await emptyCart()
-      route.push(`/order-successful/${orderId}`)
+      if (orderId) {
+        await emptyCart();
+        route.push(`/order-successful/${orderId}`);
+      }
     }
   };
-
 
   //accessing user local storage
   useEffect(() => {
@@ -95,6 +100,7 @@ export default function CartPage() {
   useEffect(() => {
     if (userId) {
       getUser();
+      setPlaceOrderLoading(false)
     }
   }, [userId]);
 
@@ -252,7 +258,7 @@ export default function CartPage() {
                   className="w-full font-bold btn-style bg-secondary"
                   onClick={() => placeOrder()}
                 >
-                  {loading ? <LoadingIcon /> : "Place Order"}
+                  {loading || placeOrderLoading ? <LoadingIcon /> : "Place Order"}
                 </button>
               </div>
             </div>
