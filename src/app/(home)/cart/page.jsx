@@ -135,7 +135,8 @@ export default function CartPage() {
           }
         }
       }else{
-        const orderId = await makeOrder();
+
+        const orderId = await makeOrder(address);
 
         if (orderId) {
           await emptyCart();

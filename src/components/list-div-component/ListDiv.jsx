@@ -15,6 +15,7 @@ export default function ListDiv({ type }) {
   const [isDeleteWindowOpen, setIsDeleteWindowOpen] = useState(null);
   const [isAddProductWindowOpen, setIsAddProductWindowOpen] = useState(false);
   const [isEditProductWindowOpen, setIsEditProductWindowOpen] = useState(null);
+  const [isOrderDetailsWindowOpen, setIsOrderDetailsWindowOpen] = useState(null);
   const [productId, setProductId] = useState("");
   const [productName, setProductName] = useState("");
   const [productPrice, setProductPrice] = useState("");
@@ -31,6 +32,11 @@ export default function ListDiv({ type }) {
 
   const closeEditForm = () => {
     setIsEditProductWindowOpen(null);
+    setError("");
+  };
+
+  const closeOrderDetails = () => {
+    setIsOrderDetailsWindowOpen(null);
     setError("");
   };
 
@@ -334,7 +340,11 @@ export default function ListDiv({ type }) {
                   ?.slice()
                   .reverse()
                   .map((order) => (
-                    <AdminOrderListData key={order._id} order={order} />
+                    <AdminOrderListData
+                      key={order._id}
+                      order={order}
+                      setIsOrderDetailsWindowOpen={setIsOrderDetailsWindowOpen}
+                    />
                   ))
               )
             ) : type === "productsList" ? (
@@ -518,6 +528,76 @@ export default function ListDiv({ type }) {
                 onClick={() => editProduct()}
               >
                 {loading ? <LoadingIcon /> : "Edit"}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {isOrderDetailsWindowOpen !== null && (
+        <div className="w-full h-full absolute top-0 left-0 bg-[#00000066] z-10 flex justify-center items-center">
+          <div className="p-5 bg-white rounded-div flex flex-col gap-5 justify-between text-darkGray text-center">
+            <h2 className="text-lg font-semibold">Order Details</h2>
+            <div className="flex flex-col gap-3 text-left">
+              <div>
+                <p className="text-sm sm:text-base font-bold">Date</p> 
+                <p className="text-sm sm:text-base">{isOrderDetailsWindowOpen.createdAt.slice(0, 10)}</p>
+              </div>
+              <div>
+                <p className="text-sm sm:text-base font-bold">Customer Name</p> 
+                <p className="text-sm sm:text-base">{isOrderDetailsWindowOpen.customerName}</p>
+              </div>
+              <div>
+                <p className="text-sm sm:text-base font-bold">Phone Number</p> 
+                <p className="text-sm sm:text-base">+965 {isOrderDetailsWindowOpen.phoneNumber}</p>
+              </div>
+              <div>
+                <p className="text-sm sm:text-base font-bold">Address</p> 
+                <p className="text-sm sm:text-base">{isOrderDetailsWindowOpen.address}</p>
+              </div>
+              <div>
+                <p className="text-sm sm:text-base font-bold">Order Summary</p> 
+                {isOrderDetailsWindowOpen.products.map((product)=>(
+                  <p className="text-sm sm:text-base" key={product.id}>{product.amount} kg  {product.name}</p>
+                ))}
+              </div>
+              <div>
+                <p className="text-sm sm:text-base font-bold">Total Price</p>
+                <p className="text-sm sm:text-base">{isOrderDetailsWindowOpen.price} KWD</p>
+              </div>
+              <select
+                id="status"
+                name="status"
+                placeholder="status"
+                className="mb-3 px-3 w-64 h-8 bg-white rounded-div border-darkGray border-[1px]"
+                onChange={(e) => setProductMeasurement(e.target.value)}
+              >
+                <option value="active" selected={isOrderDetailsWindowOpen === "active"}>
+                  Active
+                </option>
+                <option value="delivered" selected={isOrderDetailsWindowOpen === "delivered"}>
+                  Delivered
+                </option>
+                <option value="canceled" selected={isOrderDetailsWindowOpen === "canceled"}>
+                  Canceled
+                </option>
+              </select>
+            </div>
+            {error && (
+              <p className="text-sm sm:text-base text-danger">{error}</p>
+            )}
+            <div className="flex justify-between">
+              <button
+                className="btn-style bg-[#00000066] text-white"
+                onClick={() => closeOrderDetails()}
+              >
+                Cancel
+              </button>
+              <button
+                className="btn-style bg-primary text-white"
+                
+              >
+                Save
               </button>
             </div>
           </div>
