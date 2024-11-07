@@ -8,9 +8,10 @@ import {
 import { setToFalse } from "@/redux/features/isSidebarOpen";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
-export default function AdminSidebar() {
+export default function AdminSidebar({ userId }) {
   const router = useRouter();
   const dispatch = useDispatch();
 
@@ -45,6 +46,12 @@ export default function AdminSidebar() {
     dispatch(setToUsers());
     dispatch(setToFalse())
   };
+
+  useEffect(() => {
+    if (userId) {
+      localStorage.setItem("userId", userId);
+    }
+  }, [userId]);
 
   return (
     <div

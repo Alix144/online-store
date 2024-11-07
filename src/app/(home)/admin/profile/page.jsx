@@ -1,3 +1,4 @@
+import UserInfo from "@/components/profile-components/UserInfo";
 import Image from "next/image";
 
 export default function ProfilePage() {
@@ -17,10 +18,7 @@ export default function ProfilePage() {
               className="mb-5"
             />
           </div>
-          <h1 className="text-base sm:text-xl font-semibold text-white">
-            Ali Youssef
-          </h1>
-          <p className="text-sm sm:text-base text-white ">ali@gmail.com</p>
+          <UserInfo/>
         </div>
       </section>
     </main>

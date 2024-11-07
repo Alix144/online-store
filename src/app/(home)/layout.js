@@ -31,7 +31,7 @@ export default async function RootLayout({ children }) {
           <NextAuthProvider>
             {isAdmin ? (
               <div className="w-full flex relative">
-                <AdminSidebar />
+                <AdminSidebar userId={session.user.id}/>
                 <div className="w-full">
                   <AdminHeader />
                   {children}
