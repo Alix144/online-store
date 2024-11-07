@@ -143,6 +143,8 @@ export default function ListDiv({ type }) {
     const userOrders = data.filter((order) => order.userId === userId);
     const adminComingOrders = data;
     setOrders(userOrders);
+    console.log(data)
+    console.log(userId)
     setAdminOrders(adminComingOrders)
   };
 
@@ -151,12 +153,14 @@ export default function ListDiv({ type }) {
       if (type === "productsList") {
         getProducts();
       } else if (type === "customerOrderList" || type === "adminOrderList") {
-        getOrders();
+        if(userId){
+          getOrders();
+        }
       } else {
         getUsers();
       }
 
-  }, []);
+  }, [userId]);
 
   useEffect(() => {
     if (isEditProductWindowOpen === null) {
