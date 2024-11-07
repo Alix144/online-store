@@ -51,7 +51,7 @@ export default function FavoritesPage() {
                 height={100}
                 className="mb-5"
               />
-              <p>No favorites products!</p>
+              <p>No favorite products!</p>
             </div>
           ) : (
             favorites?.map((product) => (

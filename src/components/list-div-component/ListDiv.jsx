@@ -143,23 +143,21 @@ export default function ListDiv({ type }) {
     const userOrders = data.filter((order) => order.userId === userId);
     const adminComingOrders = data;
     setOrders(userOrders);
-    console.log(data)
-    console.log(userId)
-    setAdminOrders(adminComingOrders)
+    console.log(data);
+    console.log(userId);
+    setAdminOrders(adminComingOrders);
   };
 
   useEffect(() => {
-
-      if (type === "productsList") {
-        getProducts();
-      } else if (type === "customerOrderList" || type === "adminOrderList") {
-        if(userId){
-          getOrders();
-        }
-      } else {
-        getUsers();
+    if (type === "productsList") {
+      getProducts();
+    } else if (type === "customerOrderList" || type === "adminOrderList") {
+      if (userId) {
+        getOrders();
       }
-
+    } else {
+      getUsers();
+    }
   }, [userId]);
 
   useEffect(() => {
@@ -297,7 +295,16 @@ export default function ListDiv({ type }) {
                   <LoadingIcon />
                 </div>
               ) : orders.length === 0 ? (
-                <p>no orders found</p>
+                <div className="mt-10 w-full flex flex-col text-center justify-start items-center">
+                  <Image
+                    src="/images/no-task.png"
+                    alt="Empty List"
+                    width={70}
+                    height={70}
+                    className="mb-5"
+                  />
+                  <p>No Orders Found!</p>
+                </div>
               ) : (
                 orders
                   ?.slice()
@@ -312,16 +319,24 @@ export default function ListDiv({ type }) {
                   <LoadingIcon />
                 </div>
               ) : adminOrders.length === 0 ? (
-                <p>No orders found</p>
+                <div className="mt-10 w-full flex flex-col text-center justify-start items-center">
+                  <Image
+                    src="/images/no-task.png"
+                    alt="Empty List"
+                    width={70}
+                    height={70}
+                    className="mb-5"
+                  />
+                  <p>No Orders Found!</p>
+                </div>
               ) : (
                 adminOrders
                   ?.slice()
                   .reverse()
                   .map((order) => (
-                    <AdminOrderListData key={order._id} order={order}/>
+                    <AdminOrderListData key={order._id} order={order} />
                   ))
               )
-              
             ) : type === "productsList" ? (
               products === null ? (
                 <div className="h-full flex justify-center items-center">
@@ -339,15 +354,17 @@ export default function ListDiv({ type }) {
                   <p>No Products Found!</p>
                 </div>
               ) : (
-                products?.slice()
-                .reverse().map((product) => (
-                  <ProductListData
-                    key={product._id}
-                    product={product}
-                    setIsEditProductWindowOpen={setIsEditProductWindowOpen}
-                    setIsDeleteWindowOpen={setIsDeleteWindowOpen}
-                  />
-                ))
+                products
+                  ?.slice()
+                  .reverse()
+                  .map((product) => (
+                    <ProductListData
+                      key={product._id}
+                      product={product}
+                      setIsEditProductWindowOpen={setIsEditProductWindowOpen}
+                      setIsDeleteWindowOpen={setIsDeleteWindowOpen}
+                    />
+                  ))
               )
             ) : users === null ? (
               <div className="h-full flex justify-center items-center">
@@ -365,8 +382,10 @@ export default function ListDiv({ type }) {
                 <p>No usesrs found!</p>
               </div>
             ) : (
-              users?.slice()
-              .reverse().map((user) => <UsersListData key={user._id} user={user} />)
+              users
+                ?.slice()
+                .reverse()
+                .map((user) => <UsersListData key={user._id} user={user} />)
             )}
           </div>
         </div>
