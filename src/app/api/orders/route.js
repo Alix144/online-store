@@ -38,13 +38,13 @@ export const POST = async (request) => {
 export const PATCH = async (request) => {
   try {
     const body = await request.json();
-    const { orderId, newStatus } = body;
+    const { orderId, status } = body;
 
     await connectToDb();
 
     const updatedOrder = await Order.findOneAndUpdate(
       { _id: orderId },
-      {  status: newStatus },
+      {  status },
       { new: true }
     );
 

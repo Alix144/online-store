@@ -16,7 +16,7 @@ export default function CustomerOrderListData({ order }) {
         </p>
       </div>
       <div className="flex gap-1 items-center">
-        <div className="w-3 h-3 rounded-full border border-darkGray bg-secondary"></div>
+      <div className={`w-3 h-3 rounded-full border border-darkGray ${order.status === "active" ? "bg-secondary": order.status === "delivered"? "bg-success": "bg-danger"}`}></div>
         <p className="w-10 sm:w-14 lg:w-24 text-sm sm:text-base">
           {order?.status}
         </p>

@@ -17,9 +17,13 @@ export default function ListDiv({ type }) {
   const [isEditProductWindowOpen, setIsEditProductWindowOpen] = useState(null);
   const [isOrderDetailsWindowOpen, setIsOrderDetailsWindowOpen] = useState(null);
   const [productId, setProductId] = useState("");
+
   const [productName, setProductName] = useState("");
   const [productPrice, setProductPrice] = useState("");
   const [productMeasurement, setProductMeasurement] = useState("");
+
+  const [status, setStatus] = useState("");
+
   const [orders, setOrders] = useState(null);
   const [adminOrders, setAdminOrders] = useState(null);
   const [products, setProducts] = useState(null);
@@ -140,18 +144,40 @@ export default function ListDiv({ type }) {
 
   // orders
   const getOrders = async () => {
+    try {
+      const response = await fetch("/api/orders/", {
+        method: "GET",
+        headers: { "Content-Type": "application/json" },
+      });
+      const data = await response.json();
+      const userOrders = data.filter((order) => order.userId === userId);
+      const adminComingOrders = data;
+      setOrders(userOrders);
+      setAdminOrders(adminComingOrders);
+    } catch (error) {
+      setError(error)
+    }
+  };
+
+  const updateOrderStatus = async (orderId) => {
+    setError("");
     setLoading(true);
-    const response = await fetch("/api/orders/", {
-      method: "GET",
-      headers: { "Content-Type": "application/json" },
-    });
-    const data = await response.json();
-    const userOrders = data.filter((order) => order.userId === userId);
-    const adminComingOrders = data;
-    setOrders(userOrders);
-    console.log(data);
-    console.log(userId);
-    setAdminOrders(adminComingOrders);
+    try {
+      const response = await fetch("/api/orders/", {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          orderId,
+          status
+        }),
+      });
+      closeOrderDetails()
+      getOrders()
+    } catch (error) {
+      setError(error)
+    }
+    setLoading(false);
+    
   };
 
   useEffect(() => {
@@ -570,15 +596,15 @@ export default function ListDiv({ type }) {
                 name="status"
                 placeholder="status"
                 className="mb-3 px-3 w-64 h-8 bg-white rounded-div border-darkGray border-[1px]"
-                onChange={(e) => setProductMeasurement(e.target.value)}
+                onChange={(e) => setStatus(e.target.value)}
               >
-                <option value="active" selected={isOrderDetailsWindowOpen === "active"}>
+                <option value="active" selected={isOrderDetailsWindowOpen.status === "active"}>
                   Active
                 </option>
-                <option value="delivered" selected={isOrderDetailsWindowOpen === "delivered"}>
+                <option value="delivered" selected={isOrderDetailsWindowOpen.status === "delivered"}>
                   Delivered
                 </option>
-                <option value="canceled" selected={isOrderDetailsWindowOpen === "canceled"}>
+                <option value="canceled" selected={isOrderDetailsWindowOpen.status === "canceled"}>
                   Canceled
                 </option>
               </select>
@@ -595,9 +621,9 @@ export default function ListDiv({ type }) {
               </button>
               <button
                 className="btn-style bg-primary text-white"
-                
+                onClick={()=>updateOrderStatus(isOrderDetailsWindowOpen._id)}
               >
-                Save
+                {loading ? <LoadingIcon/> : "Save"}
               </button>
             </div>
           </div>
