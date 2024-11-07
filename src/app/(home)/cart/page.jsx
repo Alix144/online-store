@@ -15,7 +15,19 @@ export default function CartPage() {
   const [userId, setUserId] = useState(null);
   const [totalPrice, setTotalPrice] = useState(0);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
   const [placeOrderLoading, setPlaceOrderLoading] = useState(true);
+  const [address, setAddress] = useState("");
+  const [addAddressValue, setAddAddressValue] = useState({
+    area: "",
+    block: "",
+    street: "",
+    buildingNo: "",
+    avenue: "",
+    aptNo: "",
+    floor: "",
+    additional: "",
+  });
 
   const handleAmountChange = (productId, newAmount) => {
     setProducts((prevProducts) =>
@@ -49,22 +61,38 @@ export default function CartPage() {
     const data = await response.json();
     setProducts(data.cart);
     setUser(data);
+    if (data.address) {
+      const formattedAddress = `${data.address.area}, Block ${
+        data.address.block
+      }, Street ${data.address.street}, Building ${data.address.buildingNo}, ${
+        data.address.avenue ? "Avenue " + data.address.avenue + ", " : ""
+      }Apt ${data.address.aptNo}, Floor ${data.address.floor}`;
+
+      setAddress(formattedAddress);
+    }
   };
 
-  const makeOrder = async () => {
-    const response = await fetch("/api/orders/", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        userId,
-        products,
-        price: totalPrice,
-        customerName: user.name,
-      }),
-    });
-    const data = await response.json();
-    console.log(data);
-    return data.order._id;
+  const makeOrder = async (formattedAddress) => {
+    try {
+      const response = await fetch("/api/orders/", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          userId,
+          products,
+          price: totalPrice,
+          customerName: user.name,
+          address: formattedAddress,
+          phoneNumber: user.phoneNumber,
+        }),
+      });
+      const data = await response.json();
+      console.log(data);
+      return data.order._id;
+    } catch (error) {
+      console.log(error)
+    }
+
   };
 
   const emptyCart = async () => {
@@ -77,14 +105,44 @@ export default function CartPage() {
   };
 
   const placeOrder = async () => {
-    if (!placeOrderLoading) {
+    console.log("jjj")
+    if (placeOrderLoading === false) {
       setLoading(true);
-      const orderId = await makeOrder();
+      if (address === "") {
 
-      if (orderId) {
-        await emptyCart();
-        route.push(`/order-successful/${orderId}`);
+        if (addAddressValue.area === "" ||
+          addAddressValue.block === "" ||
+          addAddressValue.street === "" ||
+          addAddressValue.buildingNo === "" ||
+          addAddressValue.aptNo === "" ||
+          addAddressValue.floor === "") {
+            console.log("something is empty")
+          setLoading(false);
+          setError("Please fill all the required fields!");
+          return;
+        }else{
+          const formattedAddress = `${addAddressValue.area}, Block ${
+            addAddressValue.block
+          }, Street ${addAddressValue.street}, Building ${addAddressValue.buildingNo}, ${
+            addAddressValue.avenue ? "Avenue " + addAddressValue.avenue + ", " : ""
+          }Apt ${addAddressValue.aptNo}, Floor ${addAddressValue.floor}`;
+  
+          const orderId = await makeOrder(formattedAddress);
+
+          if (orderId) {
+            await emptyCart();
+            route.push(`/order-successful/${orderId}`);
+          }
+        }
+      }else{
+        const orderId = await makeOrder();
+
+        if (orderId) {
+          await emptyCart();
+          route.push(`/order-successful/${orderId}`);
+        }
       }
+
     }
   };
 
@@ -147,13 +205,13 @@ export default function CartPage() {
               <div className="p-5 md:p-10 lg:w-[40%] bg-primary rounded-div flex flex-col justify-between">
                 {/* adderss & order summary */}
                 <div className="mb-14 sm:mb-20">
-                  {true ? (
+                  {user?.address ? (
                     <div className="mb-3 sm:mb-7">
                       <p className="text-sm sm:text-base font-bold text-white">
                         Your Address
                       </p>
                       <p className="text-sm sm:text-base text-white">
-                        123 Fresh Market St., Green Valley, Kuwait City, Kuwait.
+                        {address}
                       </p>
                     </div>
                   ) : (
@@ -167,28 +225,63 @@ export default function CartPage() {
                             type="text"
                             placeholder="Area"
                             className="mb-3 px-3 w-[50%] h-8 bg-white rounded-div border-darkGray border-[1px]"
+                            value={addAddressValue?.area}
+                            onChange={(e) =>
+                              setAddAddressValue((prevAddress) => ({
+                                ...prevAddress,
+                                area: e.target.value,
+                              }))
+                            }
                           />
                           <input
                             type="text"
                             placeholder="Block"
                             className="mb-3 px-3 w-[50%] h-8 bg-white rounded-div border-darkGray border-[1px]"
+                            value={addAddressValue?.block}
+                            onChange={(e) =>
+                              setAddAddressValue((prevAddress) => ({
+                                ...prevAddress,
+                                block: e.target.value,
+                              }))
+                            }
                           />
                         </div>
                         <input
                           type="text"
                           placeholder="Street"
                           className="mb-3 px-3 w-full h-8 bg-white rounded-div border-darkGray border-[1px]"
+                          value={addAddressValue?.street}
+                          onChange={(e) =>
+                            setAddAddressValue((prevAddress) => ({
+                              ...prevAddress,
+                              street: e.target.value,
+                            }))
+                          }
                         />
                         <div className="flex gap-2">
                           <input
                             type="text"
                             placeholder="Building No"
                             className="mb-3 px-3 w-[50%] h-8 bg-white rounded-div border-darkGray border-[1px]"
+                            value={addAddressValue?.buildingNo}
+                            onChange={(e) =>
+                              setAddAddressValue((prevAddress) => ({
+                                ...prevAddress,
+                                buildingNo: e.target.value,
+                              }))
+                            }
                           />
                           <input
                             type="text"
                             placeholder="Avenue (optional)"
                             className="mb-3 px-3 w-[50%] h-8 bg-white rounded-div border-darkGray border-[1px]"
+                            value={addAddressValue?.avenue}
+                            onChange={(e) =>
+                              setAddAddressValue((prevAddress) => ({
+                                ...prevAddress,
+                                avenue: e.target.value,
+                              }))
+                            }
                           />
                         </div>
                         <div className="flex gap-2">
@@ -196,11 +289,25 @@ export default function CartPage() {
                             type="text"
                             placeholder="Apt. number"
                             className="mb-3 px-3 w-[50%] h-8 bg-white rounded-div border-darkGray border-[1px]"
+                            value={addAddressValue?.aptNo}
+                            onChange={(e) =>
+                              setAddAddressValue((prevAddress) => ({
+                                ...prevAddress,
+                                aptNo: e.target.value,
+                              }))
+                            }
                           />
                           <input
                             type="text"
                             placeholder="Floor"
                             className="mb-3 px-3 w-[50%] h-8 bg-white rounded-div border-darkGray border-[1px]"
+                            value={addAddressValue?.floor}
+                            onChange={(e) =>
+                              setAddAddressValue((prevAddress) => ({
+                                ...prevAddress,
+                                floor: e.target.value,
+                              }))
+                            }
                           />
                         </div>
                         <textarea
@@ -208,8 +315,18 @@ export default function CartPage() {
                           id=""
                           placeholder="Additional directions (optional)"
                           className="mb-3 px-3 w-full bg-white rounded-div border-darkGray border-[1px]"
+                          value={addAddressValue?.additional}
+                          onChange={(e) =>
+                            setAddAddressValue((prevAddress) => ({
+                              ...prevAddress,
+                              additional: e.target.value,
+                            }))
+                          }
                         ></textarea>
                       </div>
+                      {error && (
+                        <p className="text-sm sm:text-base text-danger">{error}</p>
+                      )}
                     </div>
                   )}
                   <div>

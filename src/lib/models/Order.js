@@ -6,13 +6,9 @@ const OrderSchema = new Schema(
       type: String,
       required: true,
     },
-    customerName:{
-      type: String,
+    products: {
+      type: Array,
       required: true,
-    },
-    products:{
-        type: Array,
-        required: true,
     },
     status: {
       type: String,
@@ -20,6 +16,17 @@ const OrderSchema = new Schema(
     },
     price: {
       type: Number,
+      required: true,
+    },
+    customerName: {
+      type: String,
+      required: true,
+    },
+    phoneNumber: {
+      type: String,
+    },
+    address: {
+      type: String,
       required: true,
     },
   },

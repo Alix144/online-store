@@ -7,8 +7,8 @@ import LoadingIcon from "@/components/LoadingIcon";
 export default function Profile() {
   const [user, setUser] = useState(null);
   const [userId, setUserId] = useState(null);
-  const [userOrders, setUserOrders] = useState([]);
-  const [activeOrders, setActiveOrders] = useState([]);
+  const [userOrders, setUserOrders] = useState(null);
+  const [activeOrders, setActiveOrders] = useState(null);
   const [formattedDate, setFormattedDate] = useState("");
 
   // calling APIs
@@ -89,7 +89,7 @@ export default function Profile() {
         <div className="py-3 sm:py-5 px-5 sm:px-10 w-full rounded-div bg-white flex justify-between items-center text-darkGray">
           <div className="">
             <p className="text-sm sm:text-base">Total Orders:</p>
-            {userOrders.length > 0 ? 
+            {userOrders !== null ? 
             <p className="text-sm sm:text-base font-bold">{userOrders.length}</p> 
             : 
             <LoadingIcon />}
@@ -98,7 +98,7 @@ export default function Profile() {
           <div className="w-[1px] h-14 bg-lightGray"></div>
           <div className="">
             <p className="text-sm sm:text-base">Active Orders</p>
-            {activeOrders.length > 0 ? 
+            {activeOrders !== null ? 
             <p className="text-sm sm:text-base font-bold">{activeOrders.length}</p> 
             : 
             <LoadingIcon />}
