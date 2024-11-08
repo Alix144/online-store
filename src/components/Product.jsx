@@ -189,8 +189,8 @@ export default function Product({
       <div className="p-3 w-52 sm:w-60 min-w-52 sm:min-w-60 h-52 sm:h-60 rounded-div bg-white border-lightGray border-[1px] flex flex-col gap-3 cursor-pointer">
         <div className="w-full h-[65%] rounded-div bg-lightGray relative">
           <Image
-            src="/images/apples.jpg"
-            alt="apples"
+            src={product?.image?.file || "/images/default-image.png"}
+            alt="Product image"
             layout="fill"
             objectFit="cover"
             className="rounded-div"

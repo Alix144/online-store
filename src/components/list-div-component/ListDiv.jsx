@@ -15,7 +15,8 @@ export default function ListDiv({ type }) {
   const [isDeleteWindowOpen, setIsDeleteWindowOpen] = useState(null);
   const [isAddProductWindowOpen, setIsAddProductWindowOpen] = useState(false);
   const [isEditProductWindowOpen, setIsEditProductWindowOpen] = useState(null);
-  const [isOrderDetailsWindowOpen, setIsOrderDetailsWindowOpen] = useState(null);
+  const [isOrderDetailsWindowOpen, setIsOrderDetailsWindowOpen] =
+    useState(null);
   const [productId, setProductId] = useState("");
 
   const [productName, setProductName] = useState("");
@@ -29,8 +30,28 @@ export default function ListDiv({ type }) {
   const [products, setProducts] = useState(null);
   const [users, setUsers] = useState(null);
 
+  const [uploadedImage, setUploadedImage] = useState({ file: "" });
+
+  function convertToBase64(file) {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => resolve(reader.result);
+      reader.onerror = (error) => reject(error);
+    });
+  }
+
+  const handleFileUpload = async (e) => {
+    const file = e.target.files[0];
+    const base64 = await convertToBase64(file);
+    setUploadedImage({ ...uploadedImage, file: base64 });
+  };
+
   const closeAddForm = () => {
     setIsAddProductWindowOpen(false);
+    setProductName("");
+    setProductPrice("");
+    setUploadedImage({ file: "" })
     setError("");
   };
 
@@ -52,6 +73,7 @@ export default function ListDiv({ type }) {
       headers: { "Content-Type": "application/json" },
     });
     const data = await response.json();
+    console.log(data)
     setProducts(data);
   };
 
@@ -75,20 +97,23 @@ export default function ListDiv({ type }) {
       return;
     }
     setLoading(true);
-    const response = await fetch("/api/products/", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        name: productName,
-        price: productPrice,
-        measurement: productMeasurement,
-      }),
-    });
-    getProducts();
+    try {
+      const response = await fetch("/api/products/", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: productName,
+          price: productPrice,
+          measurement: productMeasurement,
+          image: uploadedImage,
+        }),
+      });
+      getProducts();
+      closeAddForm()
+    } catch (error) {
+      setError(error)
+    }
     setLoading(false);
-    setProductName("");
-    setProductPrice("");
-    setIsAddProductWindowOpen(false);
   };
 
   const editProduct = async () => {
@@ -155,7 +180,7 @@ export default function ListDiv({ type }) {
       setOrders(userOrders);
       setAdminOrders(adminComingOrders);
     } catch (error) {
-      setError(error)
+      setError(error);
     }
   };
 
@@ -168,16 +193,15 @@ export default function ListDiv({ type }) {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           orderId,
-          status
+          status,
         }),
       });
-      closeOrderDetails()
-      getOrders()
+      closeOrderDetails();
+      getOrders();
     } catch (error) {
-      setError(error)
+      setError(error);
     }
     setLoading(false);
-    
   };
 
   useEffect(() => {
@@ -318,7 +342,6 @@ export default function ListDiv({ type }) {
               </div>
             </div>
           )}
-
           {/* content */}
           <div className="w-full h-full max-h-80 overflow-y-scroll scrollbar-hide overflow-x-auto">
             {type === "customerOrderList" ? (
@@ -399,6 +422,7 @@ export default function ListDiv({ type }) {
                       product={product}
                       setIsEditProductWindowOpen={setIsEditProductWindowOpen}
                       setIsDeleteWindowOpen={setIsDeleteWindowOpen}
+                      image={product.image}
                     />
                   ))
               )
@@ -482,6 +506,15 @@ export default function ListDiv({ type }) {
                 <option value="kg">kg</option>
                 <option value="g">g</option>
               </select>
+
+              <input
+                type="file"
+                lable="Image"
+                name="file"
+                id="file-upload"
+                accept=".jpeg, .png, .jpg"
+                onChange={(e) => handleFileUpload(e)}
+              />
             </div>
             {error && (
               <p className="text-sm sm:text-base text-danger">{error}</p>
@@ -566,30 +599,42 @@ export default function ListDiv({ type }) {
             <h2 className="text-lg font-semibold">Order Details</h2>
             <div className="flex flex-col gap-3 text-left">
               <div>
-                <p className="text-sm sm:text-base font-bold">Date</p> 
-                <p className="text-sm sm:text-base">{isOrderDetailsWindowOpen.createdAt.slice(0, 10)}</p>
+                <p className="text-sm sm:text-base font-bold">Date</p>
+                <p className="text-sm sm:text-base">
+                  {isOrderDetailsWindowOpen.createdAt.slice(0, 10)}
+                </p>
               </div>
               <div>
-                <p className="text-sm sm:text-base font-bold">Customer Name</p> 
-                <p className="text-sm sm:text-base">{isOrderDetailsWindowOpen.customerName}</p>
+                <p className="text-sm sm:text-base font-bold">Customer Name</p>
+                <p className="text-sm sm:text-base">
+                  {isOrderDetailsWindowOpen.customerName}
+                </p>
               </div>
               <div>
-                <p className="text-sm sm:text-base font-bold">Phone Number</p> 
-                <p className="text-sm sm:text-base">+965 {isOrderDetailsWindowOpen.phoneNumber}</p>
+                <p className="text-sm sm:text-base font-bold">Phone Number</p>
+                <p className="text-sm sm:text-base">
+                  +965 {isOrderDetailsWindowOpen.phoneNumber}
+                </p>
               </div>
               <div>
-                <p className="text-sm sm:text-base font-bold">Address</p> 
-                <p className="text-sm sm:text-base">{isOrderDetailsWindowOpen.address}</p>
+                <p className="text-sm sm:text-base font-bold">Address</p>
+                <p className="text-sm sm:text-base">
+                  {isOrderDetailsWindowOpen.address}
+                </p>
               </div>
               <div>
-                <p className="text-sm sm:text-base font-bold">Order Summary</p> 
-                {isOrderDetailsWindowOpen.products.map((product)=>(
-                  <p className="text-sm sm:text-base" key={product.id}>{product.amount} kg  {product.name}</p>
+                <p className="text-sm sm:text-base font-bold">Order Summary</p>
+                {isOrderDetailsWindowOpen.products.map((product) => (
+                  <p className="text-sm sm:text-base" key={product.id}>
+                    {product.amount} kg {product.name}
+                  </p>
                 ))}
               </div>
               <div>
                 <p className="text-sm sm:text-base font-bold">Total Price</p>
-                <p className="text-sm sm:text-base">{isOrderDetailsWindowOpen.price} KWD</p>
+                <p className="text-sm sm:text-base">
+                  {isOrderDetailsWindowOpen.price} KWD
+                </p>
               </div>
               <select
                 id="status"
@@ -598,13 +643,22 @@ export default function ListDiv({ type }) {
                 className="mb-3 px-3 w-64 h-8 bg-white rounded-div border-darkGray border-[1px]"
                 onChange={(e) => setStatus(e.target.value)}
               >
-                <option value="active" selected={isOrderDetailsWindowOpen.status === "active"}>
+                <option
+                  value="active"
+                  selected={isOrderDetailsWindowOpen.status === "active"}
+                >
                   Active
                 </option>
-                <option value="delivered" selected={isOrderDetailsWindowOpen.status === "delivered"}>
+                <option
+                  value="delivered"
+                  selected={isOrderDetailsWindowOpen.status === "delivered"}
+                >
                   Delivered
                 </option>
-                <option value="canceled" selected={isOrderDetailsWindowOpen.status === "canceled"}>
+                <option
+                  value="canceled"
+                  selected={isOrderDetailsWindowOpen.status === "canceled"}
+                >
                   Canceled
                 </option>
               </select>
@@ -621,9 +675,9 @@ export default function ListDiv({ type }) {
               </button>
               <button
                 className="btn-style bg-primary text-white"
-                onClick={()=>updateOrderStatus(isOrderDetailsWindowOpen._id)}
+                onClick={() => updateOrderStatus(isOrderDetailsWindowOpen._id)}
               >
-                {loading ? <LoadingIcon/> : "Save"}
+                {loading ? <LoadingIcon /> : "Save"}
               </button>
             </div>
           </div>
