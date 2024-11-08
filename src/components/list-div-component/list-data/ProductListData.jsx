@@ -17,7 +17,7 @@ export default function ProductListData({
   return (
     <div className="px-0 lg:px-8 mx-4 lg:mx-8 py-2 sm:py-5 flex justify-between border-b border-lightGray">
       <div className="flex gap-5 sm:gap-10 md:gap-20">
-        <div className="h-7 w-10 sm:w-14 lg:w-24">
+        <div className="h-full w-10 ">
           <Image
             src={image?.file || "/images/default-image.png"}
             alt="Product image"

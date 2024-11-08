@@ -22,6 +22,7 @@ export default function ListDiv({ type }) {
   const [productName, setProductName] = useState("");
   const [productPrice, setProductPrice] = useState("");
   const [productMeasurement, setProductMeasurement] = useState("");
+  const [uploadedImage, setUploadedImage] = useState({ file: "" });
 
   const [status, setStatus] = useState("");
 
@@ -29,8 +30,6 @@ export default function ListDiv({ type }) {
   const [adminOrders, setAdminOrders] = useState(null);
   const [products, setProducts] = useState(null);
   const [users, setUsers] = useState(null);
-
-  const [uploadedImage, setUploadedImage] = useState({ file: "" });
 
   function convertToBase64(file) {
     return new Promise((resolve, reject) => {
@@ -51,7 +50,7 @@ export default function ListDiv({ type }) {
     setIsAddProductWindowOpen(false);
     setProductName("");
     setProductPrice("");
-    setUploadedImage({ file: "" })
+    setUploadedImage({ file: "" });
     setError("");
   };
 
@@ -73,7 +72,7 @@ export default function ListDiv({ type }) {
       headers: { "Content-Type": "application/json" },
     });
     const data = await response.json();
-    console.log(data)
+    console.log(data);
     setProducts(data);
   };
 
@@ -109,9 +108,9 @@ export default function ListDiv({ type }) {
         }),
       });
       getProducts();
-      closeAddForm()
+      closeAddForm();
     } catch (error) {
-      setError(error)
+      setError(error);
     }
     setLoading(false);
   };
@@ -137,6 +136,7 @@ export default function ListDiv({ type }) {
         name: productName,
         price: productPrice,
         measurement: productMeasurement,
+        image: uploadedImage,
       }),
     });
     getProducts();
@@ -514,7 +514,21 @@ export default function ListDiv({ type }) {
                 id="file-upload"
                 accept=".jpeg, .png, .jpg"
                 onChange={(e) => handleFileUpload(e)}
+                className="hidden"
               />
+              <div className="flex justify-between">
+                <div className="h-full w-16 overflow-hidden">
+                  <Image
+                    src={uploadedImage?.file || "/images/default-image.png"}
+                    alt="Product image"
+                    width={200}
+                    height={200}
+                  />
+                </div>
+                  <label htmlFor="file-upload" className="mb-3 px-3 w-32 h-8 flex justify-center items-center cursor-pointer bg-white rounded-div border-darkGray border-[1px]">
+                    Upload
+                  </label>
+              </div>
             </div>
             {error && (
               <p className="text-sm sm:text-base text-danger">{error}</p>
@@ -571,6 +585,29 @@ export default function ListDiv({ type }) {
                   g
                 </option>
               </select>
+
+              <input
+                type="file"
+                lable="Image"
+                name="file"
+                id="file-upload"
+                accept=".jpeg, .png, .jpg"
+                onChange={(e) => handleFileUpload(e)}
+                className="hidden"
+              />
+              <div className="flex justify-between">
+                <div className="h-full w-16 overflow-hidden">
+                  <Image
+                    src={uploadedImage?.file || "/images/default-image.png"}
+                    alt="Product image"
+                    width={200}
+                    height={200}
+                  />
+                </div>
+                  <label htmlFor="file-upload" className="mb-3 px-3 w-32 h-8 flex justify-center items-center cursor-pointer bg-white rounded-div border-darkGray border-[1px]">
+                    Upload
+                  </label>
+              </div>
             </div>
             {error && (
               <p className="text-sm sm:text-base text-danger">{error}</p>

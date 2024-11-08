@@ -18,7 +18,6 @@ export const GET = async () => {
 export const POST = async (request) => {
   try {
     const body = await request.json();
-    const { name, price, measurement, image } = body;
     await connectToDb();
     const newProduct = new Product(
       body
@@ -39,13 +38,13 @@ export const POST = async (request) => {
 export const PATCH = async (request) => {
   try {
     const body = await request.json();
-    const { productId, name, price, measurement } = body;
+    const { productId, name, price, measurement, image } = body;
 
     await connectToDb();
 
     const updatedProduct = await Product.findOneAndUpdate(
       { _id: productId },
-      { name, price, measurement },
+      { name, price, measurement, image },
       { new: true }
     );
 
