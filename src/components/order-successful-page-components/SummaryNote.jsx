@@ -59,7 +59,7 @@ export default function SummaryNote({ orderId }) {
   }, [order]);
 
   return (
-    <div className="p-5 w-72 h-72 text-left bg-secondary shadow-md absolute left-16 -bottom-40 flex justify-center flex-col gap-2">
+    <div className="p-3 sm:p-5 w-60 sm:w-64 xl:w-72 h-60 sm:h-64 xl:h-72 text-left bg-secondary shadow-md absolute left-1/2 transform -translate-x-1/2 lg:translate-x-0 lg:left-16 -bottom-52 lg:-bottom-40 flex justify-center flex-col gap-2">
       {loading ? (
         <LoadingIcon />
       ) : (
@@ -71,7 +71,7 @@ export default function SummaryNote({ orderId }) {
           <div>
             <p className="text-sm">Address</p>
             <p className="text-sm font-bold">
-              123 Fresh Market St., Green Valley, Kuwait City, Kuwait.
+              {order?.address}
             </p>
           </div>
           <div>

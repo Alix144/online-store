@@ -18,7 +18,7 @@ export default function SuccessfulOrderPage( {params} ) {
                 height={300}
               />
             </div>
-            <h1 className="text-success font-bold text-3xl">
+            <h1 className="text-success font-bold text-xl sm:text-2xl lg:text-3xl">
               Order Successful!
             </h1>
             <p className="text-white text-sm sm:text-base">
@@ -28,7 +28,7 @@ export default function SuccessfulOrderPage( {params} ) {
           {/* note div */}
           <SummaryNote orderId={orderId}/>
 
-          <div className="h-28 w-28 absolute bottom-0 right-[30%]">
+          <div className="h-28 w-28 absolute bottom-0 right-10 lg:right-[30%] hidden sm:block">
             <Image
               src="/images/gratitude.png"
               alt="Gratitude"

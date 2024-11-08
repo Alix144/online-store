@@ -15,7 +15,7 @@ export default function HomeBtn() {
   
   return (
     <button
-      className="w-64 btn-style bg-primary text-white"
+      className="mt-28 lg:mt-0 w-64 btn-style bg-primary text-white"
       onClick={() => navigateToHome()}
     >
       Home
