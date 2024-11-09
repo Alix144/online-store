@@ -2,6 +2,10 @@ import HomeBtn from "@/components/order-successful-page-components/HomeBtn";
 import SummaryNote from "@/components/order-successful-page-components/SummaryNote";
 import Image from "next/image";
 
+export const metadata = {
+  title: "Order successful",
+};
+
 export default function SuccessfulOrderPage( {params} ) {
   const { orderId } = params;
 

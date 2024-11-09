@@ -15,12 +15,6 @@ const inter = Inter({
   variable: "--font-inter",
 });
 
-export const metadata = {
-  title: "Fruity Store | Home Page",
-  description:
-    "Shop fresh and preserved fruits, vegetables, dates, and a variety of foodstuffs at Fruity Store. Quality products delivered with care.",
-};
-
 export default async function RootLayout({ children }) {
   const session = await getServerSession(authOptions);
   const isAdmin = session?.user.email === "aliiyousseff144@gmail.com" || false;

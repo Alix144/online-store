@@ -1,6 +1,10 @@
 import UserInfo from "@/components/profile-components/UserInfo";
 import Image from "next/image";
 
+export const metadata = {
+  title: "Fruity Store | Profile Page",
+};
+
 export default function ProfilePage() {
   return (
     <main className="p-5 sm:p-10 flex flex-col gap-5 sm:gap-10">

@@ -8,6 +8,12 @@ import Link from "next/link";
 import CallToActionDiv from "@/components/CallToActionDiv";
 import AdminNumbersDiv from "@/components/AdminNumbersDiv";
 
+export const metadata = {
+  title: "Fruity Store | Home Page",
+  description:
+    "Shop fresh and preserved fruits, vegetables, dates, and a variety of foodstuffs at Fruity Store. Quality products delivered with care.",
+};
+
 export default async function Home() {
   const session = await getServerSession(authOptions);
   const isAdmin = session?.user.email === "aliiyousseff144@gmail.com";
@@ -16,7 +22,7 @@ export default async function Home() {
     return isAdmin ? (
       <main className="p-5 sm:p-10 flex flex-col gap-10">
         <section className="w-full">
-          <AdminNumbersDiv/>
+          <AdminNumbersDiv />
         </section>
 
         <section className="w-full">

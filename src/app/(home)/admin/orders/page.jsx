@@ -1,5 +1,9 @@
 import ListDiv from "@/components/list-div-component/ListDiv";
 
+export const metadata = {
+  title: "Fruity Store | Orders",
+};
+
 export default function OrdersPage() {
   return (
     <main className="p-5 sm:p-10 flex flex-col gap-5 sm:gap-10">
