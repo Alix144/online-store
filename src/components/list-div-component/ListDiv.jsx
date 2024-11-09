@@ -19,17 +19,60 @@ export default function ListDiv({ type }) {
     useState(null);
   const [productId, setProductId] = useState("");
 
+  
   const [productName, setProductName] = useState("");
   const [productPrice, setProductPrice] = useState("");
   const [productMeasurement, setProductMeasurement] = useState("");
   const [uploadedImage, setUploadedImage] = useState({ file: "" });
-
+  
   const [status, setStatus] = useState("");
-
+  
   const [orders, setOrders] = useState(null);
   const [adminOrders, setAdminOrders] = useState(null);
+  const [displayedAdminOrders, setDisplayedAdminOrders] = useState(null);
   const [products, setProducts] = useState(null);
+  const [displayedProducts, setDisplayedProducts] = useState(null);
+
   const [users, setUsers] = useState(null);
+  const [displayedUsers, setDisplayedUsers] = useState(null);
+
+  const [searchOrdersInputValue, setSearchOrdersInputValue] = useState("");
+  const [searchProductsInputValue, setSearchProductsInputValue] = useState("");
+  const [searchUsersInputValue, setSearchUsersInputValue] = useState("");
+
+  const searchOrders = (e) => {
+    const value = e.target.value;
+    setSearchOrdersInputValue(value);
+  
+    const filteredOrders = adminOrders.filter(order => 
+      order.customerName.toLowerCase().includes(value.toLowerCase())
+    );
+
+    setDisplayedAdminOrders(filteredOrders);
+  
+  }
+
+  const searchProducts = (e) => {
+    const value = e.target.value;
+    setSearchProductsInputValue(value);
+  
+    const filteredProducts = products.filter(product => 
+      product.name.toLowerCase().includes(value.toLowerCase())
+    );
+
+    setDisplayedProducts(filteredProducts);
+  }
+
+  const searchUsers = (e) => {
+    const value = e.target.value;
+    setSearchUsersInputValue(value);
+  
+    const filteredUsers = users.filter(user => 
+      user.name.toLowerCase().includes(value.toLowerCase())
+    );
+
+    setDisplayedUsers(filteredUsers);
+  }
 
   function convertToBase64(file) {
     return new Promise((resolve, reject) => {
@@ -72,8 +115,9 @@ export default function ListDiv({ type }) {
       headers: { "Content-Type": "application/json" },
     });
     const data = await response.json();
-    console.log(data);
     setProducts(data);
+    setSearchProductsInputValue("")
+    setDisplayedProducts(data)
   };
 
   const addProduct = async () => {
@@ -116,6 +160,7 @@ export default function ListDiv({ type }) {
   };
 
   const editProduct = async () => {
+    setLoading(true);
     setError("");
     if (productName === "" && productPrice === "") {
       setError("Please provide product name and price!");
@@ -127,21 +172,25 @@ export default function ListDiv({ type }) {
       setError("Please provide a product name!");
       return;
     }
-    setLoading(true);
-    const response = await fetch("/api/products/", {
-      method: "PATCH",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        productId,
-        name: productName,
-        price: productPrice,
-        measurement: productMeasurement,
-        image: uploadedImage,
-      }),
-    });
-    getProducts();
+    
+    try {
+      const response = await fetch("/api/products/", {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          productId,
+          name: productName,
+          price: productPrice,
+          measurement: productMeasurement,
+          image: uploadedImage,
+        }),
+      });
+      getProducts();
+      setIsEditProductWindowOpen(null);
+    } catch (error) {
+      setError(error)
+    }
     setLoading(false);
-    setIsEditProductWindowOpen(null);
   };
 
   const deleteProduct = async () => {
@@ -164,7 +213,7 @@ export default function ListDiv({ type }) {
     });
     const data = await response.json();
     setUsers(data);
-    console.log(data);
+    setDisplayedUsers(data)
   };
 
   // orders
@@ -179,6 +228,8 @@ export default function ListDiv({ type }) {
       const adminComingOrders = data;
       setOrders(userOrders);
       setAdminOrders(adminComingOrders);
+      setDisplayedAdminOrders(adminComingOrders)
+      setSearchOrdersInputValue("")
     } catch (error) {
       setError(error);
     }
@@ -247,6 +298,7 @@ export default function ListDiv({ type }) {
     <>
       <div className="w-full">
         {/* search input */}
+        {type === "adminOrderList" ?
         <div className="w-full flex justify-between flex-col-reverse sm:flex-row">
           <div className="mb-3 px-3 w-full sm:w-64 h-8 bg-white rounded-div border-darkGray border-[1px] flex gap-1 items-center">
             <div className="w-5 h-5">
@@ -259,8 +311,30 @@ export default function ListDiv({ type }) {
             </div>
             <input
               type="text"
-              placeholder="Search Order"
+              placeholder="Search order by name"
               className="h-full w-full focus:outline-none rounded-sm text-darkGray"
+              value={searchOrdersInputValue}
+              onChange={(e)=>searchOrders(e)}
+            />
+          </div>
+        </div>
+        : type === "productsList"?
+        <div className="w-full flex justify-between flex-col-reverse sm:flex-row">
+          <div className="mb-3 px-3 w-full sm:w-64 h-8 bg-white rounded-div border-darkGray border-[1px] flex gap-1 items-center">
+            <div className="w-5 h-5">
+              <Image
+                src="/images/search.png"
+                alt="Search"
+                width={100}
+                height={100}
+              />
+            </div>
+            <input
+              type="text"
+              placeholder="Search products by name"
+              className="h-full w-full focus:outline-none rounded-sm text-darkGray"
+              value={searchProductsInputValue}
+              onChange={(e)=>searchProducts(e)}
             />
           </div>
           {type === "productsList" && (
@@ -272,6 +346,29 @@ export default function ListDiv({ type }) {
             </button>
           )}
         </div>
+        : type === "usersList" ?
+        <div className="w-full flex justify-between flex-col-reverse sm:flex-row">
+          <div className="mb-3 px-3 w-full sm:w-64 h-8 bg-white rounded-div border-darkGray border-[1px] flex gap-1 items-center">
+            <div className="w-5 h-5">
+              <Image
+                src="/images/search.png"
+                alt="Search"
+                width={100}
+                height={100}
+              />
+            </div>
+            <input
+              type="text"
+              placeholder="Search user by name"
+              className="h-full w-full focus:outline-none rounded-sm text-darkGray"
+              value={searchUsersInputValue}
+              onChange={(e)=>searchUsers(e)}
+            />
+          </div>
+        </div>
+        :
+        null
+        }
 
         <div className="p-3 w-full h-96 bg-white rounded-div">
           {/* header */}
@@ -369,11 +466,11 @@ export default function ListDiv({ type }) {
                   ))
               )
             ) : type === "adminOrderList" ? (
-              adminOrders === null ? (
+              displayedAdminOrders === null ? (
                 <div className="h-full flex justify-center items-center">
                   <LoadingIcon />
                 </div>
-              ) : adminOrders.length === 0 ? (
+              ) : displayedAdminOrders.length === 0 ? (
                 <div className="mt-10 w-full flex flex-col text-center justify-start items-center">
                   <Image
                     src="/images/no-task.png"
@@ -385,7 +482,7 @@ export default function ListDiv({ type }) {
                   <p>No Orders Found!</p>
                 </div>
               ) : (
-                adminOrders
+                displayedAdminOrders
                   ?.slice()
                   .reverse()
                   .map((order) => (
@@ -413,7 +510,7 @@ export default function ListDiv({ type }) {
                   <p>No Products Found!</p>
                 </div>
               ) : (
-                products
+                displayedProducts
                   ?.slice()
                   .reverse()
                   .map((product) => (
@@ -442,7 +539,7 @@ export default function ListDiv({ type }) {
                 <p>No usesrs found!</p>
               </div>
             ) : (
-              users
+              displayedUsers
                 ?.slice()
                 .reverse()
                 .map((user) => <UsersListData key={user._id} user={user} />)
