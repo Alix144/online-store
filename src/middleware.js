@@ -21,11 +21,6 @@ export default withAuth(
       pathname.startsWith(route)
     );
 
-    //checking if the current route is private or not
-    const isPrivateRoute = privateRoutes.some((route) =>
-      pathname.startsWith(route)
-    );
-
     // if users are unauthenticated and try to access private routes they get directed to signin page
     if (!token && isProtectedRoute) {
       return NextResponse.redirect(new URL("/signin", request.url));
