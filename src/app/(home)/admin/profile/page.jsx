@@ -1,11 +1,30 @@
 import UserInfo from "@/components/profile-components/UserInfo";
 import Image from "next/image";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/lib/nextAuth";
 
 export const metadata = {
   title: "Fruity Store | Profile Page",
 };
 
-export default function ProfilePage() {
+export default async function ProfilePage() {
+  const session = await getServerSession(authOptions);
+console.log(session.user.id)
+
+  const getUser = async () => {
+    try {
+      const response = await fetch(`http://localhost:3000/api/users/${session.user.id}`);
+      const data = await response.json();
+      console.log(data);
+      return data
+    } catch (error) {
+      console.log(error);
+      return error
+    }
+  };
+
+  const user = await getUser()
+
   return (
     <main className="p-5 sm:p-10 flex flex-col gap-5 sm:gap-10">
       <section className="h-screen w-full">
@@ -22,7 +41,18 @@ export default function ProfilePage() {
               className="mb-5"
             />
           </div>
-          <UserInfo/>
+          {/* <UserInfo /> */}
+          
+            {user.email ?
+            <>
+            <h1 className="text-base sm:text-xl font-semibold text-white">
+              {user.name}
+            </h1>
+            <p className="text-sm sm:text-base text-white ">{user.email}</p>
+            </>
+            :
+            <p>Error fetching data!</p>
+            }
         </div>
       </section>
     </main>
