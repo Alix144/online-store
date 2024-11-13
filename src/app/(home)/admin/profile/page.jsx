@@ -13,7 +13,7 @@ console.log(session.user.id)
 
   const getUser = async () => {
     try {
-      const response = await fetch(`http://localhost:3000/api/users/${session.user.id}`);
+      const response = await fetch(`${process.env.website_URL}/api/users/${session.user.id}`);
       const data = await response.json();
       console.log(data);
       return data
